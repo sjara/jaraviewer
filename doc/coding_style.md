@@ -4,7 +4,7 @@ Code layout
 -----------
 
 -   Use 4 spaces for indentation. Do not use tab.
--   The first line of each executable file should be: \#!/usr/bin/env python
+-   The first line of each executable file should be: `#!/usr/bin/env python`
 
 Importing
 ---------
