@@ -1,4 +1,4 @@
-When in doubt, follow [PEP-8] (https://www.python.org/dev/peps/pep-0008/):
+When in doubt, follow [PEP-8] (https://www.python.org/dev/peps/pep-0008/).
 
 Code layout
 -----------
@@ -9,7 +9,7 @@ Code layout
 Importing
 ---------
 
--   We will import modules, not classes:
+-   Your code should import modules, not classes:
     -   Use "`import` `optparse`" instead of "`from` `optparse` `import` `OptionParser`"
     -   This keeps the global namespace cleaner (and easier to know where things come from)
     -   This does not affect performance (the full module is parsed in either case)
@@ -37,19 +37,14 @@ See the definition of [module and package from the Python documentation] (https:
 Docstrings
 ----------
 
-Docstrings for functions and classes should be compatible with Sphinx so that ReadTheDocs documentation can be created automatically. See Sphinx Napoleon.
+Docstrings for functions and classes should be compatible with Sphinx so that ReadTheDocs documentation can be created automatically. See [Sphinx Napoleon] (https://sphinxcontrib-napoleon.readthedocs.org).
 
 
 Python3 Compatibility
 ---------------------
-
-1.  Don't do this:
-
-`   print 'Num = %d' % number`
-
-Instead, do this:
-
-`   print 'Num = {0}'.format(number)`
+-  Print statements:
+   - This is ok: `print 'Num = {0}'.format(number)`
+   - Avoid this: `print 'Num = %d' % number`
 
 
 PEP8 standards
