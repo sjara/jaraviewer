@@ -39,12 +39,15 @@ Docstrings
 
 Docstrings for functions and classes should be compatible with Sphinx so that ReadTheDocs documentation can be created automatically. See [Sphinx Napoleon] (https://sphinxcontrib-napoleon.readthedocs.org).
 
-
-Python3 Compatibility
----------------------
+Other
+-----
 -  Print statements:
    - This is ok: `print 'Num = {0}'.format(number)`
    - Avoid this: `print 'Num = %d' % number`
+
+
+Python3 Compatibility
+---------------------
 
 
 PEP8 standards
