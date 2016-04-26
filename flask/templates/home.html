@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Jaraviewer</title>
+
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+        <!-- Include Date Range Picker -->
+        <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+        <!-- Manual CSS -->
+        <link href="theme.css" rel="stylesheet">
+
+    </head>
+
+    <body role="document">
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">JaraViewer</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="home.html">Home</a></li>
+                    
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Git <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a fhref="https://github.com/sjara/jaraviewer">JaraViewer</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="https://github.com/sjara/jaratoolbox">JaraToolBox</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container theme-showcase" role="main">
+      <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <h1>Jara Viewer</h1>
+            <p>Online data viewer for JaraLab. 
+                <br>The initial goal of this project is to provide a web viewer for behavior data collected in the Jaramillo lab.
+            </p>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <h3>Form</h3>
+        <br>
+        <form class="form-horizontal" role="form" name="form" method='POST' action="/execute">
+
+            <!-- Select Mouse -->
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="mice_select">Mice:</label>    
+                <div class="col-sm-4">
+                    <select class="form-control selectpicker" id="mice_select" name="miceSelect"  data-live-search="true" >
+                        <option value="" selected disabled>Select Mouse</option>
+                        <option value="mouse1">Mouse 1</option>
+                        <option value="mouse2">Mouse 2</option>
+                        <option value="mouse3">Mouse 3</option>
+                        <option value="mouse4">Mouse 4</option>
+                        <option value="mouse5">Mouse 5</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Select Date Ranges -->
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="daterange">Date Ranges:</label>   
+                <div class="col-sm-4" >
+                    <div id="daterange" class="form-control pull-right" >
+                        <i class="glyphicon glyphicon-calendar fa-calendar"></i>&nbsp;
+                        <span></span> <b class="caret"></b>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Select Plot Type -->
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="plottype">Plot Type:</label>    
+                <div class="col-sm-4">
+                    <select class="form-control" id="plottype" name="plotType" required="true">
+                        <option value="" selected disabled>Select a Plot type</option>
+
+                        <option value="plottype1">Plot Type 1</option>
+                        <option value="plottype2">Plot Type 2</option>
+                        <option value="plottype2">Plot Type 3</option>
+                        <option value="plottype4">Plot Type 4</option>
+                        <option value="plottype5">Plot Type 5</option>
+                        
+                       
+                    </select>
+                </div>
+            </div>
+
+            <br>
+            <div class="form-group">
+                <div class="text-center" >
+                    <button type="submit" class="btn btn-primary" value="Submit Button">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+
+
+    <script type="text/javascript">
+
+        // mouse select picker
+        $('.mice_select').selectpicker({
+            style: 'btn-info',
+            liveSearch: true
+        });
+    </script>
+
+    <script type="text/javascript">
+
+
+        // date range picker
+        $(function() {
+
+            function cb(start, end) {
+                $('#daterange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+            cb(moment().subtract(29, 'days'), moment());
+
+            $('#daterange').daterangepicker({
+                ranges: {
+                   'Today': [moment(), moment()],
+                   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                   'This Month': [moment().startOf('month'), moment().endOf('month')],
+                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+            }, cb);
+        });
+
+
+    </script>
+
+
+
+  </body>
+</html>
