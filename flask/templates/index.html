@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Jaraviewer</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+        <!-- Include Date Range Picker -->
+        <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+        <!-- Manual CSS -->
+        <link href="static/css/stylesheet.css" rel="stylesheet">
+
+    </head>
+
+    <body role="document">
+
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">JaraViewer</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="index.html">Home</a></li>
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Git <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a fhref="https://github.com/sjara/jaraviewer">JaraViewer</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="https://github.com/sjara/jaratoolbox">JaraToolBox</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav> <!-- nav bar end -->
+
+        <div class="container theme-showcase" role="main">
+          <!-- Main jumbotron for a primary marketing message or call to action -->
+            <div class="jumbotron">
+                <h1>Jara Viewer</h1>
+                <p>Online data viewer for behavior data collected in the Jaramillo lab.
+                </p>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>Form</h3>
+            <br>
+
+            <form class="form-horizontal" role="form" name="form" action="{{url_for('save')}}" method='POST'>
+
+                <!-- Select Mouse -->
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="subject">Subjects:</label><br>
+                    <div class="col-sm-8">
+                        
+                        <input type ="checkbox" id="subject1" name="subject" value="M1" class="hidden_checkbox">
+                        <label class="label_item" for="subject1">
+                            <img src="static/img/m1.png">
+                            <div class="label_name">M1</div>
+                        </label>
+
+
+                        <input type ="checkbox" id="subject2" name="subject" value="M2" class="hidden_checkbox">
+                        <label class="label_item" for="subject2">
+                            <img src="static/img/m2.png">
+                            <div class="label_name">M2</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject3" name="subject" value="M3" class="hidden_checkbox">
+                        <label class="label_item" for="subject3">
+                            <img src="static/img/m3.png">
+                            <div class="label_name">M3</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject4" name="subject" value="M4" class="hidden_checkbox">
+                        <label class="label_item" for="subject4">
+                            <img src="static/img/m4.png">
+                            <div class="label_name">M4</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject5" name="subject" value="M5" class="hidden_checkbox">
+                        <label class="label_item" for="subject5">
+                            <img src="static/img/m5.png">
+                            <div class="label_name">M5</div>
+                        </label>
+
+                        <br>
+
+                        <input type ="checkbox" id="subject6" name="subject" value="M6" class="hidden_checkbox">
+                        <label class="label_item" for="subject6">
+                            <img src="static/img/m6.png">
+                            <div class="label_name">M6</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject7" name="subject" value="M7" class="hidden_checkbox">
+                        <label class="label_item" for="subject7">
+                            <img src="static/img/m7.png">
+                            <div class="label_name">M7</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject8" name="subject" value="M8" class="hidden_checkbox">
+                        <label class="label_item" for="subject8">
+                            <img src="static/img/m8.png">
+                            <div class="label_name">M8</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject9" name="subject" value="M9" class="hidden_checkbox">
+                        <label class="label_item" for="subject9">
+                            <img src="static/img/m9.png">
+                            <div class="label_name">M9</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject10" name="subject" value="M10" class="hidden_checkbox">
+                        <label class="label_item" for="subject10">
+                            <img src="static/img/m10.png">
+                            <div class="label_name">M10</div>
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Plot Type:</label> 
+                    <div class="radio col-sm-6">
+                            
+                        <input type="radio" id="psychometric" value="psychometric" name="plotType" class="hidden_radio">
+                        <label class="label_item" for="psychometric">
+                            <img src="static/img/line.png">
+                            <div class="label_name">Psychometric</div>    
+                        </label>
+                        
+                        <input type="radio" id="summary" value="summary" name="plotType" class="hidden_radio">
+                        <label class="label_item" for="summary">
+                            <img src="static/img/bar.png">
+                            <div class="label_name">Summary</div>
+                        </label>
+                        
+                        <input type="radio" id="dynamic" value="dynamic" name="plotType" class="hidden_radio">
+                        <label class="label_item" for="dynamic">
+                            <img src="static/img/stats.png">
+                            <div class="label_name">Dynamic</div>
+                        </label>
+                    </div>
+                </div>
+
+                <br>
+                <div class="form-group">
+                    <div class="text-center" >
+                        <button type="submit" class="btn btn-primary" value="Submit Button">Submit</button>
+                    </div>
+                </div>
+            </form>
+
+
+            
+        </div>
+    </body>
+</html>
+
+
+
+
