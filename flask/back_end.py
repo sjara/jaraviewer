@@ -6,7 +6,7 @@ import os
 import numpy
 
 import read_data
-#import ArraData as ad	#File for arrange data
+import ArraData as ad	#File for arrange data
 #import plot_py	#File for ploting
 
 #polt_file = "plot.html"	#File name for the next page
@@ -42,10 +42,10 @@ def execute():
 
     #print raw_data
 	
-    #arra_data = ad.ArraData(Data=raw_data)	#Arrange the raw data
-    #ready_data = arra_data.get()
+    arra_data = ad.ArraData(Data=raw_data)	#Arrange the raw data
+    ready_data = arra_data.get_array(plot_type=plotType)
 	
-    #print ready_data
+    print ready_data
 	
 
 	#Generrate the file for different plot types
@@ -65,7 +65,7 @@ def execute():
 
     #print be_data
 	
-    return (str(raw_data));
+    return ( str(raw_data) +"\n" + str('|') + str(ready_data) );
 	
 
 
