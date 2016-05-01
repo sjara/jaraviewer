@@ -1,16 +1,17 @@
-#!/usr/bin python
+#import jaratoolbox	#will import the jaratoolbox later
 from flask import Flask, render_template
 from subprocess import call
 from flask import request
 import os
+import numpy
 
-app = Flask(__name__
-			#, static_url_path = "/image" #Path for the images that we will generate
-			#, static_folder = "image"	#Folder for the images that we will generate
-			)
+import read_data
+#import ArraData as ad	#File for arrange data
+#import plot_py	#File for ploting
 
+#polt_file = "plot.html"	#File name for the next page
 
-#plotpy = "plotpy.py"	#Name for the plot generator program
+app = Flask(__name__)
 
 #Read the homepage
 @app.route('/')
@@ -25,36 +26,46 @@ def initial():
 def execute():
     
 	#get the mice information
-    miceSelect = request.form['miceSelect']
+    miceSelect = str(request.form['miceSelect'])
     #print miceSelect
 
 	#get the plotType information
     plotType = request.form['plotType']
     #print plotType
 	
-    format_str = str(miceSelect) + str(plotType)	#Format the information here.
+    #format_str = str(miceSelect) + str(plotType)	#Format the information here.
+
+    info_arr = numpy.array([miceSelect])
+    #print info_arr
 	
-    #call(["python",plotpy,format_str])	#Excute the plot generator with arguments
-    
-	#Iterate the images.
-    file_list = []
-    file_counter = 0
+    raw_data = read_data.get_data(data_arra = info_arr)	#Read the raw data that needed
+
+    #print raw_data
 	
-    list_dirs = os.walk("./") 
-    for root, dirs, files in list_dirs:
-        for f in files:
-            path = os.path.join(root, f)
-            suffix = (os.path.splitext(f))[-1]
-            if ".jpg" == suffix:
-                file_counter += 1
-                file_list.append(path)
+    #arra_data = ad.ArraData(Data=raw_data)	#Arrange the raw data
+    #ready_data = arra_data.get()
 	
+    #print ready_data
 	
-	#Render the next website with the images.
-    #return render_template('plot.html', file_counter=file_counter, file_list=file_list)
+
+	#Generrate the file for different plot types
+    if plotType == "psychometric":
+        pass   
+        #plot_py.plot_psychometric(good_data)
+    elif plotType == "summary":
+        #plot_py.plot_summary(good_data)
+        pass
+    elif plotType == "dynamics":
+        #plot_py.plot_dynamics(good_data)
+        pass
+
+
+	#Return the html file that generated.
+    #return render_template(polt_file)
+
+    #print be_data
 	
-	
-	return (format_str);
+    return (str(raw_data));
 	
 
 
