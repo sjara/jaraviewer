@@ -2,7 +2,7 @@ from jaratoolbox import settings
 from jaratoolbox import loadbehavior
 from jaratoolbox import behavioranalysis
 import matplotlib.pyplot as plt
-import ArraData as ad
+from jaratoolbox import ArraData as ad
 
 EXPERIMENTER = settings.DEFAULT_EXPERIMENTER
 paradigm = '2afc'
@@ -23,9 +23,35 @@ nRewardedTrials = behavData['nRewarded'][-1]
 (pline, pcaps, pbars, pdots) = behavioranalysis.plot_frequency_psycurve(behavData,fontsize=14)
 #plt.show()
 
-arraydata = ad.ArraData(behavData)
-arraydata.get_array('psychometric')
-arraydata.get_array('summary')
-arraydata.get_array('dynamics')
-arraydata.get_array('dsadsadsa')
 
+# arrange process
+# prepare to arrange the data
+arraydata = ad.ArraData(behavData)
+arraydata.set_name(subject)
+arraydata.set_session(session)
+arraydata.set_paradigm(paradigm)
+
+# single subject in the array
+print arraydata.arrange_data('psychometric')
+print arraydata.get_array()
+print "--------------------------------------"
+print arraydata.arrange_data('summary')
+print arraydata.get_array()
+print "--------------------------------------"
+print arraydata.arrange_data('dynamics')
+print arraydata.get_array()
+print "--------------------------------------"
+print arraydata.arrange_data('dsadsadsa')
+print arraydata.get_array()
+print "\n--------------------------------------"
+# prepare to arrange the data
+arraydata.switch_data(behavData) # renew data source
+arraydata.set_name(subject)
+arraydata.set_session(session)
+arraydata.set_paradigm(paradigm)
+
+# multiple subject in the array
+print arraydata.arrange_data('psychometric')
+print arraydata.arrange_data('summary')
+print arraydata.arrange_data('dynamics')
+print arraydata.get_array()
