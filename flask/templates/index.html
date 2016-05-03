@@ -160,32 +160,43 @@
                     </div>
                 </div>
 
+                <br>
 
+                <br>
 
                 <!-- Date Range Picker -->
+
                 <div class="form-group">
+                    
                     <label class="control-label col-sm-2">Date Range:</label> 
                     
                     <div class="col-sm-6">
+
+
                         <div class="input-group date" id="daterange">
-                            <input type="text" value="" name="dateRange" class="form-control">
+                            <input type="text" name="dateRange" class="form-control">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                             
-                            
                             <script type="text/javascript">
                             
                                 $(function() {
-                                    $('#daterange').daterangepicker({
-                                        autoUpdateInput: false,
-                                        locale: {
-                                            cancelLabel: 'Clear'
-                                        }
+
+                                    function cb(start, end) {
+                                        $('#daterange input').html('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY');
+                                    }
+
+                                    $('#daterange input').daterangepicker({
+
+                                        ranges: {
+                                            'Today': [moment(), moment()],
+                                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')]
+                                        }, cb
                                     });
 
                                     $('#daterange').on('apply.daterangepicker', function(ev, picker) {
-                                        $(this).find("input").val(picker.startDate.format("MM-DD-YYYY") + ' - ' + picker.endDate.format("MM-DD-YYYY"));
+                                        $(this).find("input").val(picker.startDate.format("MM/DD/YYYY") + ' to ' + picker.endDate.format("MM/DD/YYYY"));
                                     });
 
                                     $('#daterange').on('cancel.daterangepicker', function(ev, picker){
@@ -193,14 +204,92 @@
                                     });
 
                                 });
-                                
-
                             </script>
-
-                        </div>                        
+                        </div>       
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label class="control-label col-sm-7">----------------------------OR----------------------------</label> 
+                    <br>
+                </div>
+                <br>
+
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Date Range:</label> 
+                    
+                    <div class="col-sm-6">                        
+                        <h5>
+                            <span class="label label-info">Option 1</span>
+                            Select Date Range
+                        </h5>
+                        
+                        <div class="input-group date" id="daterange2">
+                            <input type="text" value="" name="dateRange" class="form-control">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            <script type="text/javascript">
+                            
+                                $(function() {
+                                    $('#daterange2').daterangepicker({
+                                        autoUpdateInput: false,
+                                        locale: {
+                                            cancelLabel: 'Clear'
+                                        }
+                                    });
+
+                                    $('#daterange2').on('apply.daterangepicker', function(ev, picker) {
+                                        $(this).find("input").val(picker.startDate.format("MM/DD/YYYY") + ' to ' + picker.endDate.format("MM/DD/YYYY"));
+                                    });
+
+                                    $('#daterange2').on('cancel.daterangepicker', function(ev, picker){
+                                        $(this).find("input").val('');
+                                    });
+                                });
+                            </script>
+                        </div>   
+                        <br>
+                    
+
+                        <h5>
+                            <span class="label label-info">Option 2</span>
+                            Today or Yesterday
+                        </h5>
+
+                        <div>
+                            <div class="radio col-sm-6">
+                                <label>
+                                    <input type="radio" id="today" value="today" name="dateRange">Today -
+                                    <script type="text/javascript">
+                                        var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                                        var currentTime = new Date()
+                                        var month = currentTime.getMonth()
+                                        var day = currentTime.getDate()
+                                        var year = currentTime.getFullYear()
+                                        document.write(monthNames[month] + " " + day + ", " + year)
+
+                                    </script>
+                                </label>
+                                <br>
+                                <label>
+                                    <input type="radio" id="yesterday" value="yesterday" name="dateRange">Yesterday -
+                                    <script type="text/javascript">
+                                    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                                    var currentTime = new Date()
+                                    var month = currentTime.getMonth()
+                                    var day = currentTime.getDate()-1
+                                    var year = currentTime.getFullYear()
+                                    document.write(monthNames[month] + " " + day + ", " + year)
+                                    </script>
+                                </label>
+                            </div>
+                        </div>                            
+                    </div>                    
+                </div>
+
+
+                
 
 
 
