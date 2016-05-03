@@ -135,7 +135,7 @@
                     </div>
                 </div>
 
-
+                <!-- Select Plot Type -->
                 <div class="form-group">
                     <label class="control-label col-sm-2">Plot Type:</label> 
                     <div class="radio col-sm-6">
@@ -159,6 +159,50 @@
                         </label>
                     </div>
                 </div>
+
+
+
+                <!-- Date Range Picker -->
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Date Range:</label> 
+                    
+                    <div class="col-sm-6">
+                        <div class="input-group date" id="daterange">
+                            <input type="text" value="" name="dateRange" class="form-control">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            
+                            
+                            <script type="text/javascript">
+                            
+                                $(function() {
+                                    $('#daterange').daterangepicker({
+                                        autoUpdateInput: false,
+                                        locale: {
+                                            cancelLabel: 'Clear'
+                                        }
+                                    });
+
+                                    $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+                                        $(this).find("input").val(picker.startDate.format("MM-DD-YYYY") + ' - ' + picker.endDate.format("MM-DD-YYYY"));
+                                    });
+
+                                    $('#daterange').on('cancel.daterangepicker', function(ev, picker){
+                                        $(this).find("input").val('');
+                                    });
+
+                                });
+                                
+
+                            </script>
+
+                        </div>                        
+                    </div>
+                </div>
+
+
+
 
                 <br>
                 <div class="form-group">
