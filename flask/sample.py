@@ -1,8 +1,8 @@
-from jaratoolbox import settings
-from jaratoolbox import loadbehavior
-from jaratoolbox import behavioranalysis
+import settings
+import loadbehavior
+import behavioranalysis
 import matplotlib.pyplot as plt
-from jaratoolbox import ArraData as ad
+import ArraData as ad
 
 EXPERIMENTER = settings.DEFAULT_EXPERIMENTER
 paradigm = '2afc'

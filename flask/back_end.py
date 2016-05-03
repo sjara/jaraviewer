@@ -42,11 +42,20 @@ def execute():
 
     #print raw_data
 	
+	#########################test Arrange data#######################
+    
+	
     arra_data = ad.ArraData(Data=raw_data)	#Arrange the raw data
-    ready_data = arra_data.get_array(plot_type=plotType)
+    arra_data.set_name('adap021')
+    arra_data.set_session('20160310a')
+    arra_data.set_paradigm('2afc')
 	
-    print ready_data
+    arra_data.arrange_data(plot_type=plotType)
+    
+    
 	
+    ready_data = arra_data.get_array()
+	#########################test Arrange data#######################
 
 	#Generrate the file for different plot types
     if plotType == "psychometric":
@@ -64,11 +73,10 @@ def execute():
     #return render_template(polt_file)
 
     #print be_data
-	
-    return ( str(raw_data) +"\n" + str('|') + str(ready_data) );
+    display = "behavData=<br><br>{raw_data}<br><br>arrangeData=<br><br>{ready_data}".format(raw_data=raw_data,ready_data=ready_data)
+    return display
 	
 
 
 if __name__ == "__main__":
     app.run()
-

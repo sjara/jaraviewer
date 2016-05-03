@@ -6,11 +6,11 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
-from jaratoolbox import extrafuncs
-from jaratoolbox import extraplots
-from jaratoolbox import loadbehavior
-from jaratoolbox import settings
-from jaratoolbox import colorpalette
+import extrafuncs
+import extraplots
+import loadbehavior
+import settings
+import colorpalette
 
 EXPERIMENTER = settings.DEFAULT_EXPERIMENTER
 FREQCOLORS = [colorpalette.TangoPalette['Chameleon3'],

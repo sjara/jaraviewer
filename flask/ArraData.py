@@ -1,5 +1,5 @@
-from jaratoolbox import loadbehavior as lr
-from jaratoolbox import behavioranalysis as ba
+import loadbehavior as lr
+import behavioranalysis as ba
 import numpy as np
 class ArraData:
 
