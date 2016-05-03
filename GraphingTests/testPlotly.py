@@ -9,6 +9,8 @@ import numpy as np
 #print(xVals)
 #print(yVals)
 #plot([Scatter(x = xVals, y = yVals)])
+
+#basics of code taken from the documentation for plotly
 trace1 = go.Scatter(
     x= random.sample(range(10000), 1000),
     y= random.sample(range(10000), 1000)
