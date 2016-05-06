@@ -20,6 +20,7 @@ body {
 .hidden_checkbox {
 	visibility: hidden;
 	position: absolute;
+	
 }
 
 .label_item {
@@ -33,11 +34,13 @@ body {
 	vertical-align: top;
 	padding-bottom: 10px;
 	text-align:center;
+	opacity: .5; /* initial gray*/
+	border-radius: 10px;  /* round corner*/
 }
 
 .hidden_checkbox:checked + label {
 	border: 2px inset #1a75ff ; 
-	opacity: .5;
+	opacity: 1;
 }
 
 .label_name {
@@ -54,6 +57,23 @@ body {
 }
 
 .hidden_radio:checked + label {
+	border: 2px inset #ff3333 ; 
+	opacity: .9;
+}
+
+.label-date {
+	border: outset;
+	height: 32px;
+	width: 32px;
+	text-align:center;
+}
+
+.hidden_date {
+	visibility: hidden;
+	position: absolute;
+}
+
+.hidden_date:checked + label{
 	border: 2px inset #ff3333 ; 
 	opacity: .9;
 }
