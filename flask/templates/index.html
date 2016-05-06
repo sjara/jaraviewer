@@ -184,19 +184,21 @@
                                 $(function() {
 
                                     function cb(start, end) {
-                                        $('#daterange input').html('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY');
+                                        $('#daterange input').html('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
                                     }
 
                                     $('#daterange input').daterangepicker({
 
                                         ranges: {
                                             'Today': [moment(), moment()],
-                                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')]
+                                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                            'Current Month': [moment().startOf('month'), moment().endOf('month')],
+                                            'Previous Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                                         }, cb
                                     });
 
                                     $('#daterange').on('apply.daterangepicker', function(ev, picker) {
-                                        $(this).find("input").val(picker.startDate.format("MM/DD/YYYY") + ' to ' + picker.endDate.format("MM/DD/YYYY"));
+                                        $(this).find("input").val(picker.startDate.format("YYYY-MM-DD") + ' to ' + picker.endDate.format("YYYY-MM-DD"));
                                     });
 
                                     $('#daterange').on('cancel.daterangepicker', function(ev, picker){
