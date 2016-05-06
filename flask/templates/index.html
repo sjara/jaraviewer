@@ -173,7 +173,7 @@
                     <div class="col-sm-6">
 
 
-                        <div class="input-group date" id="daterange">
+                        <div class="input-group date" id="daterange"> 
                             <input type="text" name="dateRange" class="form-control">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
@@ -183,12 +183,22 @@
                             
                                 $(function() {
 
+                                    // testing the default today date format. but not working
+                                    // $('#daterange input').daterangepicker({
+                                        
+
+                                    // });
+
+
                                     function cb(start, end) {
                                         $('#daterange input').html('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
                                     }
 
+                                    /* Range for user to select */
                                     $('#daterange input').daterangepicker({
-
+                                        locale: {
+                                            format: 'YYYY-MM-DD' 
+                                        },
                                         ranges: {
                                             'Today': [moment(), moment()],
                                             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
@@ -197,10 +207,12 @@
                                         }, cb
                                     });
 
+                                    /* Apply Button */
                                     $('#daterange').on('apply.daterangepicker', function(ev, picker) {
-                                        $(this).find("input").val(picker.startDate.format("YYYY-MM-DD") + ' to ' + picker.endDate.format("YYYY-MM-DD"));
+                                        $(this).find("input").val(picker.startDate.format("YYYY-MM-DD") + ' - ' + picker.endDate.format("YYYY-MM-DD"));
                                     });
 
+                                    /* Cancel Button */
                                     $('#daterange').on('cancel.daterangepicker', function(ev, picker){
                                         $(this).find("input").val('');
                                     });
