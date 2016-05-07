@@ -17,10 +17,22 @@ body {
   width: auto;
 }
 
-.hidden_checkbox {
+.hidden_subject {
 	visibility: hidden;
 	position: absolute;
 	
+}
+
+.label_subject {
+	border: outset;
+	display: inline-block;
+	margin-right: 20px;
+	margin-bottom: 30px;
+	width: 85px;
+	vertical-align: top;
+	text-align:center;
+	opacity: .5; /* initial gray*/
+	border-radius: 10px;  /* round corner*/
 }
 
 .label_item {
@@ -38,8 +50,8 @@ body {
 	border-radius: 10px;  /* round corner*/
 }
 
-.hidden_checkbox:checked + label {
-	border: 2px inset #1a75ff ; 
+.hidden_subject:checked + label {
+	border: 2px inset ; 
 	opacity: 1;
 }
 
@@ -47,16 +59,12 @@ body {
 	text-align: center;
 }
 
-.radio label {
-	padding-left: 5px;
-}
-
-.hidden_radio {
+.hidden_plot {
 	visibility: hidden;
 	position: absolute;
 }
 
-.hidden_radio:checked + label {
+.hidden_plot:checked + label {
 	border: 2px inset #ff3333 ; 
 	opacity: .9;
 }
