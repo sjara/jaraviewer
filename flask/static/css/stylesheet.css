@@ -33,7 +33,7 @@ body {
 	vertical-align: top;
 	text-align:center;
 	opacity: .5; /* initial gray*/
-	border-radius: 10px;  /* round corner*/
+	border-radius: 4px;  /* round corner*/
 }
 
 .label_item {
