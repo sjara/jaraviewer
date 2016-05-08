@@ -24,7 +24,8 @@ body {
 }
 
 .label_subject {
-	border: outset;
+	/*border: outset;*/
+	border:0px solid transparent; /* flat look*/
 	display: inline-block;
 	margin-right: 20px;
 	margin-bottom: 30px;
@@ -51,7 +52,7 @@ body {
 }
 
 .hidden_subject:checked + label {
-	border: 2px inset ; 
+	/*border: 2px inset ; /* white border when clicked*/*/
 	opacity: 1;
 }
 
