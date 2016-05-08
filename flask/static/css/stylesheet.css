@@ -52,7 +52,7 @@ body {
 }
 
 .hidden_subject:checked + label {
-	/*border: 2px inset ; /* white border when clicked*/*/
+	/*border: 2px inset ; /* white border when clicked*/
 	opacity: 1;
 }
 
