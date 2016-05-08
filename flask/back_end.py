@@ -49,8 +49,8 @@ def execute():
     raw_data_list = []
     raw_data_list = bee.get_data(miceSelect,date_list)
     
-    #plotList = ad.ArraData(Data=raw_data_list,PlotType=plotType)
-	
+    AData = ad.ArraData(Data=raw_data_list,PlotType=plotType)
+    plotList = AData.analyze_data()
 	
     #print "{miceSelect}, {plotType}".format(miceSelect=miceSelect,plotType=plotType)
 
@@ -100,7 +100,8 @@ def execute():
     #print be_data
     #display = "behavData=<br><br>{raw_data}<br><br>arrangeData=<br><br>{ready_data}".format(raw_data=raw_data,ready_data=ready_data)
     #return display
-    return ""
+    display = "{plotList}".format(plotList=plotList)
+    return display
 
 if __name__ == "__main__":
     app.run(debug=True,port=5000)
