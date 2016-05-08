@@ -4,12 +4,10 @@
         <title>Jaraviewer</title>
 
         <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
      
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
         <!-- Include Date Range Picker -->
@@ -17,145 +15,257 @@
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 
         <!-- Manual CSS -->
-        <link href="theme.css" rel="stylesheet">
+        <link href="static/css/stylesheet.css" rel="stylesheet">
 
     </head>
 
     <body role="document">
 
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">JaraViewer</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="home.html">Home</a></li>
-                    
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Git <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="https://github.com/sjara/jaraviewer">JaraViewer</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="https://github.com/sjara/jaratoolbox">JaraToolBox</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div><!--/.nav-collapse -->
-        </div>
-    </nav>
-
-    <div class="container theme-showcase" role="main">
-      <!-- Main jumbotron for a primary marketing message or call to action -->
-        <div class="jumbotron">
-            <h1>Jara Viewer</h1>
-            <p>Online data viewer for JaraLab. 
-                <br>The initial goal of this project is to provide a web viewer for behavior data collected in the Jaramillo lab.
-            </p>
-        </div>
-    </div>
-
-
-    <div class="container">
-        <h3>Form</h3>
-        <br>
-        <form class="form-horizontal" role="form" name="form" method='POST' action="/execute">
-
-            <!-- Select Mouse -->
-            <div class="form-group">
-                <label class="control-label col-sm-2" for="mice_select">Mice:</label>    
-                <div class="col-sm-4">
-                    <select class="form-control selectpicker" id="mice_select" name="miceSelect"  data-live-search="true" >
-                        <option value="" selected disabled>Select Mouse</option>
-                        <option value="mouse1">Mouse 1</option>
-                        <option value="mouse2">Mouse 2</option>
-                        <option value="adap021">adap021</option>
-                        <option value="mouse4">Mouse 4</option>
-                        <option value="mouse5">Mouse 5</option>
-                    </select>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">JaraViewer</a>
                 </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="index.html">Home</a></li>
+                        
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Git <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a fhref="https://github.com/sjara/jaraviewer">JaraViewer</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="https://github.com/sjara/jaratoolbox">JaraToolBox</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!--/.nav-collapse -->
             </div>
+        </nav> <!-- nav bar end -->
 
-            <!-- Select Date Ranges -->
-            <div class="form-group">
-                <label class="control-label col-sm-2" for="daterange">Date Ranges:</label>   
-                <div class="col-sm-4" >
-                    <div id="daterange" class="form-control pull-right" >
-                        <i class="glyphicon glyphicon-calendar fa-calendar"></i>&nbsp;
-                        <span></span> <b class="caret"></b>
+        <div class="container theme-showcase" role="main">
+          <!-- Main jumbotron for a primary marketing message or call to action -->
+            <div class="jumbotron">
+                <h1>Jara Viewer</h1>
+                <p>Online data viewer for behavior data collected in the Jaramillo lab.
+                </p>
+            </div>
+        </div>
+
+        <div class="container">
+            <h3>Form</h3>
+            <br>
+
+            <form class="form-horizontal" role="form" name="form" action="{{url_for('execute')}}" method='POST'>
+
+                <!-- Select Mouse -->
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="subject">Subjects:</label><br>
+                    <div class="col-sm-8">
+                        
+                        <input type ="checkbox" id="subject1" name="subject" value="adap021" class="hidden_subject">
+                        <label class="label_subject btn btn-primary" for="subject1">
+                            <!-- <img src="static/img/m1.png"> -->
+                            <div class="label_name">adap021</div>
+                        </label>
+
+
+                        <input type ="checkbox" id="subject2" name="subject" value="adap022" class="hidden_subject">
+                        <label class="label_subject btn btn-primary" for="subject2">
+                            <!-- <img src="static/img/m2.png"> -->
+                            <div class="label_name">adap022</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject3" name="subject" value="M3" class="hidden_subject">
+                        <label class="label_subject btn btn-primary" for="subject3">
+                            <!-- <img src="static/img/m3.png"> -->
+                            <div class="label_name">M3</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject4" name="subject" value="M4" class="hidden_subject">
+                        <label class="label_subject btn btn-primary" for="subject4">
+                            <!-- <img src="static/img/m4.png"> -->
+                            <div class="label_name">M4</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject5" name="subject" value="M5" class="hidden_subject">
+                        <label class="label_subject btn btn-primary" for="subject5">
+                            <!-- <img src="static/img/m5.png"> -->
+                            <div class="label_name">M5</div>
+                        </label>
+
+                        <br>  <!-- row 2 -->
+
+                        <input type ="checkbox" id="subject6" name="subject" value="M6" class="hidden_subject">
+                        <label class="label_subject btn btn-success" for="subject6">
+                            <!-- <img src="static/img/m6.png"> -->
+                            <div class="label_name">M6</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject7" name="subject" value="M7" class="hidden_subject">
+                        <label class="label_subject btn btn-success" for="subject7">
+                            <!-- <img src="static/img/m7.png"> -->
+                            <div class="label_name">M7</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject8" name="subject" value="M8" class="hidden_subject">
+                        <label class="label_subject btn btn-success" for="subject8">
+                            <!-- <img src="static/img/m8.png"> -->
+                            <div class="label_name">M8</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject9" name="subject" value="M9" class="hidden_subject">
+                        <label class="label_subject btn btn-success" for="subject9">
+                            <!-- <img src="static/img/m9.png"> -->
+                            <div class="label_name">M9</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject10" name="subject" value="M10" class="hidden_subject">
+                        <label class="label_subject btn btn-success" for="subject10">
+                            <!-- <img src="static/img/m10.png"> -->
+                            <div class="label_name">M10</div>
+                        </label>
+
+                        <br>  <!-- row 3 -->
+
+                        <input type ="checkbox" id="subject11" name="subject" value="M11" class="hidden_subject">
+                        <label class="label_subject btn btn-info" for="subject11">
+                            <div class="label_name">M11</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject12" name="subject" value="M12" class="hidden_subject">
+                        <label class="label_subject btn btn-info" for="subject12">
+                            <div class="label_name">M12</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject13" name="subject" value="M13" class="hidden_subject">
+                        <label class="label_subject btn btn-info" for="subject13">
+                            <div class="label_name">M13</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject14" name="subject" value="M14" class="hidden_subject">
+                        <label class="label_subject btn btn-info" for="subject14">
+                            <div class="label_name">M14</div>
+                        </label>
+
+                        <input type ="checkbox" id="subject15" name="subject" value="M15" class="hidden_subject">
+                        <label class="label_subject btn btn-info" for="subject15">
+                            <div class="label_name">M15</div>
+                        </label>
+
+
                     </div>
                 </div>
-            </div>
 
-            <!-- Select Plot Type -->
-            <div class="form-group">
-                <label class="control-label col-sm-2" for="plottype">Plot Type:</label>    
-                <div class="col-sm-4">
-                    <select class="form-control" id="plottype" name="plotType" required="true">
-                        <option value="" selected disabled>Select a Plot type</option>
-
-                        <option value="psychometric">psychometric</option>
-                        <option value="plottype2">Plot Type 2</option>
-                        <option value="plottype2">Plot Type 3</option>
-                        <option value="plottype4">Plot Type 4</option>
-                        <option value="plottype5">Plot Type 5</option>
+                <!-- Select Plot Type -->
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Plot Type:</label> 
+                    <div class="col-sm-8">
+                            
+                        <input type="checkbox" id="psychometric" value="psychometric" name="plotType" class="hidden_plot">
+                        <label class="label_item" for="psychometric">
+                            <img src="static/img/line.png">
+                            <div class="label_name">Psychometric</div>    
+                        </label>
                         
-                       
-                    </select>
+                        <input type="checkbox" id="summary" value="summary" name="plotType" class="hidden_plot">
+                        <label class="label_item" for="summary">
+                            <img src="static/img/bar.png">
+                            <div class="label_name">Summary</div>
+                        </label>
+                        
+                        <input type="checkbox" id="dynamic" value="dynamic" name="plotType" class="hidden_plot">
+                        <label class="label_item" for="dynamic">
+                            <img src="static/img/stats.png">
+                            <div class="label_name">Dynamic</div>
+                        </label>
+                    </div>
                 </div>
-            </div>
 
-            <br>
-            <div class="form-group">
-                <div class="text-center" >
-                    <button type="submit" class="btn btn-primary" value="Submit Button">Submit</button>
+                <br>
+
+                <br>
+
+                <!-- Date Range Picker -->
+
+                <div class="form-group">
+                    
+                    <label class="control-label col-sm-2">Date Range:</label> 
+                    
+                    <div class="col-sm-6">
+
+
+                        <div class="input-group date" id="daterange"> 
+                            <input type="text" name="dateRange" class="form-control">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            
+                            <script type="text/javascript">
+                            
+                                $(function() {
+
+                                    // testing the default today date format. but not working
+                                    // $('#daterange input').daterangepicker({
+                                        
+
+                                    // });
+
+
+                                    function cb(start, end) {
+                                        $('#daterange input').html('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
+                                    }
+
+                                    /* Range for user to select */
+                                    $('#daterange input').daterangepicker({
+                                        locale: {
+                                            format: 'YYYY-MM-DD' 
+                                        },
+                                        ranges: {
+                                            'Today': [moment(), moment()],
+                                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                            'Current Month': [moment().startOf('month'), moment().endOf('month')],
+                                            'Previous Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                        }, cb
+                                    });
+
+                                    /* Apply Button */
+                                    $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+                                        $(this).find("input").val(picker.startDate.format("YYYY-MM-DD") + ' - ' + picker.endDate.format("YYYY-MM-DD"));
+                                    });
+
+                                    /* Cancel Button */
+                                    $('#daterange').on('cancel.daterangepicker', function(ev, picker){
+                                        $(this).find("input").val('');
+                                    });
+
+                                });
+                            </script>
+                        </div>       
+                    </div>
                 </div>
-            </div>
-        </form>
-    </div>
+
+                <br>
+                <div class="form-group">
+                    <div class="text-center" >
+                        <button type="submit" class="btn btn-primary" value="Submit Button">Submit</button>
+                    </div>
+                </div>
+            </form>
 
 
-
-
-    <script type="text/javascript">
-
-        // mouse select picker
-        $('.mice_select').selectpicker({
-            style: 'btn-info',
-            liveSearch: true
-        });
-    </script>
-
-    <script type="text/javascript">
-
-
-        // date range picker
-        $(function() {
-
-            function cb(start, end) {
-                $('#daterange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-            }
-            cb(moment().subtract(29, 'days'), moment());
-
-            $('#daterange').daterangepicker({
-                ranges: {
-                   'Today': [moment(), moment()],
-                   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')]
-                }
-            }, cb);
-        });
-
-
-    </script>
-
-
-
-  </body>
+            
+        </div>
+    </body>
 </html>
+
+
+
+

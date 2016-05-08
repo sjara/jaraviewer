@@ -374,13 +374,13 @@ def plot_dynamics(behavData,winsize=40,fontsize=12,soundfreq=None):
             hp, = plt.plot(range(firstValidEachBlock[indb],lastValidEachBlock[indb]),100*movAvChoice,
                            lw=lineWidth,color=thisColor)
             hPlots.append(hp)
-    #plt.ylim([-5,105])
-    #plt.axhline(50,color='0.5',ls='--')
-    #plt.ylabel('% rightward',fontsize=fontsize)
-    #plt.xlabel('Trial',fontsize=fontsize)
-    #extraplots.set_ticks_fontsize(ax,fontsize)
-    #plt.draw()
-    #plt.show()
+    plt.ylim([-5,105])
+    plt.axhline(50,color='0.5',ls='--')
+    plt.ylabel('% rightward',fontsize=fontsize)
+    plt.xlabel('Trial',fontsize=fontsize)
+    extraplots.set_ticks_fontsize(ax,fontsize)
+    plt.draw()
+    plt.show()
     return hPlots
 
 def calculate_psychometric(hitTrials,paramValueEachTrial,valid=None):

@@ -56,11 +56,23 @@ print arraydata.arrange_data('summary')
 print arraydata.arrange_data('dynamics')
 print arraydata.get_array()
 '''
+
+print "left choice: \n{lc} \ntype:{type}".format(lc=behavData.labels['choice'],type=type(behavData.labels['choice']))
+
+print "subject={s}\ndate={d}\nhostname={h}".format(s=behavData.session['subject'],d=behavData.session['date'],
+                                                    h=behavData.session['hostname'])
+													
+print behavData.session
+
 (possibleValues,fractionHitsEachValue,ciHitsEachValue,nTrialsEachValue,nHitsEachValue) = behavioranalysis.calculate_psychometric(behavData['choice']
 ,behavData['targetFrequency'],behavData['valid'])
 
-print "possibleValues: \n{p}".format(p=possibleValues)
-print "fractionHitsEachValue: \n{f}".format(f=fractionHitsEachValue)
-print "ciHitsEachValue: \n{c}".format(c=ciHitsEachValue)
+#print "possibleValues: \n{p}".format(p=possibleValues)
+#print "fractionHitsEachValue: \n{f}".format(f=fractionHitsEachValue)
+#print "ciHitsEachValue: \n{c}".format(c=ciHitsEachValue)
 
-
+######try to build a analyze data list###########
+pltDict1 = {'type':'psychometric','title':'My plot','possibleValues':possibleValues,
+'fractionHitsEachValue':fractionHitsEachValue,'ciHitsEachValue':ciHitsEachValue}
+plotList = [pltDict1]
+print plotList[0]
