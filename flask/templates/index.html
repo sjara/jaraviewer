@@ -218,7 +218,6 @@
                                         // $('#daterange input').daterangepicker({
                                         // });
 
-
                                         function cb(start, end) {
                                             $('#daterange input').html('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
                                         }
@@ -311,9 +310,23 @@
                                         }
                                     ).done(function(data) {
                                         var $display = $("#display-data");
-                                        $display.append("<div>" + data['subject'] + "</div>")
-                                        $display.append("<div>" + data['plotType'] + "</div>")
-                                        $display.append("<div>" + data['dateRange'] +"</div><br>")
+                                        
+                                        var sArray = [];
+                                        for (i=0; i < data['subject'].length; i++){
+                                            sArray.push(data['subject'][i])    
+                                        }
+                                        $display.append("<div>Subjects: " +sArray + "</div>")
+
+
+                                        var pArray = [];
+                                        for (i=0; i < data['plotType'].length; i++){
+                                            pArray.push(data['plotType'][i])    
+                                        }
+                                        $display.append("<div>Plot Types: " +pArray + "</div>")
+
+                                        // $display.append("<div>Subjects: " + data['subject'] + "</div>")
+                                        // $display.append("<div>" + data['plotType'] + "</div>")
+                                        $display.append("<div>Date Range: " + data['dateRange'] +"</div><br>")
 
                                     });
                                 });
