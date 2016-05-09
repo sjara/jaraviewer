@@ -40,7 +40,7 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Git <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a fhref="https://github.com/sjara/jaraviewer">JaraViewer</a></li>
+                                <li><a href="https://github.com/sjara/jaraviewer">JaraViewer</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="https://github.com/sjara/jaratoolbox">JaraToolBox</a></li>
                             </ul>
@@ -60,206 +60,282 @@
         </div>
 
         <div class="container">
-            <h3>Form</h3>
-            <br>
-
-            <form class="form-horizontal" role="form" name="form" action="{{url_for('execute')}}" method='POST'>
-
-                <!-- Select Mouse -->
-                <div class="form-group">
-                    <label class="control-label col-sm-2" for="subject">Subjects:</label><br>
-                    <div class="col-sm-8">
-                        
-                        <input type ="checkbox" id="subject1" name="subject" value="adap021" class="hidden_subject">
-                        <label class="label_subject btn btn-primary" for="subject1">
-                            <!-- <img src="static/img/m1.png"> -->
-                            <div class="label_name">adap021</div>
-                        </label>
-
-
-                        <input type ="checkbox" id="subject2" name="subject" value="adap022" class="hidden_subject">
-                        <label class="label_subject btn btn-primary" for="subject2">
-                            <!-- <img src="static/img/m2.png"> -->
-                            <div class="label_name">adap022</div>
-                        </label>
-
-                        <input type ="checkbox" id="subject3" name="subject" value="M3" class="hidden_subject">
-                        <label class="label_subject btn btn-primary" for="subject3">
-                            <!-- <img src="static/img/m3.png"> -->
-                            <div class="label_name">M3</div>
-                        </label>
-
-                        <input type ="checkbox" id="subject4" name="subject" value="M4" class="hidden_subject">
-                        <label class="label_subject btn btn-primary" for="subject4">
-                            <!-- <img src="static/img/m4.png"> -->
-                            <div class="label_name">M4</div>
-                        </label>
-
-                        <input type ="checkbox" id="subject5" name="subject" value="M5" class="hidden_subject">
-                        <label class="label_subject btn btn-primary" for="subject5">
-                            <!-- <img src="static/img/m5.png"> -->
-                            <div class="label_name">M5</div>
-                        </label>
-
-                        <br>  <!-- row 2 -->
-
-                        <input type ="checkbox" id="subject6" name="subject" value="M6" class="hidden_subject">
-                        <label class="label_subject btn btn-success" for="subject6">
-                            <!-- <img src="static/img/m6.png"> -->
-                            <div class="label_name">M6</div>
-                        </label>
-
-                        <input type ="checkbox" id="subject7" name="subject" value="M7" class="hidden_subject">
-                        <label class="label_subject btn btn-success" for="subject7">
-                            <!-- <img src="static/img/m7.png"> -->
-                            <div class="label_name">M7</div>
-                        </label>
-
-                        <input type ="checkbox" id="subject8" name="subject" value="M8" class="hidden_subject">
-                        <label class="label_subject btn btn-success" for="subject8">
-                            <!-- <img src="static/img/m8.png"> -->
-                            <div class="label_name">M8</div>
-                        </label>
-
-                        <input type ="checkbox" id="subject9" name="subject" value="M9" class="hidden_subject">
-                        <label class="label_subject btn btn-success" for="subject9">
-                            <!-- <img src="static/img/m9.png"> -->
-                            <div class="label_name">M9</div>
-                        </label>
-
-                        <input type ="checkbox" id="subject10" name="subject" value="M10" class="hidden_subject">
-                        <label class="label_subject btn btn-success" for="subject10">
-                            <!-- <img src="static/img/m10.png"> -->
-                            <div class="label_name">M10</div>
-                        </label>
-
-                        <br>  <!-- row 3 -->
-
-                        <input type ="checkbox" id="subject11" name="subject" value="M11" class="hidden_subject">
-                        <label class="label_subject btn btn-info" for="subject11">
-                            <div class="label_name">M11</div>
-                        </label>
-
-                        <input type ="checkbox" id="subject12" name="subject" value="M12" class="hidden_subject">
-                        <label class="label_subject btn btn-info" for="subject12">
-                            <div class="label_name">M12</div>
-                        </label>
-
-                        <input type ="checkbox" id="subject13" name="subject" value="M13" class="hidden_subject">
-                        <label class="label_subject btn btn-info" for="subject13">
-                            <div class="label_name">M13</div>
-                        </label>
-
-                        <input type ="checkbox" id="subject14" name="subject" value="M14" class="hidden_subject">
-                        <label class="label_subject btn btn-info" for="subject14">
-                            <div class="label_name">M14</div>
-                        </label>
-
-                        <input type ="checkbox" id="subject15" name="subject" value="M15" class="hidden_subject">
-                        <label class="label_subject btn btn-info" for="subject15">
-                            <div class="label_name">M15</div>
-                        </label>
-
-
-                    </div>
-                </div>
-
-                <!-- Select Plot Type -->
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Plot Type:</label> 
-                    <div class="col-sm-8">
-                            
-                        <input type="checkbox" id="psychometric" value="psychometric" name="plotType" class="hidden_plot">
-                        <label class="label_item" for="psychometric">
-                            <img src="static/img/line.png">
-                            <div class="label_name">Psychometric</div>    
-                        </label>
-                        
-                        <input type="checkbox" id="summary" value="summary" name="plotType" class="hidden_plot">
-                        <label class="label_item" for="summary">
-                            <img src="static/img/bar.png">
-                            <div class="label_name">Summary</div>
-                        </label>
-                        
-                        <input type="checkbox" id="dynamic" value="dynamic" name="plotType" class="hidden_plot">
-                        <label class="label_item" for="dynamic">
-                            <img src="static/img/stats.png">
-                            <div class="label_name">Dynamic</div>
-                        </label>
-                    </div>
-                </div>
-
+            <!-- container 1: Form -->
+            <div class="col-lg-8"> 
+                <h3>Form</h3>
                 <br>
 
-                <br>
+                <form class="form-horizontal" role="form" name="form" action="{{url_for('profile')}}" method='POST'>
 
-                <!-- Date Range Picker -->
-
-                <div class="form-group">
-                    
-                    <label class="control-label col-sm-2">Date Range:</label> 
-                    
-                    <div class="col-sm-6">
-
-
-                        <div class="input-group date" id="daterange"> 
-                            <input type="text" name="dateRange" class="form-control">
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
+                    <!-- Select Mouse -->
+                    <div class="form-group">
+                        <label class="control-label col-sm-1" for="subject">Subjects:</label><br>
+                        <div class="col-sm-10">
                             
-                            <script type="text/javascript">
+                            <input type ="checkbox" id="subject1" name="subject" value="M1" class="hidden_subject">
+                            <label class="label_subject btn btn-primary" for="subject1">
+                                <!-- <img src="static/img/m1.png"> -->
+                                <div class="label_name">M1</div>
+                            </label>
+
+
+                            <input type ="checkbox" id="subject2" name="subject" value="M2" class="hidden_subject">
+                            <label class="label_subject btn btn-primary" for="subject2">
+                                <!-- <img src="static/img/m2.png"> -->
+                                <div class="label_name">M2</div>
+                            </label>
+
+                            <input type ="checkbox" id="subject3" name="subject" value="M3" class="hidden_subject">
+                            <label class="label_subject btn btn-primary" for="subject3">
+                                <!-- <img src="static/img/m3.png"> -->
+                                <div class="label_name">M3</div>
+                            </label>
+
+                            <input type ="checkbox" id="subject4" name="subject" value="M4" class="hidden_subject">
+                            <label class="label_subject btn btn-primary" for="subject4">
+                                <!-- <img src="static/img/m4.png"> -->
+                                <div class="label_name">M4</div>
+                            </label>
+
+                            <input type ="checkbox" id="subject5" name="subject" value="M5" class="hidden_subject">
+                            <label class="label_subject btn btn-primary" for="subject5">
+                                <!-- <img src="static/img/m5.png"> -->
+                                <div class="label_name">M5</div>
+                            </label>
+
+                            <br>  <!-- row 2 -->
+
+                            <input type ="checkbox" id="subject6" name="subject" value="M6" class="hidden_subject">
+                            <label class="label_subject btn btn-success" for="subject6">
+                                <!-- <img src="static/img/m6.png"> -->
+                                <div class="label_name">M6</div>
+                            </label>
+
+                            <input type ="checkbox" id="subject7" name="subject" value="M7" class="hidden_subject">
+                            <label class="label_subject btn btn-success" for="subject7">
+                                <!-- <img src="static/img/m7.png"> -->
+                                <div class="label_name">M7</div>
+                            </label>
+
+                            <input type ="checkbox" id="subject8" name="subject" value="M8" class="hidden_subject">
+                            <label class="label_subject btn btn-success" for="subject8">
+                                <!-- <img src="static/img/m8.png"> -->
+                                <div class="label_name">M8</div>
+                            </label>
+
+                            <input type ="checkbox" id="subject9" name="subject" value="M9" class="hidden_subject">
+                            <label class="label_subject btn btn-success" for="subject9">
+                                <!-- <img src="static/img/m9.png"> -->
+                                <div class="label_name">M9</div>
+                            </label>
+
+                            <input type ="checkbox" id="subject10" name="subject" value="M10" class="hidden_subject">
+                            <label class="label_subject btn btn-success" for="subject10">
+                                <!-- <img src="static/img/m10.png"> -->
+                                <div class="label_name">M10</div>
+                            </label>
+
+                            <br>  <!-- row 3 -->
+
+                            <input type ="checkbox" id="subject11" name="subject" value="M11" class="hidden_subject">
+                            <label class="label_subject btn btn-info" for="subject11">
+                                <div class="label_name">M11</div>
+                            </label>
+
+                            <input type ="checkbox" id="subject12" name="subject" value="M12" class="hidden_subject">
+                            <label class="label_subject btn btn-info" for="subject12">
+                                <div class="label_name">M12</div>
+                            </label>
+
+                            <input type ="checkbox" id="subject13" name="subject" value="M13" class="hidden_subject">
+                            <label class="label_subject btn btn-info" for="subject13">
+                                <div class="label_name">M13</div>
+                            </label>
+
+                            <input type ="checkbox" id="subject14" name="subject" value="M14" class="hidden_subject">
+                            <label class="label_subject btn btn-info" for="subject14">
+                                <div class="label_name">M14</div>
+                            </label>
+
+                            <input type ="checkbox" id="subject15" name="subject" value="M15" class="hidden_subject">
+                            <label class="label_subject btn btn-info" for="subject15">
+                                <div class="label_name">M15</div>
+                            </label>
+
+
+                        </div>
+                    </div>
+
+                    <!-- Select Plot Type -->
+                    <div class="form-group">
+                        <label class="control-label col-sm-1">Plot Type:</label> 
+                        <div class="col-sm-6">
+                                
+                            <input type="checkbox" id="psychometric" value="psychometric" name="plotType" class="hidden_plot">
+                            <label class="label_item" for="psychometric">
+                                <img src="static/img/line.png">
+                                <div class="label_name">Psychometric</div>    
+                            </label>
                             
-                                $(function() {
+                            <input type="checkbox" id="summary" value="summary" name="plotType" class="hidden_plot">
+                            <label class="label_item" for="summary">
+                                <img src="static/img/bar.png">
+                                <div class="label_name">Summary</div>
+                            </label>
+                            
+                            <input type="checkbox" id="dynamic" value="dynamic" name="plotType" class="hidden_plot">
+                            <label class="label_item" for="dynamic">
+                                <img src="static/img/stats.png">
+                                <div class="label_name">Dynamic</div>
+                            </label>
+                        </div>
+                    </div>
 
-                                    // testing the default today date format. but not working
-                                    // $('#daterange input').daterangepicker({
-                                        
+                    <br>
 
-                                    // });
+                    <br>
+
+                    <!-- Date Range Picker -->
+
+                    <div class="form-group">
+                        
+                        <label class="control-label col-sm-1">Date Range:</label> 
+                        
+                        <div class="col-sm-6">
 
 
-                                    function cb(start, end) {
-                                        $('#daterange input').html('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
+                            <div class="input-group date" id="daterange"> 
+                                <input type="text" id="date-range-input" name="dateRange" class="form-control">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                                
+                                <script type="text/javascript">
+                                
+                                    $(function() {
+
+                                        // testing the default today date format. but not working
+                                        // $('#daterange input').daterangepicker({
+                                        // });
+
+
+                                        function cb(start, end) {
+                                            $('#daterange input').html('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
+                                        }
+
+                                        /* Range for user to select */
+                                        $('#daterange input').daterangepicker({
+                                            locale: {
+                                                format: 'YYYY-MM-DD' 
+                                            },
+                                            ranges: {
+                                                'Today': [moment(), moment()],
+                                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                'Current Month': [moment().startOf('month'), moment().endOf('month')],
+                                                'Previous Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                            }, cb
+                                        });
+
+                                        /* Apply Button */
+                                        $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+                                            $(this).find("input").val(picker.startDate.format("YYYY-MM-DD") + ' - ' + picker.endDate.format("YYYY-MM-DD"));
+                                        });
+
+                                        /* Cancel Button */
+                                        $('#daterange').on('cancel.daterangepicker', function(ev, picker){
+                                            $(this).find("input").val('');
+                                        });
+
+                                    });
+                                </script>
+                            </div>       
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="form-group">
+                        <!-- Buttons -->
+                        <div class="text-center" >
+                            <!-- input type button, so doesn't submit upon click -->
+                            <input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/>
+                            <input type="button" id="save-profile-btn" class="btn btn-success" name="submit" value="save"/>
+                            <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
+                        </div>
+
+
+
+
+                        <!-- clear-btn -->
+
+                        <script type="text/javascript">
+                            $(function() {
+                                $("#clear-btn").click(function() {
+
+                                    $("[name='subject']").prop("checked", false);
+                                    $("[name='plotType']").prop("checked", false);
+                                    $("[name='dateRange']").val($(this).data('original-value'));
+
+                                })
+                            })
+                        </script>
+
+                        <script type="text/javascript">
+                            $(function() {
+                                $("#save-profile-btn").click(function() {
+                                    var $checkedSubject = $("[name='subject']:checked") // list of selected subjects
+
+                                    var sValues = [] // list to hold the subject
+                                    for (var i = 0; i < $checkedSubject.length; i++ ){
+                                        sValues.push($checkedSubject[i].value);
                                     }
 
-                                    /* Range for user to select */
-                                    $('#daterange input').daterangepicker({
-                                        locale: {
-                                            format: 'YYYY-MM-DD' 
-                                        },
-                                        ranges: {
-                                            'Today': [moment(), moment()],
-                                            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                            'Current Month': [moment().startOf('month'), moment().endOf('month')],
-                                            'Previous Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                                        }, cb
-                                    });
+                                    
+                                    var $checkedPlot = $("[name='plotType']:checked") // list of checked plot types
+                                    var pValues = [] // list of plot types
+                                    for (var i = 0; i < $checkedPlot.length; i++){
+                                        pValues.push($checkedPlot[i].value);
+                                    }
 
-                                    /* Apply Button */
-                                    $('#daterange').on('apply.daterangepicker', function(ev, picker) {
-                                        $(this).find("input").val(picker.startDate.format("YYYY-MM-DD") + ' - ' + picker.endDate.format("YYYY-MM-DD"));
-                                    });
+                                    var dValue = $("#date-range-input").val()
 
-                                    /* Cancel Button */
-                                    $('#daterange').on('cancel.daterangepicker', function(ev, picker){
-                                        $(this).find("input").val('');
-                                    });
+                                    console.log(sValues);
+                                    console.log(pValues);
+                                    console.log(dValue);
 
+                                    // send post request to backend
+                                    $.post("profile",
+                                        {
+                                            subject: sValues,
+                                            plotType: pValues,
+                                            dateRange: dValue
+                                        }
+                                    ).done(function(data) {
+                                        var $display = $("#display-data");
+                                        $display.append("<div>" + data['subject'] + "</div>")
+                                        $display.append("<div>" + data['plotType'] + "</div>")
+                                        $display.append("<div>" + data['dateRange'] +"</div><br>")
+
+                                    });
                                 });
-                            </script>
-                        </div>       
+                            });
+                        </script>
                     </div>
-                </div>
+                </form>
+            </div> <!-- container 1 -->
 
-                <br>
+
+
+            <!-- container 2: Profiles -->
+            <div class="col-lg-4">
+                <div id="display-data"/>
+
+                <h3>Saved Profiles</h3>
                 <div class="form-group">
-                    <div class="text-center" >
-                        <button type="submit" class="btn btn-primary" value="Submit Button">Submit</button>
-                    </div>
-                </div>
-            </form>
+                    <br>
+                    <!-- input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/>
+ -->                </div>
 
+            </div> <!-- 2 -->
 
             
         </div>
