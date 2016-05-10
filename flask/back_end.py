@@ -59,10 +59,10 @@ def execute():
     raw_data_list = bee.get_data(miceSelect,date_list)
     
     AData = ad.ArraData(Data=raw_data_list,PlotType=plot_type_list)
-    plotList = AData.analyze_data()
+    plotList,imageList = AData.analyze_data()
 	
 
-    display = "{plotList}".format(plotList=plotList)
+    display = "plotList: {plotList} <br>imageList: {imageList} ".format(plotList=plotList,imageList=imageList)
     return display
 
 if __name__ == "__main__":

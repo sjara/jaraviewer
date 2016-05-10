@@ -1,15 +1,16 @@
 import loadbehavior
 import behavioranalysis
 import numpy as np
+import sys,os
+
 class ArraData:
 
 	array = []
+	svg_array = []
 	data = None
 	PlotType = None
-	dict = {}
-	name = ""
-	session = ""
-	paradigm = ""
+	
+	file_path = ""
 	#init the class
 	def __init__(self,Data,PlotType):
 		#get the behavior data from here
@@ -25,18 +26,22 @@ class ArraData:
 		#self.dict['paradigm'] = self.paradigm
 		#self.dict['title'] = 'My plot'
 		#self.dict['ciHitsEachValue'] = []
-		graphDict = {}
+		
+		
+		self.clean()
 		filename = ""
-
-
-
+		
+		print "len of bdata: "+str(len(self.data))
+		
+		list_dirs = os.walk("./image/")
+		
 
 		for pt in self.PlotType:
 
 			for d in self.data:
-				
-				mousename = d.session['subject']				
-				time = d.session['date']
+				graphDict = {}
+				mousename = d.session['subject']
+				print "mouse name: "+str(mousename)
 				date = d.session['date']
 				year = date[0:4]
 				month = date[5:7]
@@ -46,16 +51,39 @@ class ArraData:
 
 				graphDict['type'] = pt
 				graphDict['filename'] = filename
-				graphDict['data'] = self.data
+				#self.graphDict['data'] = self.data
+				
+				self.svg_array.append(filename)
+				
+				check_file_exsits = False
+				
+				for root,dirs,files in list_dirs:
+					if check_file_exsits:
+						break
+						
+					for f in files:
+						if f == filename:
+							check_file_exsits = True
+							break
+				
+				if not check_file_exsits:
+					print "graphDict file name:"+str(graphDict['filename'])
+					self.array.append(graphDict)
+					print "self array: "+str(self.array)
+					check_file_exsits = False
+		
+		print "array: "+str(self.array)
+		print "len: "+str(len(self.array))
+		temp_array = self.array
+		temp_svg_array = self.svg_array
+		
+		
+		
+		
+		
+		return temp_array,temp_svg_array
 
-				self.array.append(graphDict)
-		print self.array
-		return self.array
-
-
-
-
-
+		
 	def get_array(self):
 		temp = self.array
 		self.clean()
@@ -76,8 +104,13 @@ class ArraData:
 	def set_paradigm(self,paradigm):
 		self.paradigm = paradigm
 
+		
+	def set_path(self,file_path):
+		self.file_path = file_path
+		
 	def clean(self):
+		print "clean has been called"
 		self.array = []
-		self.dict = {}
+		self.svg_array = []
 
 
