@@ -25,41 +25,36 @@ class ArraData:
 		#self.dict['paradigm'] = self.paradigm
 		#self.dict['title'] = 'My plot'
 		#self.dict['ciHitsEachValue'] = []
+		graphDict = {}
+		filename = ""
 
 
 
 
 		for pt in self.PlotType:
-			#analyze the data and slice the info to build a psychometric graph
-			if pt == 'psychometric':
-				for d in self.data:
-					print "arrange psychometric data"
-					(possibleValues,fractionHitsEachValue,ciHitsEachValue,nTrialsEachValue,nHitsEachValue) = 						behavioranalysis.calculate_psychometric(d['choice']
-					,d['targetFrequency'],d['valid'])
-					
 
-					pltDict1 = {'type':'psychometric','title':'My plot','possibleValues':possibleValues,
-'fractionHitsEachValue':fractionHitsEachValue,'ciHitsEachValue':ciHitsEachValue,'mouse name':d.session['subject']}
-					print pltDict1
-					self.array.append(pltDict1)
+			for d in self.data:
 				
-			#analyze the data and slice the info to build a summary graph
-			elif pt == 'summary':
-				print "arrange summary data"
-				self.dict['plot_type'] = 'summary'
-				self.array.append(self.dict)
+				mousename = d.session['subject']				
+				time = d.session['date']
+				date = d.session['date']
+				year = date[0:4]
+				month = date[5:7]
+				day = date[8:10]
+				date =  "_"+year+month+day+"_"
+				filename = mousename+date+pt+".svg"
 
-			#analyze the data and slice the info to build a dynamics graph
-			elif pt == 'dynamics':
-				print "arrange dynamics data"
-				self.dict['plot_type'] = 'dynamics'
-				self.array.append(self.dict)
+				graphDict['type'] = pt
+				graphDict['filename'] = filename
+				graphDict['data'] = self.data
 
-			# type not found
-			else:
-				print "no this type of plot"
-
+				self.array.append(graphDict)
+		print self.array
 		return self.array
+
+
+
+
 
 	def get_array(self):
 		temp = self.array
