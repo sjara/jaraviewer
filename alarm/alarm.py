@@ -51,7 +51,7 @@ class Alarm(object):
         self.paradigm           = last[-2]
         self.subjectName        = last[-3]
 
-    def alert(self, sender, destination, password):
+    def alert(self):
         # TODO: Probably shouldn't be storing the user/password in plaintext
 
         for path, data in self.behavData:
@@ -64,6 +64,9 @@ class Alarm(object):
                 """
                 To test the email sending capability, replace "username@uoregon.edu" with a testing username, 
                 and the corresponding password below, before uncommenting.
+
+                sender          = alarm_settings.contact_dict["test"][0]
+                destination     = alarm_settings.contact_dict[self.experimenterName][0]
 
                 smtpServer      = "smtp.uoregon.edu"
                 textSubtype     = "plain"
@@ -98,7 +101,7 @@ def main():
     # Set the threshold so high it will always alert (for testing purposes)
     alarm = Alarm(threshold = 1, belowThreshold = True)
     alarm.loadData()
-    alarm.alert("username@uoregon.edu", "username@uoregon.edu", "password") 
+    alarm.alert()
 
 if __name__ == "__main__":
     main()
