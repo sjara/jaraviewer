@@ -18,7 +18,6 @@ END_DAY_STA = 21
 END_DAY_END = 23
 
 def date_generator(raw_date_str):
-    #print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
     star_year = int(raw_date_str[START_YEAR_STA:START_YEAR_END])
     star_month = int(raw_date_str[START_MONTH_STA:START_MONTH_END])
     star_day = int(raw_date_str[START_DAY_STA:START_DAY_END])
@@ -35,8 +34,6 @@ def date_generator(raw_date_str):
     delta = int(delta.days)
     for i in range(0,delta+1):
         #print temp_date
-        #date_str = temp_date.strftime("%d")
-        #print date_str+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
         date_str = temp_date.strftime("%Y%m%d")
         date_str = date_str + 'a'
         #print date_str
