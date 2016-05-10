@@ -194,35 +194,21 @@
 
                     <br>
 
-                    <br>
-
                     <!-- Date Range Picker -->
-
                     <div class="form-group">
-                        
                         <label class="control-label col-sm-2">Date Range:</label> 
-                        
                         <div class="col-sm-6">
-
-
                             <div class="input-group date" id="daterange"> 
                                 <input type="text" id="date-range-input" name="dateRange" class="form-control">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-calendar"></span>
                                 </span>
-                                
-                                <script type="text/javascript">
-                                
+
+                                <script type="text/javascript">                                
                                     $(function() {
-
-                                        // testing the default today date format. but not working
-                                        // $('#daterange input').daterangepicker({
-                                        // });
-
                                         function cb(start, end) {
                                             $('#daterange input').html('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
                                         }
-
                                         /* Range for user to select */
                                         $('#daterange input').daterangepicker({
                                             locale: {
@@ -245,7 +231,6 @@
                                         $('#daterange').on('cancel.daterangepicker', function(ev, picker){
                                             $(this).find("input").val('');
                                         });
-
                                     });
                                 </script>
                             </div>       
@@ -256,7 +241,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="column-num">Column Number:</label>    
                         <div class="col-sm-6">
-                            <select class="form-control" id="column-num" name="columnnum">
+                            <select class="form-control" id="column-num" name="columNum">
                                 <option value="" selected disabled>Select Number of Column</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -289,7 +274,7 @@
                                     $("[name='subject']").prop("checked", false);
                                     $("[name='plotType']").prop("checked", false);
                                     $("[name='dateRange']").val($(this).data('original-value'));
-
+                                    $("[name='columNum']").prop("selected", false);
                                 })
                             })
                         </script>
@@ -304,7 +289,6 @@
                                         sValues.push($checkedSubject[i].value);
                                     }
 
-                                    
                                     var $checkedPlot = $("[name='plotType']:checked") // list of checked plot types
                                     var pValues = [] // list of plot types
                                     for (var i = 0; i < $checkedPlot.length; i++){
@@ -312,17 +296,20 @@
                                     }
 
                                     var dValue = $("#date-range-input").val()
+                                    var cValue = $("select[name=columNum]").val();
 
                                     console.log(sValues);
                                     console.log(pValues);
                                     console.log(dValue);
+                                    console.log(cValue);
 
                                     // send post request to backend
                                     $.post("profile",
                                         {
                                             subject: sValues,
                                             plotType: pValues,
-                                            dateRange: dValue
+                                            dateRange: dValue,
+                                            columNum: cValue
                                         }
                                     ).done(function(data) {
                                         var $display = $("#display-data");
@@ -331,19 +318,18 @@
                                         for (i=0; i < data['subject'].length; i++){
                                             sArray.push(data['subject'][i])    
                                         }
-                                        $display.append("<div>Subjects: " +sArray + "</div>")
-
+                                        $display.append("<div>Subjects: " + sArray + "</div>")
 
                                         var pArray = [];
                                         for (i=0; i < data['plotType'].length; i++){
                                             pArray.push(data['plotType'][i])    
                                         }
-                                        $display.append("<div>Plot Types: " +pArray + "</div>")
+                                        $display.append("<div>Plot Types: " + pArray + "</div>")
 
                                         // $display.append("<div>Subjects: " + data['subject'] + "</div>")
                                         // $display.append("<div>" + data['plotType'] + "</div>")
-                                        $display.append("<div>Date Range: " + data['dateRange'] +"</div><br>")
-
+                                        $display.append("<div>Date Range: " + data['dateRange'] + "</div>")
+                                        $display.append("<div>Column Number: " + data['columNum'] + "</div><br>")
                                     });
                                 });
                             });
@@ -361,8 +347,7 @@
                 <h3>Saved Profiles</h3>
                 <div class="form-group">
                     <br>
-                    <!-- input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/>
- -->                </div>
+                </div>
 
             </div> <!-- 2 -->
 
