@@ -70,19 +70,20 @@ body {
 	opacity: .9;
 }
 
-.label-date {
-	border: outset;
-	height: 32px;
-	width: 32px;
-	text-align:center;
-}
-
-.hidden_date {
-	visibility: hidden;
-	position: absolute;
-}
 
 .hidden_date:checked + label{
 	border: 2px inset #ff3333 ; 
 	opacity: .9;
+}
+
+.profile-div{
+	border: 1.0px;
+	padding: 10px;
+}
+
+
+.profile-selected{
+	border-radius: 5px;
+	background: #ffff80;
+	padding: 10px;
 }
