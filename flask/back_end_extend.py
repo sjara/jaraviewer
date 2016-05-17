@@ -145,3 +145,62 @@ def test_plot(out_dic):
     f=open(file_path,'w+')
     f.close()
 '''
+
+def plot_render(plo_fil_nam,col):
+    mice_date = {}
+    for plot in plo_fil_nam:
+        stri = plot.split('_',3)
+        mice_date_str = stri[0]+'-'+stri[1]
+        if mice_date_str in mice_date.keys():
+            mice_date[mice_date_str].append(plot)
+        else:
+            mice_date[mice_date_str] = []
+            mice_date[mice_date_str].append(plot)
+        #print mouse
+        #print date
+    #print mice_date
+	
+    width = 12/int(col)
+    plot_str = ""
+    for group in mice_date:
+        mouse_str = '''
+					<div class="row">
+						<div class="col-lg-12">
+							<h1 class="page-header">{gro}</h1>
+						</div>
+						<!-- /.col-lg-12 -->
+					</div>
+					<!-- /.row -->
+					<div class="row">
+					'''.format(gro=group)
+        panel_str = ""
+        for file_name in mice_date[group]:
+            #print file_name
+            image_path = "/static/image/"+file_name
+            #print image_path
+            image_str = "<div class='col-lg-{wid}'>	<div class='panel panel-default'><div class='panel-heading'>{fil_nam}</div>	<div class='panel-body'><div class=panel-image>".format(fil_nam=file_name,wid=width)
+            image_str += "<img src='{ima_pat}' class='img-responsive center-block'>".format(ima_pat=image_path)
+            image_str += "</div></div></div></div>"
+            panel_str += image_str
+            print image_str
+        temp_str = mouse_str+panel_str+"</div>"
+        plot_str += temp_str
+	
+    #print plot_str
+    #print mice_name
+    #print date_list
+        #mice_str += mouse_str	
+    #return mice_str
+    return plot_str
+	
+
+def link_gene(plo_fil_nam,col):
+    link_str = settings.URL_LINK
+    count = 0
+    for plot_name in plo_fil_nam:
+        temp_str = "plot"+str(count)+"="+plot_name+'&'
+        link_str += temp_str
+        count +=1
+    link_str += "num="+str(count)
+    link_str += "&col=" + str(col)
+    return link_str

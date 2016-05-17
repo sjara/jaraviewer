@@ -12,7 +12,10 @@ import back_end_extend as bee
 #plot_file = "plot.html"	#File name for the next page
 #plot_path = "./plot_path"	#path for the plot that generated
 
-app = Flask(__name__)
+app = Flask(__name__
+			#, static_url_path = '/'
+			, static_folder = 'static'
+			)
 
 #Read the homepage
 @app.route('/')
@@ -38,6 +41,8 @@ def execute():
     #print plotType
     dateRange = request.form['dateRange']
     #print dateRange
+    colum = request.form['columNum']
+    #print colum,"!!!!!!!!!!!!!"
 	
     date_list = []
     date_list = bee.date_generator(raw_date_str = dateRange)
@@ -47,9 +52,26 @@ def execute():
     #AData = ad.ArraData(Data=raw_data_list,PlotType=plot_type_list)
     #plotList,imageList = AData.analyze_data()
 	
-    display = plot_file_name
+    #display = plot_file_name
     #display = "plotList: {plotList} <br>imageList: {imageList} ".format(plotList=plotList,imageList=imageList)
-    return str(display)
+    plot_str = ""
+    plot_str = bee.plot_render(plo_fil_nam=plot_file_name,col=colum)
+    link_str = bee.link_gene(plo_fil_nam=plot_file_name,col=colum)
+    return render_template('flot.html',link=link_str,mou_str=plot_str)
 
+@app.route('/link',methods=['GET'])
+def link():
+    num = request.args.get('num')
+    col = request.args.get('col')
+    new_plot_list = []
+    for i in range(0,int(num)):
+        arg_name = "plot"+str(i)
+        new_plot_list.append(request.args.get(arg_name))
+	
+    plot_str = bee.plot_render(plo_fil_nam=new_plot_list,col=col)
+    link_str = bee.link_gene(plo_fil_nam=new_plot_list,col=col)
+    return render_template('flot.html',link=link_str,mou_str=plot_str)
+	
+	
 if __name__ == "__main__":
     app.run(debug=True,port=5000)
