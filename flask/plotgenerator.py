@@ -2,9 +2,7 @@
 #By: James Vargas-Witherell
 import matplotlib.pyplot as plt
 from jaratoolbox import behavioranalysis
-#the following are only needed for the test function. Can delete later
-from jaratoolbox import loadbehavior
-from jaratoolbox import settings
+
 '''
 INPUT CONVENTIONS:
 plotList should be a list of dictionaries, each dictionary with the following parameters:
@@ -42,6 +40,10 @@ def Generate(plotList):
         #plt.savefig(os.path.join(path, plot['filename']))
     return True 
 
+#the following are only needed for the test function. 
+from jaratoolbox import loadbehavior
+from jaratoolbox import settings
+import time
 def Test():
     #Test function: Used to test code without needing the other modules
     # NOTE: this text function will be a mini version of what the backend will be doing each time
@@ -63,5 +65,10 @@ def Test():
     graphList.append(graphDict2)
     graphDict3 = {'type' : "dynamics", 'filename' : "adap021_20160310_dynamics.svg", 'data' : behavData}
     graphList.append(graphDict3)
+    #time.time returns the current system time in seconds. by taking the time before and after running the Generate function and taking the difference,
+    #we can see the exact time in seconds that the module took to run.
+    t0 = time.time()
     Generate(graphList)
+    t1 = time.time()
+    print(t1-t0)
 
