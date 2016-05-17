@@ -14,7 +14,8 @@ plotList should be a list of dictionaries, each dictionary with the following pa
 
 A parameter may be added that contains the filepath to the graph storage folder. Need to discuss
 '''
-#need to make a global path variable
+#Path variable. Currently is an empty string, so files will be stored in the current directory
+path = ""
 def Generate(plotList):
 #plotList is the list of plot dictionaries as specified above
     for plot in plotList:
@@ -37,6 +38,8 @@ def Generate(plotList):
         #save the plot under the given filename (need to edit with filepath)
         #NOTE: Current savefig will save to whatever directory the code is run in. Be warned
         plt.savefig(plot['filename'])
+        ### When settings file is done, and path is avalible, uncomment below code and delete the above one ###
+        #plt.savefig(os.path.join(path, plot['filename']))
     return True 
 
 def Test():
@@ -58,7 +61,7 @@ def Test():
     graphList.append(graphDict1)
     graphDict2 = {'type' : "summary", 'filename' : "adap021_20160310_summary.svg", 'data' : behavData}
     graphList.append(graphDict2)
-    graphDict3 = {'type' : "dynamic", 'filename' : "adap021_20160310_dynamic.svg", 'data' : behavData}
+    graphDict3 = {'type' : "dynamics", 'filename' : "adap021_20160310_dynamics.svg", 'data' : behavData}
     graphList.append(graphDict3)
     Generate(graphList)
 
