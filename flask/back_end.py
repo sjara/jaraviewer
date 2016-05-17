@@ -5,7 +5,7 @@ from flask import request
 import os
 import numpy
 
-import ArraData as ad	#File for arrange data
+#import ArraData as ad	#File for arrange data
 import back_end_extend as bee
 #import plot_py	#File for ploting
 
@@ -18,28 +18,14 @@ app = Flask(__name__)
 @app.route('/')
 @app.route('/home.html')
 def initial():
-    
+ 
     mice = []
-	
-    try:
-        mice_file = open("./static/data/subjects.txt","r")
-    except:
-        print "Can't open the file"
-    mice = mice_file.read().splitlines()
-    #print mice
-    mouse_str = ""
-    count = 1
-    is_break = ""
-    for mouse in mice:
-        if count%4 == 0:
-            is_break = "<br>"
-        mouse_str += "<input type ='checkbox' id='subject{count1}' name='subject' value='{subj1}' class='hidden_subject'>	<label class='label_subject btn btn-primary' for='subject{count2}'>	<div class='label_name'>{subj2}</div>	</label> {is_bre}".format(count1=count,subj1=mouse,count2=count,subj2=mouse,is_bre=is_break)
-        count += 1
-        is_break = ""
-    print mouse_str
+    mice = bee.get_mice()
+    mice_str = ""
+    mice_str = bee.format_index(mic=mice)
 	
     #return render_template('home.html',test=mice_input,mice_num=mice_num)
-    return render_template('home.html',test=mouse_str)
+    return render_template('home.html',test=mice_str)
 	
 
 #Get the information from the home page and excute the plot generator program and read the image pathes for next website
@@ -55,15 +41,15 @@ def execute():
 	
     date_list = []
     date_list = bee.date_generator(raw_date_str = dateRange)
-    raw_data_list = []
-    raw_data_list = bee.get_data(miceSelect,date_list)
+    plot_file_name = []
+    plot_file_name = bee.get_plot(miceSelect,date_list,plo_typ=plot_type_list)
     
-    AData = ad.ArraData(Data=raw_data_list,PlotType=plot_type_list)
-    plotList,imageList = AData.analyze_data()
+    #AData = ad.ArraData(Data=raw_data_list,PlotType=plot_type_list)
+    #plotList,imageList = AData.analyze_data()
 	
-
-    display = "plotList: {plotList} <br>imageList: {imageList} ".format(plotList=plotList,imageList=imageList)
-    return display
+    display = plot_file_name
+    #display = "plotList: {plotList} <br>imageList: {imageList} ".format(plotList=plotList,imageList=imageList)
+    return str(display)
 
 if __name__ == "__main__":
     app.run(debug=True,port=5000)

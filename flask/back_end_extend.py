@@ -1,5 +1,6 @@
 import datetime
 import time
+import sys,os
 
 import loadbehavior
 import settings
@@ -16,6 +17,30 @@ END_MONTH_STA = 18
 END_MONTH_END = 20
 END_DAY_STA = 21
 END_DAY_END = 23
+
+def get_mice():
+    mice = []
+	
+    try:
+        mice_file = open(settings.SUBJECT_PATH,"r")
+    except:
+        print "Can't open the file"
+    mice = mice_file.read().splitlines()
+    #print mice
+    return mice
+	
+def format_index(mic):
+    mouse_str = ""
+    count = 1
+    is_break = ""
+    for mouse in mic:
+        if count%4 == 0:
+            is_break = "<br>"
+        mouse_str += "<input type ='checkbox' id='subject{count1}' name='subject' value='{subj1}' class='hidden_subject'>	<label class='label_subject btn btn-primary' for='subject{count2}'>	<div class='label_name'>{subj2}</div>	</label> {is_bre}".format(count1=count,subj1=mouse,count2=count,subj2=mouse,is_bre=is_break)
+        count += 1
+        is_break = ""
+    #print mouse_str
+    return mouse_str
 
 def date_generator(raw_date_str):
     star_year = int(raw_date_str[START_YEAR_STA:START_YEAR_END])
@@ -44,7 +69,7 @@ def date_generator(raw_date_str):
     return date_list
 	
 	
-def get_data(mice,date):
+def get_plot(mice,date,plo_typ):
 
     EXPERIMENTER = settings.DEFAULT_EXPERIMENTER
     paradigm = '2afc'
@@ -54,12 +79,28 @@ def get_data(mice,date):
     #session = '20160310a' # This is the date formatted as YYYYMMDD and one more character (usually 'a')
 
 	
-    behav_list = []
+    all_file_name = []
+    #non_exsi_file = []
     for subject in subject_list:
         for session in session_list:
             behavFile = loadbehavior.path_to_behavior_data(subject,EXPERIMENTER,paradigm,session)
             behavData = loadbehavior.FlexCategBehaviorData(behavFile,readmode='full')
-            behav_list.append(behavData)
+            #print str(subject),str(session),"!!!!!!!!!!!!!!!!!!!!!"
+            for plot_type in plo_typ:
+                out_dict = form_out_put(sub=subject,typ=plot_type,data=behavData,sess=session)
+                all_file_name.append(out_dict['filename'])
+                #print str(check_exsit(fil_nam=out_dict['filename'])),out_dict['filename']
+                if not check_exsit(fil_nam=out_dict['filename']):
+                    #non_exsi_file.append(out_dict['filename'])
+                    #plot_function(out_dict)
+                    #test_plot(out_dic=out_dict)
+                    print
+					
+    
+    #print non_exsi_file
+    #print all_file_name
+                #plot_function()
+            #behav_list.append(behavData)
     
 	# -- Find the data filename and load the data into a data object (similar to a Python dict) --
     #behavFile = loadbehavior.path_to_behavior_data(subject,EXPERIMENTER,paradigm,session)
@@ -68,6 +109,39 @@ def get_data(mice,date):
 
     #print behav_list
 
-    return behav_list
+    return all_file_name
 
 #get_data(data_arra=numpy.array(['adap021']))
+
+
+def form_out_put(sub,typ,data,sess):
+    out_dict = {}
+    #print str(sub),"sub",str(typ),"typ",sess,"sess"
+    out_dict['type'] = str(typ)
+    #print sess
+    form_sess = sess[0:-1]
+    #print form_sess
+    out_dict['filename'] = str(sub)+'_'+str(form_sess)+'_'+str(typ)+'.svg'
+    #print out_dict['filename']
+    out_dict['data'] = data
+    return out_dict
+	
+def check_exsit(fil_nam):
+    check_file_exsits = False
+    image_path = os.walk(settings.IMAGE_PATH)
+    for root,dirs,files in image_path:
+        if check_file_exsits:
+            return True
+        for f in files:
+            if f == fil_nam:
+                check_file_exsits = True
+                return True
+    if not check_file_exsits:
+        return False
+
+'''		
+def test_plot(out_dic):
+    file_path = settings.IMAGE_PATH+out_dic['filename']
+    f=open(file_path,'w+')
+    f.close()
+'''
