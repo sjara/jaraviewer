@@ -3,6 +3,7 @@
 import matplotlib.pyplot as plt
 from jaratoolbox import behavioranalysis
 import settings
+import os
 '''
 INPUT CONVENTIONS:
 plotList should be a list of dictionaries, each dictionary with the following parameters:

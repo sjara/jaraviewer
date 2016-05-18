@@ -38,6 +38,6 @@ def Test():
     #time.time returns the current system time in seconds. by taking the time before and after running the Generate function and taking the difference,
     #we can see the exact time in seconds that the module took to run.
     t0 = time.time()
-    Generate(graphList)
+    plotgenerator.Generate(graphList)
     t1 = time.time()
     print(t1-t0)
