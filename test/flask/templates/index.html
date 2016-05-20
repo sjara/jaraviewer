@@ -167,6 +167,16 @@
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="modify-input">Modifiy Subject:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="modify-input">
+
+                        </div>
+                        <input type="button" id="add-btn" class="btn btn-default" name="add" value="Add"/>
+                        <input type="button" id="del-btn" class="btn btn-default" name="del" value="Delete"/>
+                    </div>
+
                     <!-- Select Plot Type -->
                     <div class="form-group">
                         <label class="control-label col-sm-2">Plot Type:</label> 
@@ -257,16 +267,19 @@
                         <!-- Buttons -->
                         <div class="text-center" >
                             <!-- input type button, so doesn't submit upon click -->
-                            <input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/>
-                            <input type="button" id="save-profile-btn" class="btn btn-success" name="submit" value="save"/>
+                           <!--  <input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/> -->
+                            <button type="reset" class="btn btn-warning" name="submit" value="reset">Reset </button>
+                            <input type="button" id="save-profile-btn" class="btn btn-success" name="submit" value="Save"/>
                             <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
+                            
                         </div>
 
 
 
 
-                        <!-- clear-btn -->
 
+                        <!-- clear-btn -->
+<!-- 
                         <script type="text/javascript">
                             function clearData() {
 
@@ -280,6 +293,7 @@
                             })
                         </script>
 
+ -->
                         <script type="text/javascript">
                             function profileClickHandler(data) {
                                 return function(event){
