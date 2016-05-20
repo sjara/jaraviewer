@@ -1,20 +1,15 @@
 #!/usr/bin/env python
 
 '''
-General settings for jaratoolbox.
+Settings for the Jaraviewer
 '''
 
-import os
+BEHAVIOR_PATH = './1/2'	#Path for the raw data
 
-BEHAVIOR_PATH = './1/2'
-EPHYS_PATH = '/data/ephys'
+DEFAULT_EXPERIMENTER = 'santiago'	#Name for the experimenter
 
-DEFAULT_EXPERIMENTER = 'santiago'
+IMAGE_PATH = './image/'	#Path to save and load the plots
 
-KK_PATH = '/home/jarauser/src/klustakwik/KK2/KlustaKwik'
+SUBJECT_PATH = './static/data/subjects.txt'	#Path to for storing and reading subjects' file
 
-IMAGE_PATH = './image/'
-
-SUBJECT_PATH = './static/data/subjects.txt'
-
-URL_LINK = 'http://127.0.0.1:5000/link?'
+URL_LINK = 'http://127.0.0.1:5000/link?'	#URL like for sharing

@@ -1,5 +1,4 @@
-#import jaratoolbox	#will import the jaratoolbox later
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 from subprocess import call
 from flask import request
 import os
@@ -19,7 +18,7 @@ app = Flask(__name__
 
 #Read the homepage
 @app.route('/')
-@app.route('/home.html')
+@app.route('/jaraviewer')
 def initial():
  
     mice = []
@@ -54,10 +53,11 @@ def execute():
 	
     #display = plot_file_name
     #display = "plotList: {plotList} <br>imageList: {imageList} ".format(plotList=plotList,imageList=imageList)
-    plot_str = ""
-    plot_str = bee.plot_render(plo_fil_nam=plot_file_name,col=colum)
+    #plot_str = ""
+    #plot_str = bee.plot_render(plo_fil_nam=plot_file_name,col=colum)
+	
     link_str = bee.link_gene(plo_fil_nam=plot_file_name,col=colum)
-    return render_template('flot.html',link=link_str,mou_str=plot_str)
+    return redirect(link_str,code=302)
 
 @app.route('/link',methods=['GET'])
 def link():

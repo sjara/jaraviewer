@@ -2,6 +2,7 @@ import datetime
 import time
 import sys,os
 
+#from jaratoolbox import loadbehavior
 import loadbehavior
 import settings
 
@@ -195,7 +196,8 @@ def plot_render(plo_fil_nam,col):
 	
 
 def link_gene(plo_fil_nam,col):
-    link_str = settings.URL_LINK
+    #link_str = settings.URL_LINK
+    link_str = "/link?"
     count = 0
     for plot_name in plo_fil_nam:
         temp_str = "plot"+str(count)+"="+plot_name+'&'
@@ -203,4 +205,5 @@ def link_gene(plo_fil_nam,col):
         count +=1
     link_str += "num="+str(count)
     link_str += "&col=" + str(col)
+    print link_str
     return link_str
