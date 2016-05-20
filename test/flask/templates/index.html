@@ -318,6 +318,8 @@
                                     listOfProfiles = JSON.parse(localStorage['profileData']) // looks at previous profile    
                                 }
 
+
+                                // displaying saved profiles from previous saved
                                 for(var i=0; i<listOfProfiles.length; i++) {
                                     var data = listOfProfiles[i]
                                     $profileLabel = $('<div class="profile-div">' + 
@@ -328,8 +330,6 @@
                                     $profileLabel.appendTo('#display-data');
                                     // append button to display 
                                     $profileLabel.click(profileClickHandler(data));
-
-                                    
                                 }
 
 
@@ -347,21 +347,24 @@
                                         pValues.push($checkedPlot[i].value);
                                     }
 
-                                    var dValue = $("#date-range-input").val()
-                                    var cValue = $("select[name=columNum]").val();
+                                    // var dValue = $("#date-range-input").val() // comment out 
+                                    // var cValue = $("select[name=columNum]").val(); // comment outlater after verification
 
+                                    /* Logs for debugging purposes*/
                                     console.log(sValues);
                                     console.log(pValues);
-                                    console.log(dValue);
-                                    console.log(cValue);
+                                    // console.log(dValue);
+                                    // console.log(cValue);
 
 
-                                    // MADE CHANGES STARTED HERE !!!!!!!!
+                                    // Profiles data
                                     var profile = {
                                         subject: sValues,
-                                        plotType: pValues,
-                                        dateRange: dValue,
-                                        columNum: cValue
+                                        plotType: pValues 
+                                        // in future, if want to add daterange or column, just add:
+                                        // dateRange: dValue,
+                                        // columNum: cValue
+                                        // and uncomment dValue, cValue above
                                     };
 
 
@@ -373,15 +376,17 @@
                                     }
 
                                     listOfProfiles.push(profile) // add current to list of profiles
-
-
-
                                     localStorage.setItem('profileData', JSON.stringify(listOfProfiles)); // set items
 
 
                                     // displaying data formater
+                                    // for most recent save clicked
                                     var $display = $("#display-data");
-                                    $profileLabel = $('<div class="profile-div" >' + JSON.stringify(profile) + '<div>');
+                                    $profileLabel = $('<div class="profile-div" >' 
+                                        + JSON.stringify(profile.subject, null, 2).replace(/[\[\]"]/g, "")  
+                                        + '<br>' 
+                                        + JSON.stringify(profile.plotType, null, 2).replace(/[\[\]"]/g, "") 
+                                        + '<div>');
                                     $profileLabel.appendTo('#display-data');
 
 
