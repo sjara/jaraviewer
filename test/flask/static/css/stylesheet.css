@@ -87,3 +87,20 @@ body {
 	background: #ffff80;
 	padding: 10px;
 }
+
+.jumbotron {
+    padding: 0.5em 0.6em;
+    h1 {
+        font-size: 45px;
+    }
+    p {
+        font-size: 1.2em;
+        .btn {
+            padding: 0.5em;
+        }
+    }
+}
+
+.vertical-line {
+    border-right: solid 0.5px #e6e6e6;
+}
