@@ -66,9 +66,9 @@
                 <h3>Form</h3>
                 <br>
 
-                <form class="form-horizontal" role="form" name="form" action="{{url_for('profile')}}" target="_blank" method='POST'>
+                <form class="form-horizontal" role="form" name="form" action="{{url_for('profile')}}" target="-blank" method='POST'>
 
-                    <!-- Select Mouse -->
+                    <!-- Select Subject -->
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="subject">Subjects:</label><br>
                         <div class="col-sm-10">
@@ -320,7 +320,11 @@
 
                                 for(var i=0; i<listOfProfiles.length; i++) {
                                     var data = listOfProfiles[i]
-                                    $profileLabel = $('<div class="profile-div">' + JSON.stringify(data) + '<div>');
+                                    $profileLabel = $('<div class="profile-div">' + 
+                                        JSON.stringify(data.subject, null, 2).replace(/[\[\]"]/g, "") 
+                                        + '<br>' 
+                                        + JSON.stringify(data.plotType, null, 2).replace(/[\[\]"]/g, "") 
+                                        + '<br>' + '<div>');
                                     $profileLabel.appendTo('#display-data');
                                     // append button to display 
                                     $profileLabel.click(profileClickHandler(data));
