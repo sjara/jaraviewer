@@ -6,7 +6,7 @@ import numpy
 
 #import ArraData as ad	#File for arrange data
 import back_end_extend as bee
-#import plot_py	#File for ploting
+#import plotgenerator as pg	#File for ploting
 
 #plot_file = "plot.html"	#File name for the next page
 #plot_path = "./plot_path"	#path for the plot that generated
@@ -16,6 +16,8 @@ app = Flask(__name__
 			, static_folder = 'static'
 			)
 
+#modify_str = ""
+			
 #Read the homepage
 @app.route('/')
 @app.route('/jaraviewer')
@@ -27,13 +29,15 @@ def initial():
     mice_str = bee.format_index(mic=mice)	#get the html string
 	
     #return render_template('home.html',test=mice_input,mice_num=mice_num)
-    return render_template('home.html',test=mice_str)
+    return render_template('back_index.html',mice=mice_str)
 	
 
 #Get the information from the home page and excute the plot generator program
 @app.route('/execute',methods=['POST'])
 def execute():
-    
+    #projectpath = request.form.save-profile-btn
+    #print projectpath
+    save = request.form.getlist('save')
     miceSelect = request.form.getlist('subject')
     #print miceSelect
     plot_type_list = request.form.getlist('plotType')
@@ -42,6 +46,16 @@ def execute():
     #print dateRange
     colum = request.form['columNum']
     #print colum
+    if len(save) > 0:
+        save = str(save[0])
+        if save == "Save":
+            #print "!!!!!!!!!!"
+            bee.write_profile(mic_lis=miceSelect,plo_lis=plot_type_list,dat_ran=dateRange,col=colum)
+            return redirect("/jaraviewer",code=302)
+
+    #print save
+    #print "save"
+
 	
     date_list = []
     date_list = bee.date_generator(raw_date_str = dateRange)	#get the list of dates
@@ -65,6 +79,30 @@ def link():
     plot_str = bee.plot_render(plo_fil_nam=new_plot_list,col=col)	#get he string to render the html
     return render_template('back_static_flot.html',mou_str=plot_str)
 	
+@app.route('/modify',methods=['POST'])
+def modify():
+    add = request.form['add_sub']
+    dele = request.form['del_sub']
+    add_result = True
+    if not add=="":
+        add_result = bee.add_subject(sub=add)
+        if add_result == False:
+            print "adding error"
+    del_result = True
+    if not dele=="":
+        del_result = bee.del_subject(sub=dele)
+        if del_result == False:
+            print "deleting error"
+    
+        
+    #print add_result
+    #print add,dele
+    return redirect("/jaraviewer",code=302)
+
+@app.route('/reset')
+def reset():
+    bee.reset_pro()
+    return redirect("/jaraviewer",code=302)
 	
 if __name__ == "__main__":
     app.run(debug=True,port=5000)

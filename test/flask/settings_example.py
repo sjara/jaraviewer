@@ -10,6 +10,8 @@ Settings for the Jaraviewer
 
 #IMAGE_PATH = 'PATH_FOR_IMAGE'	#Path to save and load the plots
 
-#SUBJECT_PATH = 'PATH_FOR_SUBJECTS.TXT'	#Path to for storing and reading subjects' file
+#SUBJECT_PATH = '.../subjects.txt'	#Path to for storing and reading subjects' file
 
 #URL_LINK = 'PATH_FOR_SHARING_LINK'	#URL like for sharing
+
+#SAVE_PROFILE = ".../profile.txt"	#Path for profile

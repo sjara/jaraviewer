@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Jaraviewer</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+     
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+
+        <!-- Include Date Range Picker -->
+        <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+
+        <!-- Manual CSS -->
+        <link href="static/css/stylesheet.css" rel="stylesheet">
+
+    </head>
+
+    <body role="document">
+
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">JaraViewer</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="index.html">Home</a></li>
+                        <li><a href="modify.html">Modify Subject</a></li>
+
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Git <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="https://github.com/sjara/jaraviewer">JaraViewer</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="https://github.com/sjara/jaratoolbox">JaraToolBox</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav> <!-- nav bar end -->
+
+        <div class="container theme-showcase" role="main">
+          <!-- Main jumbotron for a primary marketing message or call to action -->
+            <div class="jumbotron">
+                <h1>Jara Viewer</h1>
+                <p>Online data viewer for behavior data collected in the Jaramillo lab.
+                </p>
+            </div>
+        </div>
+
+        <div class="container">
+            <!-- container 1: Form -->
+            <div class="col-lg-8 vertical-line"> 
+                <h3 align="center">Form</h3>
+                <br>
+
+                <form class="form-horizontal" role="form" name="form" action="/execute" target="-blank" method='POST'>
+
+                    <!-- Select Subject -->
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="subject">Subjects:</label><br>
+                        <div class="col-sm-10">
+                            {{ mice|safe }}
+
+
+
+                        </div>
+                    </div>
+
+                    <!--  extra space  -->
+                    <br>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="modify-input">Modifiy Subject 1:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="modify-input">
+
+                        </div>
+                        <input type="button" id="add-btn" class="btn btn-default" name="add" value="Add"/>
+                        <input type="button" id="del-btn" class="btn btn-default" name="del" value="Delete"/>
+                    </div>
+                    
+
+                    <!--  extra space  -->
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="modify-input">Modifiy Subject 2:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="modify-input">
+
+                        </div>
+                        <button type="submit" id="add-btn" class="btn btn-default" name="add" value="Add">Add</button>
+                        <button type="submit" id="del-btn" class="btn btn-default" name="del" value="Delete">Delete</button>
+                    </div>
+
+                    <!-- Select Plot Type -->
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Plot Type:</label> 
+                        <div class="col-sm-6">
+                                
+                            <input type="checkbox" id="psychometric" value="psychometric" name="plotType" class="hidden_plot">
+                            <label class="label_item" for="psychometric">
+                                <img src="static/img/line.png">
+                                <div class="label_name">Psychometric</div>    
+                            </label>
+                            
+                            <input type="checkbox" id="summary" value="summary" name="plotType" class="hidden_plot">
+                            <label class="label_item" for="summary">
+                                <img src="static/img/bar.png">
+                                <div class="label_name">Summary</div>
+                            </label>
+                            
+                            <input type="checkbox" id="dynamics" value="dynamics" name="plotType" class="hidden_plot">
+                            <label class="label_item" for="dynamics">
+                                <img src="static/img/stats.png">
+                                <div class="label_name">Dynamics</div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <br>
+
+                    <!-- Date Range Picker -->
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Date Range:</label> 
+                        <div class="col-sm-6">
+                            <div class="input-group date" id="daterange"> 
+                                <input type="text" id="date-range-input" name="dateRange" class="form-control">
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+
+                                <script type="text/javascript">                                
+                                    $(function() {
+                                        function cb(start, end) {
+                                            $('#daterange input').html('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD');
+                                        }
+                                        /* Range for user to select */
+                                        $('#daterange input').daterangepicker({
+                                            locale: {
+                                                format: 'YYYY-MM-DD' 
+                                            },
+                                            ranges: {
+                                                'Today': [moment(), moment()],
+                                                'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                                                'Current Month': [moment().startOf('month'), moment().endOf('month')],
+                                                'Previous Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                            }, cb
+                                        });
+
+                                        /* Apply Button */
+                                        $('#daterange').on('apply.daterangepicker', function(ev, picker) {
+                                            $(this).find("input").val(picker.startDate.format("YYYY-MM-DD") + ' - ' + picker.endDate.format("YYYY-MM-DD"));
+                                        });
+
+                                        /* Cancel Button */
+                                        $('#daterange').on('cancel.daterangepicker', function(ev, picker){
+                                            $(this).find("input").val('');
+                                        });
+                                    });
+                                </script>
+                            </div>       
+                        </div>
+                    </div>
+
+                    <!--Columns  -->
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="column-num">Column Number:</label>    
+                        <div class="col-sm-6">
+                            <select class="form-control" id="column-num" name="columNum" required>
+                                <option value="" selected disabled>Select Number of Column</option>
+                                <option value="-">-</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <br>
+                    <div class="form-group">
+                        <!-- Buttons -->
+                        <div class="text-center" >
+                            <!-- input type button, so doesn't submit upon click -->
+                           <!--  <input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/> -->
+                            <a href="/reset" class="button">Reset</a>
+                            <input type="checkbox" id="save-profile-btn" class="btn btn-success" name="save" value="Save"/>
+                            <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
+                           
+                        </div>
+
+
+
+                        <!-- Clear Data Function to Reset values for profileClickHandler --> 
+                        <script type="text/javascript">
+                            function clearData() {
+
+                                    $("[name='subject']").prop("checked", false);
+                                    $("[name='plotType']").prop("checked", false);
+                                    $("[name='dateRange']").val($(this).data('original-value'));
+                                    $("[name='columNum']").prop("selected", false);
+                                }
+                            $(function() {
+                                $("#clear-btn").click(clearData)
+                            })
+                        </script>
+
+
+                        <script type="text/javascript">
+                            function profileClickHandler(data) {
+                                return function(event){
+                                    // click and unclick saved profiles
+                                    $('.profile-selected').removeClass('profile-selected')
+                                    $(event.target).addClass('profile-selected')
+                                    
+                                    // clear data selections.
+                                    clearData()
+
+                                    // obtaining the subject data
+                                    for (var i =0; i<data.subject.length; i++){
+                                        $("#"+data.subject[i]).prop("checked", true);
+                                    };
+
+                                    // obtaining the plotType data
+                                    for(var i = 0; i<data.plotType.length; i++){
+                                        $("#"+data.plotType[i]).prop("checked", true);
+                                    };
+
+                                    // obtaining the dataRange data
+                                    $("[name='dateRange']").val(data.dateRange);
+
+                                    // obtaining the columnNum data
+                                    $("#column-num option[value="+data.columNum +"]").prop("selected", true);
+                            }}
+
+
+                            $(function() {
+                                var listOfProfiles;
+
+                                if (localStorage.getItem("profileData") == null){
+                                    listOfProfiles = [];
+                                }
+                                else {
+                                    listOfProfiles = JSON.parse(localStorage['profileData']) // looks at previous profile    
+                                }
+
+
+                                // displaying saved profiles from previous saved
+                                for(var i=0; i<listOfProfiles.length; i++) {
+                                    var data = listOfProfiles[i]
+                                    $profileLabel = $('<div class="profile-div">' + 
+                                        JSON.stringify(data.subject, null, 2).replace(/[\[\]"]/g, "") 
+                                        + '<br>' 
+                                        + JSON.stringify(data.plotType, null, 2).replace(/[\[\]"]/g, "") 
+                                        + '<br>' + '<div>');
+                                    $profileLabel.appendTo('#display-data');
+                                    // append button to display 
+                                    $profileLabel.click(profileClickHandler(data));
+                                }
+
+
+                                $("#save-profile-btn").click(function() {
+                                    var $checkedSubject = $("[name='subject']:checked") // list of selected subjects
+
+                                    var sValues = [] // list to hold the subject
+                                    for (var i = 0; i < $checkedSubject.length; i++ ){
+                                        sValues.push($checkedSubject[i].value);
+                                    }
+
+                                    var $checkedPlot = $("[name='plotType']:checked") // list of checked plot types
+                                    var pValues = [] // list of plot types
+                                    for (var i = 0; i < $checkedPlot.length; i++){
+                                        pValues.push($checkedPlot[i].value);
+                                    }
+
+                                    // var dValue = $("#date-range-input").val() // comment out 
+                                    // var cValue = $("select[name=columNum]").val(); // comment outlater after verification
+
+                                    /* Logs for debugging purposes*/
+                                    console.log(sValues);
+                                    console.log(pValues);
+                                    // console.log(dValue);
+                                    // console.log(cValue);
+
+
+                                    // Profiles data
+                                    var profile = {
+                                        subject: sValues,
+                                        plotType: pValues 
+                                        // in future, if want to add daterange or column, just add:
+                                        // dateRange: dValue,
+                                        // columNum: cValue
+                                        // and uncomment dValue, cValue above
+                                    };
+
+
+                                    if (localStorage.getItem("profileData") == null){
+                                        listOfProfiles = [];
+                                    }
+                                    else {
+                                        listOfProfiles = JSON.parse(localStorage['profileData']) // looks at previous profile    
+                                    }
+
+                                    listOfProfiles.push(profile) // add current to list of profiles
+                                    localStorage.setItem('profileData', JSON.stringify(listOfProfiles)); // set items
+
+
+                                    // displaying data formater
+                                    // for most recent save clicked
+                                    var $display = $("#display-data");
+                                    $profileLabel = $('<div class="profile-div" >' 
+                                        + JSON.stringify(profile.subject, null, 2).replace(/[\[\]"]/g, "")  
+                                        + '<br>' 
+                                        + JSON.stringify(profile.plotType, null, 2).replace(/[\[\]"]/g, "") 
+                                        + '<div>');
+                                    $profileLabel.appendTo('#display-data');
+
+
+                                    // selected
+                                    $profileLabel.click(profileClickHandler(profile));
+                                }); // close whole function()
+                            });
+                        </script>
+                    </div>
+                </form>
+
+                <br>
+                <br>
+                <hr>
+                <h3 align="center">Add/Delete Option 2: Separate form</h3>
+                <hr>
+                <h4>Add/Delete subjects</h4>
+                <br>
+                
+                <form class="form-horizontal" role="form" name="form" action="/modify" method='POST'>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="add">Add Subject:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="add" name="add_sub">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="remove">Remove Subject:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="remove" name="del_sub">
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                </form>
+            </div> <!-- container 1 -->
+
+
+
+            <!-- container 2: Display Profiles  -->
+            <div class="col-lg-4">
+                <div id="display-data"/>
+
+                    <h3 align="center">Saved Profiles</h3>
+                    <div class="form-group">
+
+                        
+                </div>
+
+            </div> <!-- 2 -->
+
+            
+        </div>
+    </body>
+</html>
+
+
+
+

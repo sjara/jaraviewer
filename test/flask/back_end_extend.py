@@ -1,10 +1,12 @@
 import datetime
 import time
 import sys,os
+import shutil
 
 from jaratoolbox import loadbehavior
 #import loadbehavior
 import settings
+import back_plotgenerator as pg	#File for ploting
 
 #indexes for extracting the date 
 START_YEAR_STA = 0
@@ -28,6 +30,7 @@ def get_mice():
     except:
         print "Can't open the file"
     mice = mice_file.read().splitlines()
+    mice_file.close()
     return mice
 	
 #function to generate the strings of html for mouse selecting
@@ -89,9 +92,11 @@ def get_plot(mice,date,plo_typ):
                 all_file_name.append(out_dict['filename'])
                 if not check_exsit(fil_nam=out_dict['filename']):
                     #non_exsi_file.append(out_dict['filename'])
-                    #plot_function(out_dict)
+                    test_list=[]
+                    test_list.append(out_dict)
+                    pg.Generate(plotList=test_list)
                     #test_plot(out_dic=out_dict)
-                    print
+                    #print
 					
     
     #print non_exsi_file
@@ -161,22 +166,30 @@ def plot_render(plo_fil_nam,col):
         col_counter = 0
         plot_str = ""+"<table cellpadding='0' cellspacing='0' border='0'> <tr class='row1'>"
         for group in mice_date:
+            
+            
             if col_counter < col:
                 group_str = ""
                 group_str += "<td><h1 style='width:150px;left: 0; top: 2'>"+group+"</h1></td>"
                 for file_name in mice_date[group]:
-                    group_str += "<td><img  style='width:350px' src='/static/image/line-chart.png' /></td>"
+                    ima_src = settings.IMAGE_PATH
+                    ima_src += file_name
+                    print ima_src
+                    group_str += "<td><img  style='width:350px' src='"+ima_src+"' /></td>"
                 group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
                 plot_str += group_str
                 col_counter += 1
             elif col_counter >= col:
-                #print "!!!!!!!!!!!!!!!!!!!!!!"
                 plot_str += "</tr> </table> <br> <hr style='width: "+width+"px' />"
                 plot_str += "<table cellpadding='0' cellspacing='0' border='0'> <tr class='row1'>"
                 group_str = ""
                 group_str += "<td><h1 style='width:150px;left: 0; top: 2'>"+group+"</h1></td>"
                 for file_name in mice_date[group]:
-                    group_str += "<td><img  style='width:350px' src='/static/image/line-chart.png' /></td>"
+                    ima_src = settings.IMAGE_PATH
+                    ima_src += file_name
+                    print ima_src
+                    group_str += "<td><img  style='width:350px' src='"+ima_src+"' /></td>"
+                    #group_str += "<td><img  style='width:350px' src='/static/image/line-chart.png' /></td>"
                 group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
                 plot_str += group_str                
                 col_counter = 1
@@ -196,3 +209,61 @@ def link_gene(plo_fil_nam,col):
     link_str += "&col=" + str(col)
     print link_str
     return link_str
+
+def add_subject(sub):
+    try:
+        mice_file = open(settings.SUBJECT_PATH,"r+")
+    except:
+        print "Can't open the file"
+    mice = mice_file.read().splitlines()
+    if sub in mice:
+        return False
+    sub += '\n'
+    mice_file.write(sub)
+    mice_file.close()
+    
+    return True
+	
+def del_subject(sub):
+    file_path = settings.SUBJECT_PATH
+    try:
+        mice_file = open(file_path,"r+")
+    except:
+        print "Can't open the file"
+    mice = mice_file.read().splitlines()
+    try:
+        mice.remove(sub)
+    except:
+        return False
+    mice_file.close()
+    temp_path = file_path+".new"
+    temp_file = open(temp_path,'w')
+    for mouse in mice:
+        mouse += '\n'
+        temp_file.write(mouse)
+    temp_file.close()
+    shutil.move(temp_path, file_path)
+    return True
+
+def write_profile(mic_lis,plo_lis,dat_ran,col):
+    profile = open(settings.SAVE_PROFILE,'a')
+    wri_str = ""
+    for mouse in mic_lis:
+        mouse = str(mouse) + ','
+        wri_str += mouse
+    wri_str += ';'
+    for plot in plo_lis:
+        plot = str(plot) + ','
+        wri_str += plot
+    wri_str += ';'
+    wri_str += str(dat_ran)
+    wri_str += ';'
+    wri_str += str(col)
+    wri_str += '\n'
+    profile.write(wri_str)
+    profile.close()
+
+def reset_pro():
+    temp_path = settings.SAVE_PROFILE+".new"
+    temp_profile = open(temp_path,'w')
+    shutil.move(temp_path,settings.SAVE_PROFILE)
