@@ -2,10 +2,11 @@ import datetime
 import time
 import sys,os
 
-#from jaratoolbox import loadbehavior
-import loadbehavior
+from jaratoolbox import loadbehavior
+#import loadbehavior
 import settings
 
+#indexes for extracting the date 
 START_YEAR_STA = 0
 START_YEAR_END = 4
 START_MONTH_STA = 5
@@ -19,17 +20,17 @@ END_MONTH_END = 20
 END_DAY_STA = 21
 END_DAY_END = 23
 
+#function to open 'subject.txt'
 def get_mice():
     mice = []
-	
     try:
         mice_file = open(settings.SUBJECT_PATH,"r")
     except:
         print "Can't open the file"
     mice = mice_file.read().splitlines()
-    #print mice
     return mice
 	
+#function to generate the strings of html for mouse selecting
 def format_index(mic):
     mouse_str = ""
     count = 1
@@ -40,9 +41,9 @@ def format_index(mic):
         mouse_str += "<input type ='checkbox' id='subject{count1}' name='subject' value='{subj1}' class='hidden_subject'>	<label class='label_subject btn btn-primary' for='subject{count2}'>	<div class='label_name'>{subj2}</div>	</label> {is_bre}".format(count1=count,subj1=mouse,count2=count,subj2=mouse,is_bre=is_break)
         count += 1
         is_break = ""
-    #print mouse_str
     return mouse_str
 
+#get all the dates from the date string
 def date_generator(raw_date_str):
     star_year = int(raw_date_str[START_YEAR_STA:START_YEAR_END])
     star_month = int(raw_date_str[START_MONTH_STA:START_MONTH_END])
@@ -69,7 +70,7 @@ def date_generator(raw_date_str):
     #print date_list
     return date_list
 	
-	
+#link to the plot module
 def get_plot(mice,date,plo_typ):
 
     EXPERIMENTER = settings.DEFAULT_EXPERIMENTER
@@ -77,20 +78,15 @@ def get_plot(mice,date,plo_typ):
 
     subject_list = mice
     session_list = date
-    #session = '20160310a' # This is the date formatted as YYYYMMDD and one more character (usually 'a')
-
 	
     all_file_name = []
-    #non_exsi_file = []
     for subject in subject_list:
         for session in session_list:
             behavFile = loadbehavior.path_to_behavior_data(subject,EXPERIMENTER,paradigm,session)
             behavData = loadbehavior.FlexCategBehaviorData(behavFile,readmode='full')
-            #print str(subject),str(session),"!!!!!!!!!!!!!!!!!!!!!"
             for plot_type in plo_typ:
                 out_dict = form_out_put(sub=subject,typ=plot_type,data=behavData,sess=session)
                 all_file_name.append(out_dict['filename'])
-                #print str(check_exsit(fil_nam=out_dict['filename'])),out_dict['filename']
                 if not check_exsit(fil_nam=out_dict['filename']):
                     #non_exsi_file.append(out_dict['filename'])
                     #plot_function(out_dict)
@@ -112,21 +108,17 @@ def get_plot(mice,date,plo_typ):
 
     return all_file_name
 
-#get_data(data_arra=numpy.array(['adap021']))
 
-
+#form a dictionary for the ploting function
 def form_out_put(sub,typ,data,sess):
     out_dict = {}
-    #print str(sub),"sub",str(typ),"typ",sess,"sess"
     out_dict['type'] = str(typ)
-    #print sess
     form_sess = sess[0:-1]
-    #print form_sess
     out_dict['filename'] = str(sub)+'_'+str(form_sess)+'_'+str(typ)+'.svg'
-    #print out_dict['filename']
     out_dict['data'] = data
     return out_dict
-	
+
+#function to check is the image already exsited
 def check_exsit(fil_nam):
     check_file_exsits = False
     image_path = os.walk(settings.IMAGE_PATH)
@@ -147,6 +139,7 @@ def test_plot(out_dic):
     f.close()
 '''
 
+#generate the string of html for showing plot page
 def plot_render(plo_fil_nam,col):
     mice_date = {}
     for plot in plo_fil_nam:
@@ -157,46 +150,42 @@ def plot_render(plo_fil_nam,col):
         else:
             mice_date[mice_date_str] = []
             mice_date[mice_date_str].append(plot)
-        #print mouse
-        #print date
-    #print mice_date
 	
-    width = 12/int(col)
-    plot_str = ""
-    for group in mice_date:
-        mouse_str = '''
-					<div class="row">
-						<div class="col-lg-12">
-							<h1 class="page-header">{gro}</h1>
-						</div>
-						<!-- /.col-lg-12 -->
-					</div>
-					<!-- /.row -->
-					<div class="row">
-					'''.format(gro=group)
-        panel_str = ""
-        for file_name in mice_date[group]:
-            #print file_name
-            image_path = "/static/image/"+file_name
-            #print image_path
-            image_str = "<div class='col-lg-{wid}'>	<div class='panel panel-default'><div class='panel-heading'>{fil_nam}</div>	<div class='panel-body'><div class=panel-image>".format(fil_nam=file_name,wid=width)
-            image_str += "<img src='{ima_pat}' class='img-responsive center-block'>".format(ima_pat=image_path)
-            image_str += "</div></div></div></div>"
-            panel_str += image_str
-            print image_str
-        temp_str = mouse_str+panel_str+"</div>"
-        plot_str += temp_str
+    type_number = len(mice_date[mice_date_str])
 	
-    #print plot_str
-    #print mice_name
-    #print date_list
-        #mice_str += mouse_str	
-    #return mice_str
+    print col
+    col = int(col)
+    if col > 0:
+        width = col*(350*type_number)+250
+        width = str(width)
+        col_counter = 0
+        plot_str = ""+"<table cellpadding='0' cellspacing='0' border='0'> <tr class='row1'>"
+        for group in mice_date:
+            if col_counter < col:
+                group_str = ""
+                group_str += "<td><h1 style='width:150px;left: 0; top: 2'>"+group+"</h1></td>"
+                for file_name in mice_date[group]:
+                    group_str += "<td><img  style='width:350px' src='/static/image/line-chart.png' /></td>"
+                group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
+                plot_str += group_str
+                col_counter += 1
+            elif col_counter >= col:
+                #print "!!!!!!!!!!!!!!!!!!!!!!"
+                plot_str += "</tr> </table> <br> <hr style='width: "+width+"px' />"
+                plot_str += "<table cellpadding='0' cellspacing='0' border='0'> <tr class='row1'>"
+                group_str = ""
+                group_str += "<td><h1 style='width:150px;left: 0; top: 2'>"+group+"</h1></td>"
+                for file_name in mice_date[group]:
+                    group_str += "<td><img  style='width:350px' src='/static/image/line-chart.png' /></td>"
+                group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
+                plot_str += group_str                
+                col_counter = 1
+        plot_str += "</tr> </table> <br> <hr style='width: "+width+"px' />"
+
     return plot_str
 	
-
+#generate the string of URL for sharing.
 def link_gene(plo_fil_nam,col):
-    #link_str = settings.URL_LINK
     link_str = "/link?"
     count = 0
     for plot_name in plo_fil_nam:
