@@ -104,3 +104,22 @@ body {
 .vertical-line {
     border-right: solid 0.5px #e6e6e6;
 }
+
+
+
+.hidden_save_btn{
+	visibility: hidden;
+	position: absolute;
+}
+
+.label_save_btn {
+	/*border: outset;*/
+	border:0px solid transparent; /* flat look*/
+	display: inline-block;
+	margin-right: 20px;
+	margin-bottom: 30px;
+	width: 85px;
+	vertical-align: top;
+	text-align:center;
+	border-radius: 4px;  /* round corner*/
+}
