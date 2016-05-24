@@ -51,22 +51,37 @@ class Alarm(object):
         self.paradigm           = last[-2]
         self.subjectName        = last[-3]
 
-    def sendEmail(self, sender, destination, message, subject):
-        smtpServer      = "smtp.uoregon.edu"
-        textSubtype     = "plain"
+    def sendEmail(self, destination, message, subject):
+        smtpServer          = "smtp.uoregon.edu"
+        textSubtype         = "plain"
+
+        f                   = open(alarm_settings.path_to_auth)
+        text                = f.read()
+        sender, password    = text.split()
 
         # Setup message variables 
         msg             = MIMEText(message)
         msg['Subject']  = subject
-        msg['From']     = sender 
+        msg['From']     = sender
 
         # Setup the connection, and attempt to send the message.
+        """
         conn            = SMTP(smtpServer)
         conn.set_debuglevel(False)
         conn.login(sender, password)
         conn.sendmail(sender, destination, msg.as_string())
         conn.close()
+        """
 
+    def belowThresholdAlarm(self, data, destination):
+             if(self.calculateAverage(data) < self.threshold and self.belowThreshold):
+                        message = "Average below acceptable amount for " + self.subjectName + ". Sending alert to " + destination
+                        self.sendEmail(destination, message, "Alert: Average performance below threshold.")
+
+    def aboveThresholdAlarm(self, data, destination):
+        if(self.calculateAverage(data) > self.threshold and self.aboveThreshold):
+                message = "Average above acceptable amount for " + self.subjectName + ". Sending alert to " + destination 
+                self.sendEmail(destination, message, "Alert: Average performance above threshold")
 
     def alert(self):
         animals = alarm_settings.contact_dict.keys()
@@ -77,16 +92,9 @@ class Alarm(object):
             if self.subjectName in animals:
                 animals.remove(self.subjectName)
 
-            if(self.calculateAverage(data) < self.threshold and self.belowThreshold):
-                # TODO: This should be read in from the file. 
-                sender = "foo@bar.baz" 
-
                 for destination in alarm_settings.contact_dict[self.subjectName]:
-                    print("Average below acceptable amount for " + self.subjectName + ". Sending alert to " + destination)                    
-                    if(self.calculateAverage(data) > self.threshold and self.aboveThreshold):
-                            print(destination)
-                            #self.sendEmail(sender, destination)
-                            print("Average above acceptable amount for " + self.subjectName + ". Sending alert to " + destination) 
+                    self.belowThresholdAlarm(data, destination)
+                    self.aboveThresholdAlarm(data, destination)
 
         if(self.missingData and len(animals) != 0):
             for animal in animals:
