@@ -51,13 +51,13 @@ class Alarm(object):
         self.paradigm           = last[-2]
         self.subjectName        = last[-3]
 
-    def sendEmail(self, sender, destination):
+    def sendEmail(self, sender, destination, message, subject):
         smtpServer      = "smtp.uoregon.edu"
         textSubtype     = "plain"
 
         # Setup message variables 
-        msg             = MIMEText("This is a test alert.")
-        msg['Subject']  = "Alarm alert: Performance below threshold"
+        msg             = MIMEText(message)
+        msg['Subject']  = subject
         msg['From']     = sender 
 
         # Setup the connection, and attempt to send the message.
@@ -69,7 +69,7 @@ class Alarm(object):
 
 
     def alert(self):
-        animals = alarm_settings.list_of_animals
+        animals = alarm_settings.contact_dict.keys()
 
         for path, data in self.behavData:
             self.parseFilePath(path)
@@ -90,7 +90,7 @@ class Alarm(object):
         if(self.missingData and len(animals) != 0):
             for animal in animals:
                 for destination in alarm_settings.contact_dict[animal]:
-                    print("Missing data for " + animal + ". Sending alert to " + self.experimenterName)
+                    print("Missing data for " + animal + ". Sending alert to " + destination)
 
     def calculateAverage(self, data):
         nValidTrials        = data['nValid'][-1]
