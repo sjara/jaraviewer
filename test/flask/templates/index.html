@@ -62,13 +62,13 @@
 
         <div class="container">
             <!-- container 1: Form -->
-            <div class="col-lg-8"> 
-                <h3>Form</h3>
+            <div class="col-lg-8 vertical-line"> 
+                <h3 align="center">Form</h3>
                 <br>
 
-                <form class="form-horizontal" role="form" name="form" action="{{url_for('profile')}}" method='POST'>
+                <form class="form-horizontal" role="form" name="form" action="{{url_for('profile')}}" target="-blank" method='POST'>
 
-                    <!-- Select Mouse -->
+                    <!-- Select Subject -->
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="subject">Subjects:</label><br>
                         <div class="col-sm-10">
@@ -113,7 +113,7 @@
                             </label>
 
                             <input type ="checkbox" id="M7" name="subject" value="M7" class="hidden_subject">
-                            <label class="label_subject btn btn-success" for="M6">
+                            <label class="label_subject btn btn-success" for="M7">
                                 <!-- <img src="static/img/m7.png"> -->
                                 <div class="label_name">M7</div>
                             </label>
@@ -165,6 +165,32 @@
 
 
                         </div>
+                    </div>
+
+                    <!--  extra space  -->
+                    <br>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="modify-input">Modifiy Subject 1:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="modify-input">
+
+                        </div>
+                        <input type="button" id="add-btn" class="btn btn-default" name="add" value="Add"/>
+                        <input type="button" id="del-btn" class="btn btn-default" name="del" value="Delete"/>
+                    </div>
+                    
+
+                    <!--  extra space  -->
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="modify-input">Modifiy Subject 2:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="modify-input">
+
+                        </div>
+                        <button type="submit" id="add-btn" class="btn btn-default" name="add" value="Add">Add</button>
+                        <button type="submit" id="del-btn" class="btn btn-default" name="del" value="Delete">Delete</button>
                     </div>
 
                     <!-- Select Plot Type -->
@@ -243,6 +269,7 @@
                         <div class="col-sm-6">
                             <select class="form-control" id="column-num" name="columNum" required>
                                 <option value="" selected disabled>Select Number of Column</option>
+                                <option value="-">-</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -256,17 +283,24 @@
                     <div class="form-group">
                         <!-- Buttons -->
                         <div class="text-center" >
-                            <!-- input type button, so doesn't submit upon click -->
-                            <input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/>
-                            <input type="button" id="save-profile-btn" class="btn btn-success" name="submit" value="save"/>
+                            <!-- Clear Button, same as reset button below, keep commented-->
+                           <!--  <input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/> -->
+                            
+                            <!--New Reset Button-->
+                            <button type="reset" class="btn btn-warning" name="submit" value="reset">Reset </button>
+                            
+                            <!--Save button-->
+                            <input type ="checkbox" id="save-profile-btn" name="submit" value="Save" class="hidden_save_btn">
+                            <label class="label_save_btn btn btn-success" for="save-profile-btn">
+                                <div class="label_name">Save</div>
+                            </label>
                             <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
+                           
                         </div>
 
 
 
-
-                        <!-- clear-btn -->
-
+                        <!-- Clear Data Function to Reset values for profileClickHandler --> 
                         <script type="text/javascript">
                             function clearData() {
 
@@ -279,6 +313,7 @@
                                 $("#clear-btn").click(clearData)
                             })
                         </script>
+
 
                         <script type="text/javascript">
                             function profileClickHandler(data) {
@@ -318,14 +353,18 @@
                                     listOfProfiles = JSON.parse(localStorage['profileData']) // looks at previous profile    
                                 }
 
+
+                                // displaying saved profiles from previous saved
                                 for(var i=0; i<listOfProfiles.length; i++) {
                                     var data = listOfProfiles[i]
-                                    $profileLabel = $('<div class="profile-div">' + JSON.stringify(data) + '<div>');
+                                    $profileLabel = $('<div class="profile-div">' + 
+                                        JSON.stringify(data.subject, null, 2).replace(/[\[\]"]/g, "") 
+                                        + '<br>' 
+                                        + JSON.stringify(data.plotType, null, 2).replace(/[\[\]"]/g, "") 
+                                        + '<br>' + '<div>');
                                     $profileLabel.appendTo('#display-data');
                                     // append button to display 
                                     $profileLabel.click(profileClickHandler(data));
-
-                                    
                                 }
 
 
@@ -343,21 +382,24 @@
                                         pValues.push($checkedPlot[i].value);
                                     }
 
-                                    var dValue = $("#date-range-input").val()
-                                    var cValue = $("select[name=columNum]").val();
+                                    // var dValue = $("#date-range-input").val() // comment out 
+                                    // var cValue = $("select[name=columNum]").val(); // comment outlater after verification
 
+                                    /* Logs for debugging purposes*/
                                     console.log(sValues);
                                     console.log(pValues);
-                                    console.log(dValue);
-                                    console.log(cValue);
+                                    // console.log(dValue);
+                                    // console.log(cValue);
 
 
-                                    // MADE CHANGES STARTED HERE !!!!!!!!
+                                    // Profiles data
                                     var profile = {
                                         subject: sValues,
-                                        plotType: pValues,
-                                        dateRange: dValue,
-                                        columNum: cValue
+                                        plotType: pValues 
+                                        // in future, if want to add daterange or column, just add:
+                                        // dateRange: dValue,
+                                        // columNum: cValue
+                                        // and uncomment dValue, cValue above
                                     };
 
 
@@ -369,15 +411,17 @@
                                     }
 
                                     listOfProfiles.push(profile) // add current to list of profiles
-
-
-
                                     localStorage.setItem('profileData', JSON.stringify(listOfProfiles)); // set items
 
 
                                     // displaying data formater
+                                    // for most recent save clicked
                                     var $display = $("#display-data");
-                                    $profileLabel = $('<div class="profile-div" >' + JSON.stringify(profile) + '<div>');
+                                    $profileLabel = $('<div class="profile-div" >' 
+                                        + JSON.stringify(profile.subject, null, 2).replace(/[\[\]"]/g, "")  
+                                        + '<br>' 
+                                        + JSON.stringify(profile.plotType, null, 2).replace(/[\[\]"]/g, "") 
+                                        + '<div>');
                                     $profileLabel.appendTo('#display-data');
 
 
@@ -388,6 +432,32 @@
                         </script>
                     </div>
                 </form>
+
+                <br>
+                <br>
+                <hr>
+                <h3 align="center">Add/Delete Option 2: Separate form</h3>
+                <hr>
+                <h4>Add/Delete subjects</h4>
+                <br>
+                
+                <form class="form-horizontal" role="form" name="form" action="" method='POST'>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="add">Add Subject:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="add">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="remove">Remove Subject:</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="remove">
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                </form>
             </div> <!-- container 1 -->
 
 
@@ -396,7 +466,7 @@
             <div class="col-lg-4">
                 <div id="display-data"/>
 
-                    <h3>Saved Profiles</h3>
+                    <h3 align="center">Saved Profiles</h3>
                     <div class="form-group">
 
                         
