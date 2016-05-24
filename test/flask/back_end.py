@@ -74,7 +74,7 @@ def link():
         new_plot_list.append(request.args.get(arg_name))
 	
     plot_str = bee.plot_render(plo_fil_nam=new_plot_list,col=col)	#get he string to render the html
-    return render_template('back_static_flot.html',mou_str=plot_str)
+    return render_template('back_static_plot.html',mou_str=plot_str)
 	
 # Modify subjects (add/delete)
 @app.route('/modify',methods=['POST'])
