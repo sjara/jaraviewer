@@ -41,7 +41,7 @@ def format_index(mic):
     for mouse in mic:
         if count%4 == 0:
             is_break = "<br>"
-        mouse_str += "<input type ='checkbox' id='subject{count1}' name='subject' value='{subj1}' class='hidden_subject'>	<label class='label_subject btn btn-primary' for='subject{count2}'>	<div class='label_name'>{subj2}</div>	</label> {is_bre}".format(count1=count,subj1=mouse,count2=count,subj2=mouse,is_bre=is_break)
+        mouse_str += "<input type ='checkbox' id='{sub}' name='subject' value='{subj1}' class='hidden_subject'>	<label class='label_subject btn btn-primary' for='{sub2}'>	<div class='label_name'>{subj2}</div>	</label> {is_bre}".format(sub=mouse,subj1=mouse,sub2=mouse,subj2=mouse,is_bre=is_break)
         count += 1
         is_break = ""
     return mouse_str
@@ -56,21 +56,16 @@ def date_generator(raw_date_str):
     end_day = int(raw_date_str[END_DAY_STA:END_DAY_END])
     start_date = datetime.date(star_year,star_month,star_day)
     end_date = datetime.date(end_year,end_month,end_day)
-    #print "{start_date}, {end_date}".format(start_date=str(start_date),end_date=str(start_date))
     
     date_list = []
     temp_date = start_date
     delta = end_date - start_date
     delta = int(delta.days)
     for i in range(0,delta+1):
-        #print temp_date
         date_str = temp_date.strftime("%Y%m%d")
         date_str = date_str + 'a'
-        #print date_str
         date_list.append(date_str)
         temp_date += datetime.timedelta(days=1)
-        #print
-    #print date_list
     return date_list
 	
 #link to the plot module
@@ -98,18 +93,6 @@ def get_plot(mice,date,plo_typ):
                     #test_plot(out_dic=out_dict)
                     #print
 					
-    
-    #print non_exsi_file
-    #print all_file_name
-                #plot_function()
-            #behav_list.append(behavData)
-    
-	# -- Find the data filename and load the data into a data object (similar to a Python dict) --
-    #behavFile = loadbehavior.path_to_behavior_data(subject,EXPERIMENTER,paradigm,session)
-
-    #behavData = loadbehavior.FlexCategBehaviorData(behavFile,readmode='full')
-
-    #print behav_list
 
     return all_file_name
 
@@ -146,6 +129,7 @@ def test_plot(out_dic):
 
 #generate the string of html for showing plot page
 def plot_render(plo_fil_nam,col):
+    #print "!!!!!!!!!!!!!"
     mice_date = {}
     for plot in plo_fil_nam:
         stri = plot.split('_',3)
@@ -158,7 +142,43 @@ def plot_render(plo_fil_nam,col):
 	
     type_number = len(mice_date[mice_date_str])
 	
-    print col
+    #case for dynamic
+    counter = 0
+    plot_str = ""
+    plot_str += "<div class='row'>"
+    if col == '-':
+        for group in mice_date:
+            if counter%2 == 0:
+                plot_str += "</div>"
+                plot_str += "<div class='row'>"
+                gro_str = ""
+                gro_str += "<div class='col-lg-6'> <div class='page-header'>"+group+"</div>"
+                for img in mice_date[group]:
+                    ima_src = ""
+                    ima_src += settings.IMAGE_PATH
+                    ima_src += img
+                    ima_str = ""
+                    ima_str += "<div class='col-lg-6 col-lg-4'><img width='350px' height='300px' class='thumbnail img-responsive' src='"+ima_src+"'></a></div>"
+                    gro_str += ima_str
+                gro_str += "</div>"
+                plot_str += gro_str
+            else:
+                gro_str = ""
+                gro_str += "<div class='col-lg-6'> <div class='page-header'>"+group+"</div>"
+                for img in mice_date[group]:
+                    ima_src = ""
+                    ima_src += settings.IMAGE_PATH
+                    ima_src += img
+                    ima_str = ""
+                    ima_str += "<div class='col-lg-6 col-lg-4'><img width='350px' height='300px' class='thumbnail img-responsive' src='"+ima_src+"'></a></div>"
+                    gro_str += ima_str
+                gro_str += "</div>"
+                plot_str += gro_str
+            counter += 1
+        plot_str += "</div>"
+        return plot_str
+	
+    #case for static
     col = int(col)
     if col > 0:
         width = col*(350*type_number)+250
@@ -174,7 +194,7 @@ def plot_render(plo_fil_nam,col):
                 for file_name in mice_date[group]:
                     ima_src = settings.IMAGE_PATH
                     ima_src += file_name
-                    print ima_src
+                    #print ima_src
                     group_str += "<td><img  style='width:350px' src='"+ima_src+"' /></td>"
                 group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
                 plot_str += group_str
@@ -187,7 +207,7 @@ def plot_render(plo_fil_nam,col):
                 for file_name in mice_date[group]:
                     ima_src = settings.IMAGE_PATH
                     ima_src += file_name
-                    print ima_src
+                    #print ima_src
                     group_str += "<td><img  style='width:350px' src='"+ima_src+"' /></td>"
                     #group_str += "<td><img  style='width:350px' src='/static/image/line-chart.png' /></td>"
                 group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
@@ -207,23 +227,28 @@ def link_gene(plo_fil_nam,col):
         count +=1
     link_str += "num="+str(count)
     link_str += "&col=" + str(col)
-    print link_str
     return link_str
 
+#functon for adding subject
 def add_subject(sub):
     try:
-        mice_file = open(settings.SUBJECT_PATH,"r+")
+        mice_file = open(settings.SUBJECT_PATH,"r")
     except:
         print "Can't open the file"
     mice = mice_file.read().splitlines()
     if sub in mice:
         return False
     sub += '\n'
+    mice_file.close()
+    try:
+        mice_file = open(settings.SUBJECT_PATH,"a")
+    except:
+        print "Can't open the file"
     mice_file.write(sub)
     mice_file.close()
-    
     return True
-	
+
+#function for deleting subject
 def del_subject(sub):
     file_path = settings.SUBJECT_PATH
     try:
@@ -244,9 +269,10 @@ def del_subject(sub):
     temp_file.close()
     shutil.move(temp_path, file_path)
     return True
-
+	
+#function for wirte profile
 def write_profile(mic_lis,plo_lis,dat_ran,col):
-    profile = open(settings.SAVE_PROFILE,'a')
+    profile = open(settings.SAVE_PROFILE,'a+')
     wri_str = ""
     for mouse in mic_lis:
         mouse = str(mouse) + ','
@@ -255,15 +281,80 @@ def write_profile(mic_lis,plo_lis,dat_ran,col):
     for plot in plo_lis:
         plot = str(plot) + ','
         wri_str += plot
-    wri_str += ';'
-    wri_str += str(dat_ran)
-    wri_str += ';'
-    wri_str += str(col)
     wri_str += '\n'
     profile.write(wri_str)
     profile.close()
 
+'''
 def reset_pro():
     temp_path = settings.SAVE_PROFILE+".new"
     temp_profile = open(temp_path,'w')
     shutil.move(temp_path,settings.SAVE_PROFILE)
+'''
+
+#read profile from file
+def read_profile():
+    profile = open(settings.SAVE_PROFILE,'r+')
+    res_list = []
+    pro_list = profile.read().splitlines()
+    index = 0
+    for prof in pro_list:
+        pro_dict = {}
+        pro_data = prof.split(';',1)
+        mice = pro_data[0].split(',')
+        mice = mice[0:-1]
+        type_list = pro_data[1].split(',')
+        type_list = type_list[0:-1]
+        index += 1
+        pro_dict['index'] = str(index)
+        pro_dict['subject'] = mice
+        pro_dict['plotType'] = type_list
+        res_list.append(pro_dict)
+    return res_list
+
+
+#function to generate the strings of html for profile selecting, not done
+def format_profile(profile_list):
+    profile_str = ""
+    count = 1
+    is_break = ""
+    for profile in profile_list:
+        one_pro_str = ""
+        one_pro_str += profile['index']
+        one_pro_str += "<br>"
+        one_pro_str += str(profile['subject'])
+        one_pro_str += "<br>"
+        one_pro_str += str(profile['plotType'])
+        is_break = "<br>"
+        profile_str += "<input type ='checkbox' id='{index1}' name='profile' value='{index2}' class='hidden_profile'>	<label class='' for='{index3}'>	<div class=''>{prof}</div>	</label> {is_bre}".format(index1=str(profile['index']),index2=str(profile['index']),index3=str(profile['index']),prof=one_pro_str,is_bre=is_break)
+        count += 1
+    return profile_str
+	
+	
+	
+# function to delete profile
+def dele_profile(index_list):
+    str_index_list = []
+    for index in index_list:
+        str_index_list.append(str(index))
+    file_path = settings.SAVE_PROFILE
+    try:
+        profile = open(file_path,"r+")
+    except:
+        print "Can't open the file"
+    old_pro_lis = profile.read().splitlines()
+    profile.close()
+	
+    new_file_path = file_path+".new"
+    try:
+        new_pro = open(new_file_path,"a+")
+    except:
+        print "Can't open the file"
+    counter = 1
+    for pro_str in old_pro_lis:
+        if not str(counter) in str_index_list:
+            pro_str += '\n'
+            new_pro.write(pro_str)
+        counter += 1
+    new_pro.close()
+    shutil.move(new_file_path, file_path)

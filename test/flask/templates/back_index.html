@@ -36,7 +36,7 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="index.html">Home</a></li>
-                        <li><a href="modify.html">Modify Subject</a></li>
+                        <li><a href="/modify_saved_profile">Modify Subject</a></li>
 
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Git <span class="caret"></span></a>
@@ -251,19 +251,22 @@
                             $(function() {
                                 var listOfProfiles;
 
-                                if (localStorage.getItem("profileData") == null){
-                                    listOfProfiles = [];
-                                }
-                                else {
-                                    listOfProfiles = JSON.parse(localStorage['profileData']) // looks at previous profile    
-                                }
+                                //if (list_profiles == null){
+                                    //listOfProfiles = [];
+                                //}
+                                //else {
+                                    listOfProfiles = {{list_profiles|safe}} // looks at previous profile  
+									console.log(listOfProfiles)
+                                //}
 
 
                                 // displaying saved profiles from previous saved
                                 for(var i=0; i<listOfProfiles.length; i++) {
                                     var data = listOfProfiles[i]
                                     $profileLabel = $('<div class="profile-div">' + 
-                                        JSON.stringify(data.subject, null, 2).replace(/[\[\]"]/g, "") 
+										JSON.stringify(data.index, null, 2).replace(/[\[\]"]/g, "") 
+										+ '<br>'
+                                        + JSON.stringify(data.subject, null, 2).replace(/[\[\]"]/g, "") 
                                         + '<br>' 
                                         + JSON.stringify(data.plotType, null, 2).replace(/[\[\]"]/g, "") 
                                         + '<br>' + '<div>');
@@ -273,66 +276,43 @@
                                 }
 
 
-                                $("#save-profile-btn").click(function() {
-                                    var $checkedSubject = $("[name='subject']:checked") // list of selected subjects
+<!--                                 $("#save-profile-btn").click(function() {
+//                                     var $checkedSubject = $("[name='subject']:checked") // list of selected subjects
 
-                                    var sValues = [] // list to hold the subject
-                                    for (var i = 0; i < $checkedSubject.length; i++ ){
-                                        sValues.push($checkedSubject[i].value);
-                                    }
-
-                                    var $checkedPlot = $("[name='plotType']:checked") // list of checked plot types
-                                    var pValues = [] // list of plot types
-                                    for (var i = 0; i < $checkedPlot.length; i++){
-                                        pValues.push($checkedPlot[i].value);
-                                    }
+                 //                   var sValues = [] // list to hold the subject
+                 //                   for (var i = 0; i < $checkedSubject.length; i++ ){
+                 //                       sValues.push($checkedSubject[i].value);
+                 //                   }
+//
+                 //                   var $checkedPlot = $("[name='plotType']:checked") // list of checked plot types
+                 //                   var pValues = [] // list of plot types
+                 //                   for (var i = 0; i < $checkedPlot.length; i++){
+                 //                       pValues.push($checkedPlot[i].value);
+                 //                   }
 
                                     // var dValue = $("#date-range-input").val() // comment out 
                                     // var cValue = $("select[name=columNum]").val(); // comment outlater after verification
 
                                     /* Logs for debugging purposes*/
-                                    console.log(sValues);
-                                    console.log(pValues);
+                                    //console.log(sValues);
+                                  //  console.log(pValues);
                                     // console.log(dValue);
                                     // console.log(cValue);
 
 
                                     // Profiles data
-                                    var profile = {
-                                        subject: sValues,
-                                        plotType: pValues 
+                                   // var profile = {
+									//	index: iter,
+                                   //     subject: sValues,
+                                    //    plotType: pValues 
                                         // in future, if want to add daterange or column, just add:
                                         // dateRange: dValue,
                                         // columNum: cValue
                                         // and uncomment dValue, cValue above
-                                    };
+               //                     };
 
 
-                                    if (localStorage.getItem("profileData") == null){
-                                        listOfProfiles = [];
-                                    }
-                                    else {
-                                        listOfProfiles = JSON.parse(localStorage['profileData']) // looks at previous profile    
-                                    }
-
-                                    listOfProfiles.push(profile) // add current to list of profiles
-                                    localStorage.setItem('profileData', JSON.stringify(listOfProfiles)); // set items
-
-
-                                    // displaying data formater
-                                    // for most recent save clicked
-                                    var $display = $("#display-data");
-                                    $profileLabel = $('<div class="profile-div" >' 
-                                        + JSON.stringify(profile.subject, null, 2).replace(/[\[\]"]/g, "")  
-                                        + '<br>' 
-                                        + JSON.stringify(profile.plotType, null, 2).replace(/[\[\]"]/g, "") 
-                                        + '<div>');
-                                    $profileLabel.appendTo('#display-data');
-
-
-                                    // selected
-                                    $profileLabel.click(profileClickHandler(profile));
-                                }); // close whole function()
+                                //}); // close whole function() -->
                             });
                         </script>
                     </div>
@@ -346,22 +326,16 @@
                 <h4>Add/Delete subjects</h4>
                 <br>
                 
-                <form class="form-horizontal" role="form" name="form" action="/modify" method='POST'>
+				<form class="form-horizontal" role="form" name="form" action="/modify" method='POST'>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="add">Add Subject:</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="add" name="add_sub">
+                        <label class="control-label col-sm-2" for="subject">Modify Subject:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="subject" name='subject'>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="remove">Remove Subject:</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="remove" name="del_sub">
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </div>
+                        <button type="submit" class="btn btn-default" name="submit" value="add">Add</button>
+                        <button type="submit" class="btn btn-default" name="submit" value="delete">Delete</button>
+ 
                 </form>
             </div> <!-- container 1 -->
 

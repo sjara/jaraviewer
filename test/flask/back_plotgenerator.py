@@ -2,6 +2,7 @@
 #By: James Vargas-Witherell
 import matplotlib.pyplot as plt
 from jaratoolbox import behavioranalysis
+#import behavioranalysis
 import settings
 import os
 '''

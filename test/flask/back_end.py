@@ -27,36 +27,34 @@ def initial():
     mice = bee.get_mice()	#open the 'subject.txt'
     mice_str = ""
     mice_str = bee.format_index(mic=mice)	#get the html string
-	
-    #return render_template('home.html',test=mice_input,mice_num=mice_num)
-    return render_template('back_index.html',mice=mice_str)
+    profile = []
+    profile = bee.read_profile()	#function for profiles
+    
+    return render_template('back_index.html',mice=mice_str,list_profiles=profile)
 	
 
 #Get the information from the home page and excute the plot generator program
 @app.route('/execute',methods=['POST'])
 def execute():
-    #projectpath = request.form.save-profile-btn
-    #print projectpath
-    save = request.form.getlist('save')
+
+    save = request.form.getlist('save')	#check box for save
+
     miceSelect = request.form.getlist('subject')
-    #print miceSelect
+
     plot_type_list = request.form.getlist('plotType')
-    #print plotType
+
     dateRange = request.form['dateRange']
-    #print dateRange
-    colum = request.form['columNum']
-    #print colum
+
+    colum = str(request.form['columNum'])
+	
+    #see if user choose save
     if len(save) > 0:
         save = str(save[0])
         if save == "Save":
-            #print "!!!!!!!!!!"
-            bee.write_profile(mic_lis=miceSelect,plo_lis=plot_type_list,dat_ran=dateRange,col=colum)
+            bee.write_profile(mic_lis=miceSelect,plo_lis=plot_type_list,dat_ran=dateRange,col=colum)	#write code to the profile.txt
             return redirect("/jaraviewer",code=302)
 
-    #print save
-    #print "save"
-
-	
+    #else
     date_list = []
     date_list = bee.date_generator(raw_date_str = dateRange)	#get the list of dates
     plot_file_name = []
@@ -68,7 +66,6 @@ def execute():
 #Show the page with the plots
 @app.route('/link',methods=['GET'])
 def link():
-    #get arguments
     num = request.args.get('num')
     col = request.args.get('col')
     new_plot_list = []
@@ -79,30 +76,50 @@ def link():
     plot_str = bee.plot_render(plo_fil_nam=new_plot_list,col=col)	#get he string to render the html
     return render_template('back_static_flot.html',mou_str=plot_str)
 	
+# Modify subjects (add/delete)
 @app.route('/modify',methods=['POST'])
 def modify():
-    add = request.form['add_sub']
-    dele = request.form['del_sub']
-    add_result = True
-    if not add=="":
-        add_result = bee.add_subject(sub=add)
-        if add_result == False:
-            print "adding error"
-    del_result = True
-    if not dele=="":
-        del_result = bee.del_subject(sub=dele)
-        if del_result == False:
-            print "deleting error"
-    
-        
-    #print add_result
-    #print add,dele
+    sub_str = request.form['subject']
+    result = True
+    if request.form['submit'] == "add":
+        result = bee.add_subject(sub=sub_str)	#function for adding one subject to the subject.txt
+    elif request.form['submit'] == "delete":
+        result = bee.del_subject(sub=sub_str)	#function for deleting one subject from the subject.txt
+    else:
+        print "Error"
+        return redirect("/jaraviewer",code=302)
+
+        if result == False:
+            print "Error"
+		
     return redirect("/jaraviewer",code=302)
 
+
+	
+	
+	
+	
+# Rendering the profile page
+@app.route('/modify_saved_profile')
+def modify_profile():
+    profile = bee.read_profile()	#read from file
+    pro_str = bee.format_profile(profile)	#rerenderthe html file
+    return render_template('modify-saved-profile.html',profile=pro_str)
+
+#Delete from profile.txt
+@app.route('/delete_profile',methods=['POST'])
+def delete_profile():
+    check_list = request.form.getlist('profile')	#see which profile the user choose
+    bee.dele_profile(index_list=check_list)	#delete from file
+    return redirect("/jaraviewer",code=302)
+
+	
+'''
 @app.route('/reset')
 def reset():
     bee.reset_pro()
     return redirect("/jaraviewer",code=302)
+'''
 	
 if __name__ == "__main__":
     app.run(debug=True,port=5000)
