@@ -79,32 +79,7 @@
                         </div>
                     </div>
 
-                    <!--  extra space  -->
-                    <br>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="modify-input">Modifiy Subject 1:</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="modify-input">
-
-                        </div>
-                        <input type="button" id="add-btn" class="btn btn-default" name="add" value="Add"/>
-                        <input type="button" id="del-btn" class="btn btn-default" name="del" value="Delete"/>
-                    </div>
-                    
-
-                    <!--  extra space  -->
-                    <br>
-                    <br>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="modify-input">Modifiy Subject 2:</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="modify-input">
-
-                        </div>
-                        <button type="submit" id="add-btn" class="btn btn-default" name="add" value="Add">Add</button>
-                        <button type="submit" id="del-btn" class="btn btn-default" name="del" value="Delete">Delete</button>
-                    </div>
-
+                   
                     <!-- Select Plot Type -->
                     <div class="form-group">
                         <label class="control-label col-sm-2">Plot Type:</label> 
@@ -180,7 +155,6 @@
                         <label class="control-label col-sm-2" for="column-num">Column Number:</label>    
                         <div class="col-sm-6">
                             <select class="form-control" id="column-num" name="columNum" required>
-                                <option value="" selected disabled>Select Number of Column</option>
                                 <option value="-">-</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -197,7 +171,7 @@
                         <div class="text-center" >
                             <!-- input type button, so doesn't submit upon click -->
                            <!--  <input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/> -->
-                            <a href="/reset" class="button">Reset</a>
+                            <button type="reset" class="btn btn-warning" name="submit" value="reset">Reset </button>
                             <input type="checkbox" id="save-profile-btn" class="btn btn-success" name="save" value="Save"/>
                             <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
                            
