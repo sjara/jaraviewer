@@ -8,17 +8,10 @@ everything below this text.
 
 # Example alarm creation:
 
-belowThreshold = Alarm(threshold = 0.5, belowThreshold = True)
+belowThreshold = Alarm(threshold = 1, belowThreshold = True)
 aboveThreshold = Alarm(threshold = 0.7, aboveThreshold = True)
 missingData    = Alarm(missingData = True)
 aboveAndBelow  = Alarm(threshold = 0.6, belowThreshold = True, aboveThreshold = True)
-
-# Load data in for alarms:
-
-belowThreshold.loadData()
-aboveThreshold.loadData()
-missingData.loadData()
-aboveAndBelow.loadData()
 
 # Run the alert method (checks all data for any issues, and sends out email if issues are found):
 

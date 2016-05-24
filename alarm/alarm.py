@@ -10,8 +10,6 @@ from smtplib import SMTP_SSL as SMTP
 from email.mime.text import MIMEText
 
 class Alarm(object):
-    # TODO: This should most likely be running constantly, or whenever new data is availible to check. 
-
     def __init__(self, threshold = 0, belowThreshold = False, aboveThreshold = False, missingData = False):
         # A basic threshold, to detect if average performance falls below it. 
         self.behavData      = [] 
@@ -29,7 +27,7 @@ class Alarm(object):
         self.experimenterName   = None
         self.experimentDate     = None
 
-    def loadData(self):
+    def loadData(self, animals):
         # Load all the data availible into a list for later processing.
 
         for info in os.walk(settings.BEHAVIOR_PATH):
@@ -37,9 +35,11 @@ class Alarm(object):
 
             for element in info[2]:
                 name, extension = element.split(".")
-                if(extension == "h5"):
-                    full_path = os.path.join(path, element)
-                    self.behavData.append((full_path, loadbehavior.FlexCategBehaviorData(full_path, readmode='full')))
+
+                for animal in animals:
+                    if(extension == "h5" and animal in name):
+                        full_path = os.path.join(path, element)
+                        self.behavData.append((full_path, loadbehavior.FlexCategBehaviorData(full_path, readmode='full')))
 
     def parseFilePath(self, filepath):
         li                      = filepath.split("/") 
@@ -70,6 +70,7 @@ class Alarm(object):
 
     def alert(self):
         animals = alarm_settings.contact_dict.keys()
+        self.loadData(animals)
 
         for path, data in self.behavData:
             self.parseFilePath(path)
@@ -96,12 +97,3 @@ class Alarm(object):
         nValidTrials        = data['nValid'][-1]
         nRewardTrials       = data['nRewarded'][-1]
         return float(nRewardTrials)/nValidTrials
-
-def main():
-    # Set the threshold so high it will always alert (for testing purposes)
-    alarm = Alarm(threshold = 1, belowThreshold = True, missingData = True)
-    alarm.loadData()
-    alarm.alert()
-
-if __name__ == "__main__":
-    main()
