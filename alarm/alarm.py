@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-
 import os
 import alarm_settings
 from jaratoolbox import settings
 from jaratoolbox import loadbehavior
 from jaratoolbox import behavioranalysis
+from jaratoolbox import extrafuncs
 
+from datetime import date
 from smtplib import SMTP_SSL as SMTP
 from email.mime.text import MIMEText
 
@@ -37,9 +38,13 @@ class Alarm(object):
                 name, extension = element.split(".")
 
                 for animal in animals:
-                    if(extension == "h5" and animal in name):
+                    experimentDate  = name.split("_")[-1]
+                    isoDate         = experimentDate[:4] + "-" + experimentDate[4:6] + "-" + experimentDate[6:8]
+                    today           = date.today() 
+
+                    if(today == extrafuncs.parse_isodate(isoDate) and extension == "h5" and animal in name):
                         full_path = os.path.join(path, element)
-                        self.behavData.append((full_path, loadbehavior.FlexCategBehaviorData(full_path, readmode='full')))
+                        self.behavData.append((full_path, loadbehavior.BehaviorData(full_path, readmode='full')))
 
     def parseFilePath(self, filepath):
         li                      = filepath.split("/") 
@@ -65,6 +70,11 @@ class Alarm(object):
         msg['From']     = sender
 
         # Setup the connection, and attempt to send the message.
+        print("To: " + destination)
+        print("From: " + sender)
+        print("Subject: " + subject)
+        print("Body: " + message + "\n")
+
         """
         conn            = SMTP(smtpServer)
         conn.set_debuglevel(False)
@@ -75,13 +85,19 @@ class Alarm(object):
 
     def belowThresholdAlarm(self, data, destination):
              if(self.calculateAverage(data) < self.threshold and self.belowThreshold):
-                        message = "Average below acceptable amount for " + self.subjectName + ". Sending alert to " + destination
+                        message = "Average below acceptable amount for " + self.subjectName + "."
                         self.sendEmail(destination, message, "Alert: Average performance below threshold.")
 
     def aboveThresholdAlarm(self, data, destination):
         if(self.calculateAverage(data) > self.threshold and self.aboveThreshold):
-                message = "Average above acceptable amount for " + self.subjectName + ". Sending alert to " + destination 
+                message = "Average above acceptable amount for " + self.subjectName + "."
                 self.sendEmail(destination, message, "Alert: Average performance above threshold")
+
+    def isMissingDataAlarm(self, animals):
+        if(self.missingData and len(animals) != 0):
+            for animal in animals:
+                for destination in alarm_settings.contact_dict[animal]:
+                    self.sendEmail(destination, "Missing data for " + animal + ".", "Alert: Missing data")
 
     def alert(self):
         animals = alarm_settings.contact_dict.keys()
@@ -96,11 +112,8 @@ class Alarm(object):
                     self.belowThresholdAlarm(data, destination)
                     self.aboveThresholdAlarm(data, destination)
 
-        if(self.missingData and len(animals) != 0):
-            for animal in animals:
-                for destination in alarm_settings.contact_dict[animal]:
-                    print("Missing data for " + animal + ". Sending alert to " + destination)
-
+        self.isMissingDataAlarm(animals)
+        
     def calculateAverage(self, data):
         nValidTrials        = data['nValid'][-1]
         nRewardTrials       = data['nRewarded'][-1]
