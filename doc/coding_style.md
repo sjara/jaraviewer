@@ -12,7 +12,7 @@ Importing
 -   Your code should import modules, not classes:
     -   Use "`import` `optparse`" instead of "`from` `optparse` `import` `OptionParser`"
     -   This keeps the global namespace cleaner (and easier to know where things come from)
-    -   This does not affect performance (the full module is parsed in either case)
+    -   This [does not affect performance](http://programmers.stackexchange.com/questions/187403/import-module-vs-from-module-import-function) (the full module is parsed in either case) 
     -   This helps with the use of 'reload()' when developing in interactive mode
     -   Note that "`from` `PySide` `import` `QtGui`" is fine. QtGui is a module.
 
@@ -28,7 +28,7 @@ Naming conventions
     -   Examples: `[1]` `BrainMix()` `[2]` `AffineRegistration()` `[3]` `ImageViewer()`
 -   Function names should be lowercase, with words separated by underscores as necessary to improve readability.
     -   Examples: `[1]` `register()` `[2]` `create_menus()`
--   Variables names should be mixedCase.
+-   Variables names should be mixedCase (and they should **never** be a single letter).
     -   Examples: `[1]` `mainWindow` `[2]` `self.alignedImages`
 
 See the definition of [module and package from the Python documentation] (https://docs.python.org/2/tutorial/modules.html).
