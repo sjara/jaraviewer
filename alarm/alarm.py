@@ -1,6 +1,4 @@
 #!/usr/bin/env python
-:a
-:xa
 import os
 import alarm_settings
 from jaratoolbox import settings
