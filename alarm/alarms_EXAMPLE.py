@@ -8,10 +8,10 @@ everything below this text.
 
 # Example alarm creation:
 
-belowThreshold = Alarm(threshold = 1, belowThreshold = True)
-aboveThreshold = Alarm(threshold = 0.7, aboveThreshold = True)
-missingData    = Alarm(missingData = True)
-aboveAndBelow  = Alarm(threshold = 0.6, belowThreshold = True, aboveThreshold = True)
+belowThreshold = Alarm(threshold = 1, belowThreshold = True, subjects = ["adap022"], subscribers = ["foo@uoregon.edu", "bar@uoregon.edu"])
+aboveThreshold = Alarm(threshold = 0.0, aboveThreshold = True, subjects = ["adap021"], subscribers = ["aboveThreshold@uoregon.edu"])
+missingData    = Alarm(missingData = True, subjects = ["thisAnimalDoesn'tExist"], subscribers = ["missingDataAlert@uoregon.edu"])
+aboveAndBelow  = Alarm(threshold = 0.6, belowThreshold = True, aboveThreshold = True, subjects = ["adap022", "adap021"], subscribers = ["aboveAndBelow@uoregon.edu", "johnnyAppleseed@uoregon.edu"])
 
 # Run the alert method (checks all data for any issues, and sends out email if issues are found):
 

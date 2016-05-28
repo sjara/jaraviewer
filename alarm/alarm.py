@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+:a
+:xa
 import os
 import alarm_settings
 from jaratoolbox import settings
@@ -11,8 +13,7 @@ from smtplib import SMTP_SSL as SMTP
 from email.mime.text import MIMEText
 
 class Alarm(object):
-    def __init__(self, threshold = 0, belowThreshold = False, aboveThreshold = False, missingData = False):
-        # A basic threshold, to detect if average performance falls below it. 
+    def __init__(self, threshold = 0, subjects = [], subscribers = [], belowThreshold = False, aboveThreshold = False, missingData = False):
         self.behavData      = [] 
 
         # Flags for certain alarms
@@ -20,6 +21,8 @@ class Alarm(object):
         self.belowThreshold = belowThreshold
         self.aboveThreshold = aboveThreshold
         self.missingData    = missingData
+        self.subjects       = subjects
+        self.subscribers    = subscribers
 
         # Information from parsed filepath
         self.subjectName        = None
@@ -28,7 +31,7 @@ class Alarm(object):
         self.experimenterName   = None
         self.experimentDate     = None
 
-    def loadData(self, animals):
+    def loadData(self):
         # Load all the data availible into a list for later processing.
 
         for info in os.walk(settings.BEHAVIOR_PATH):
@@ -37,11 +40,12 @@ class Alarm(object):
             for element in info[2]:
                 name, extension = element.split(".")
 
-                for animal in animals:
+                for animal in self.subjects:
                     experimentDate  = name.split("_")[-1]
                     isoDate         = experimentDate[:4] + "-" + experimentDate[4:6] + "-" + experimentDate[6:8]
                     today           = date.today() 
 
+                    # We only want data from today from an animal that we care about
                     if(today == extrafuncs.parse_isodate(isoDate) and extension == "h5" and animal in name):
                         full_path = os.path.join(path, element)
                         self.behavData.append((full_path, loadbehavior.BehaviorData(full_path, readmode='full')))
@@ -93,26 +97,25 @@ class Alarm(object):
                 message = "Average above acceptable amount for " + self.subjectName + "."
                 self.sendEmail(destination, message, "Alert: Average performance above threshold")
 
-    def isMissingDataAlarm(self, animals):
-        if(self.missingData and len(animals) != 0):
-            for animal in animals:
-                for destination in alarm_settings.contact_dict[animal]:
+    def isMissingDataAlarm(self):
+        if(self.missingData and len(self.subjects) != 0):
+            for animal in self.subjects:
+                for destination in self.subscribers:
                     self.sendEmail(destination, "Missing data for " + animal + ".", "Alert: Missing data")
 
     def alert(self):
-        animals = alarm_settings.contact_dict.keys()
-        self.loadData(animals)
+        self.loadData()
 
         for path, data in self.behavData:
             self.parseFilePath(path)
-            if self.subjectName in animals:
-                animals.remove(self.subjectName)
+            if self.subjectName in self.subjects:
+                self.subjects.remove(self.subjectName)
 
-                for destination in alarm_settings.contact_dict[self.subjectName]:
+                for destination in self.subscribers:
                     self.belowThresholdAlarm(data, destination)
                     self.aboveThresholdAlarm(data, destination)
 
-        self.isMissingDataAlarm(animals)
+        self.isMissingDataAlarm()
         
     def calculateAverage(self, data):
         nValidTrials        = data['nValid'][-1]
