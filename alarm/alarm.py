@@ -36,17 +36,23 @@ class Alarm(object):
             path = info[0]
 
             for element in info[2]:
-                name, extension = element.split(".")
+                split           = element.split(".")
 
-                for animal in self.subjects:
-                    experimentDate  = name.split("_")[-1]
-                    isoDate         = experimentDate[:4] + "-" + experimentDate[4:6] + "-" + experimentDate[6:8]
-                    today           = date.today() 
+                if(len(split) == 2):
+                    name, extension = element.split(".")
 
-                    # We only want data from today from an animal that we care about
-                    if(today == extrafuncs.parse_isodate(isoDate) and extension == "h5" and animal in name):
-                        full_path = os.path.join(path, element)
-                        self.behavData.append((full_path, loadbehavior.BehaviorData(full_path, readmode='full')))
+                    for animal in self.subjects:
+                        experimentDate  = name.split("_")[-1]
+                        isoDate         = experimentDate[:4] + "-" + experimentDate[4:6] + "-" + experimentDate[6:8]
+                        today           = date.today() 
+
+                        # We only want data from today from an animal that we care about
+                        if(extension == "h5" and animal in name):
+                            try:
+                                full_path = os.path.join(path, element)
+                                self.behavData.append((full_path, loadbehavior.BehaviorData(full_path, readmode='full')))
+                            except:
+                                self.sendToAllSubscribers("Error when attempting to load " + full_path + ".", "Alert: Alarm error")
 
     def parseFilePath(self, filepath):
         li                      = filepath.split("/") 
@@ -57,6 +63,10 @@ class Alarm(object):
         self.experimentDate     = last[-1]
         self.paradigm           = last[-2]
         self.subjectName        = last[-3]
+
+    def sendToAllSubscribers(self, message, subject):
+        for destination in self.subscribers:
+            self.sendEmail(destination, message, subject)
 
     def sendEmail(self, destination, message, subject):
         smtpServer          = "smtp.uoregon.edu"
@@ -85,21 +95,20 @@ class Alarm(object):
         conn.close()
         """
 
-    def belowThresholdAlarm(self, data, destination):
-             if(self.calculateAverage(data) < self.threshold and self.belowThreshold):
-                        message = "Average below acceptable amount for " + self.subjectName + "."
-                        self.sendEmail(destination, message, "Alert: Average performance below threshold.")
+    def belowThresholdAlarm(self, data):
+         if(self.calculateAverage(data) < self.threshold and self.belowThreshold):
+                    message = "Average below acceptable amount for " + self.subjectName + "."
+                    self.sendToAllSubscribers(message, "Alert: Average performance below threshold.")
 
-    def aboveThresholdAlarm(self, data, destination):
+    def aboveThresholdAlarm(self, data):
         if(self.calculateAverage(data) > self.threshold and self.aboveThreshold):
                 message = "Average above acceptable amount for " + self.subjectName + "."
-                self.sendEmail(destination, message, "Alert: Average performance above threshold")
+                self.sendToAllSubscribers(message, "Alert: Average performance above threshold.")
 
     def isMissingDataAlarm(self):
         if(self.missingData and len(self.subjects) != 0):
             for animal in self.subjects:
-                for destination in self.subscribers:
-                    self.sendEmail(destination, "Missing data for " + animal + ".", "Alert: Missing data")
+                self.sendToAllSubscribers("Missing data for " + animal + ".", "Alert: Missing data")
 
     def alert(self):
         self.loadData()
@@ -109,9 +118,8 @@ class Alarm(object):
             if self.subjectName in self.subjects:
                 self.subjects.remove(self.subjectName)
 
-                for destination in self.subscribers:
-                    self.belowThresholdAlarm(data, destination)
-                    self.aboveThresholdAlarm(data, destination)
+                self.belowThresholdAlarm(data)
+                self.aboveThresholdAlarm(data)
 
         self.isMissingDataAlarm()
         
