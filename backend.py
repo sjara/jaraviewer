@@ -17,7 +17,12 @@ from jaraviewer import plotgenerator as pg	#File for ploting
 ###fixed variable###
 EXPERIMENTER = 'santiago'
 paradigm = '2afc'
-
+static_group_width = 200
+static_ima_width = 350
+make_up_br = 200
+dynamic_img_height = 300
+dynamic_img_width = 380
+subject_br = 4
 
 #indexes for extracting the date 
 START_YEAR_STA = 0
@@ -52,7 +57,7 @@ def format_index(mic):
     count = 1
     is_break = ""
     for mouse in mic:
-        if count%4 == 0:
+        if count%subject_br == 0:
             is_break = "<br>"
         mouse_str += "<input type ='checkbox' id='{sub}' name='subject' value='{subj1}' class='hidden_subject'>	<label class='label_subject btn btn-primary' for='{sub2}'>	<div class='label_name'>{subj2}</div>	</label> {is_bre}".format(sub=mouse,subj1=mouse,sub2=mouse,subj2=mouse,is_bre=is_break)
         count += 1
@@ -164,7 +169,7 @@ def plot_render(plo_fil_nam,col):
                 ima_src += settings.IMAGE_PATH
                 ima_src += img
                 ima_str = ""
-                ima_str += "<div class='col-xs-4'><img width='380px' height='300px' src='"+ima_src+"'></a></div>"
+                ima_str += "<div class='col-xs-4'><img width='"+str(dynamic_img_width)+"px' height='"+str(dynamic_img_height)+"px' src='"+ima_src+"'></a></div>"
                 gro_str += ima_str
             gro_str += "</div> <br>"
             plot_str += gro_str
@@ -174,7 +179,7 @@ def plot_render(plo_fil_nam,col):
     #case for static
     col = int(col)
     if col > 0:
-        width = col*((350*type_number)+250)
+        width = col*((static_group_width*type_number)+static_ima_width+make_up_br)
         width = str(width)
         col_counter = 0
         plot_str = ""+"<table cellpadding='0' cellspacing='0' border='0'> <tr class='row1'>"
@@ -183,11 +188,11 @@ def plot_render(plo_fil_nam,col):
             
             if col_counter < col:
                 group_str = ""
-                group_str += "<td><h1 style='width:200px;left: 0; top: 2'>"+group+"</h1></td>"
+                group_str += "<td><h1 style='width:"+str(static_group_width)+"px'>"+group+"</h1></td>"
                 for file_name in mice_date[group]:
                     ima_src = settings.IMAGE_PATH
                     ima_src += file_name
-                    group_str += "<td><img  style='width:350px' src='"+ima_src+"' /></td>"
+                    group_str += "<td><img  style='width:"+str(static_ima_width)+"px' src='"+ima_src+"' /></td>"
                 group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
                 plot_str += group_str
                 col_counter += 1
@@ -195,11 +200,11 @@ def plot_render(plo_fil_nam,col):
                 plot_str += "</tr> </table> <br> <hr style='width: "+width+"px' />"
                 plot_str += "<table cellpadding='0' cellspacing='0' border='0'> <tr class='row1'>"
                 group_str = ""
-                group_str += "<td><h1 style='width:200px;left: 0; top: 2'>"+group+"</h1></td>"
+                group_str += "<td><h1 style='width:"+str(static_group_width)+"px;left: 0; top: 2'>"+group+"</h1></td>"
                 for file_name in mice_date[group]:
                     ima_src = settings.IMAGE_PATH
                     ima_src += file_name
-                    group_str += "<td><img  style='width:350px' src='"+ima_src+"' /></td>"
+                    group_str += "<td><img  style='width:"+str(static_ima_width)+"px' src='"+ima_src+"' /></td>"
                 group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
                 plot_str += group_str                
                 col_counter = 1
