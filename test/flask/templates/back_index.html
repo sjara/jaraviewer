@@ -63,17 +63,15 @@
         <div class="container">
             <!-- container 1: Form -->
             <div class="col-lg-8 vertical-line"> 
-		<br>
-                <h3 align="center">Add/Delete Subject</h3>
-                <hr>
-                <h4>Add/Delete subjects</h4>
-                <br>
-                
 		<form class="form-horizontal" role="form" name="form" action="/modify" method='POST'>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="subject">Modify Subject:</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="subject" name='subject'>
+                        </div>
+                        <div class="col-sm-3">
+                       	    <button type="submit" class="btn btn-default" name="submit" value="add">Add</button>
+                            <button type="submit" class="btn btn-default" name="submit" value="delete">Delete</button>
                         </div>
                     </div>
                         <button type="submit" class="btn btn-default" name="submit" value="add">Add</button>
