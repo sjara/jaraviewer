@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import logging
-import alarm_settings
+import alarm_conf 
 from jaratoolbox import settings
 from jaratoolbox import loadbehavior
 from jaratoolbox import behavioranalysis
@@ -54,7 +54,7 @@ class Alarm(object):
         self.experimentDate     = None
 
         if(self.log):
-            logging.basicConfig(filename = alarm_settings.LOG_FILENAME, level = logging.INFO)
+            logging.basicConfig(filename = alarm_conf.LOG_FILENAME, level = logging.INFO)
 
     def loadData(self):
         """
@@ -156,7 +156,7 @@ class Alarm(object):
         smtpServer          = "smtp.uoregon.edu"
         textSubtype         = "plain"
 
-        f                   = open(alarm_settings.path_to_auth)
+        f                   = open(alarm_conf.PATH_TO_AUTH)
         text                = f.read()
         sender, password    = text.split()
 
