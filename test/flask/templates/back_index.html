@@ -173,11 +173,45 @@
                            <!--  <input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/> -->
                             <button type="reset" class="btn btn-warning" name="submit" value="reset">Reset </button>
                             <input type="checkbox" id="save-profile-btn" class="btn btn-success" name="save" value="Save"/>
-                            <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
+                            <button type="submit" class="btn btn-primary" name="submit" value="submit" onClick = "valthisform();">Submit</button>
                            
                         </div>
 
+			
+			
+			<!-- Validate subject and plot type checkboxes -->
+			<script type="text/javascript">
+                            function valthisform(){
+                                
+                                // catching subject checkboxes
+                                var subjectchecked = false;
+                                var subjectcheckbox = document.getElementsByName("subject");
+                                
+                                for (var i = 0; i<subjectcheckbox.length; i++){
+                                    if (subjectcheckbox[i].checked){
+                                        subjectchecked = true;
+                                        break;
+                                    }
+                                }
+                                if (subjectchecked == false){
+                                    alert("Please select a subject.");
+                                }
 
+
+                                // catching plot type checkboxes
+                                var plotcheckbox = document.getElementsByName("plotType");
+                                var plotchecked = false;
+                                for (var i = 0; i<plotcheckbox.length; i++){
+                                    if (plotcheckbox[i].checked){
+                                        plotchecked = true;
+                                        break;
+                                    }
+                                }
+                                if (plotchecked == false){
+                                    alert("Please select a plot type.");
+                                }
+                            }
+                        </script>
 
                         <!-- Clear Data Function to Reset values for profileClickHandler --> 
                         <script type="text/javascript">
