@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import logging
 import alarm_settings
 from jaratoolbox import settings
 from jaratoolbox import loadbehavior
@@ -16,7 +17,7 @@ class Alarm(object):
     an email when given conditions are true.
     """
 
-    def __init__(self, threshold = 0, subjects = [], subscribers = [], belowThreshold = False, aboveThreshold = False, missingData = False):
+    def __init__(self, threshold = 0, subjects = [], subscribers = [], log = False, belowThreshold = False, aboveThreshold = False, missingData = False):
 
         """
         Sets up instance variables that will be needed later on, and sets
@@ -26,6 +27,7 @@ class Alarm(object):
             threshold       - The threshold to check against for the belowThreshold/aboveThreshold alarms
             subjects        - A list of strings containing the names of animals to check the data for
             subscribers     - A list of strings containing the emails of those to alert when alarms are set off
+            log             - A boolean flag on whether to keep a log of debug/error/info messages
             belowThreshold  - A boolean flag to check if animals are below the passed in threshold 
             aboveThreshold  - A boolean flag to check if animals are above the passed in threshold 
             missingData     - A boolean flag to check if data for the passed in animals is missing
@@ -42,6 +44,7 @@ class Alarm(object):
         self.missingData    = missingData
         self.subjects       = subjects
         self.subscribers    = subscribers
+        self.log            = log
 
         # Information from parsed filepath
         self.subjectName        = None
@@ -50,10 +53,14 @@ class Alarm(object):
         self.experimenterName   = None
         self.experimentDate     = None
 
+        if(self.log):
+            logging.basicConfig(filename = alarm_settings.LOG_FILENAME, level = logging.INFO)
+
     def loadData(self):
         """
         Walks through all files in settings.BEHAVIOR_PATH and lazily loads in the
-        relevent files to "behavData" as a tuple formatted as, (<full path of file>, <loaded behavior data>).
+        relevent files to the "behavData" list where each index is a tuple formatted as, 
+        (<full path of file>, <loaded behavior data>).
 
         Args:
             None
@@ -72,6 +79,9 @@ class Alarm(object):
                 if(len(split) == 2):
                     name, extension = element.split(".")
 
+                    if(self.log):
+                        logging.debug("Name: " + name + " Extension: " + extension)
+
                     for animal in self.subjects:
 
                         # Get the date from the name and format it in ISO format to compare to the current date.
@@ -79,13 +89,20 @@ class Alarm(object):
                         isoDate         = experimentDate[:4] + "-" + experimentDate[4:6] + "-" + experimentDate[6:8]
                         today           = date.today() 
 
+                        if(self.log):
+                            logging.debug("Comparing date: " + str(isoDate) + " to " + str(today) + " (today)")
+
                         # We only want data from today from an animal that we care about
-                        if(extension == "h5" and animal in name):
+                        if(today == extrafuncs.parse_isodate(isoDate) and extension == "h5" and animal in name):
                             try:
                                 full_path = os.path.join(path, element)
                                 self.behavData.append((full_path, loadbehavior.BehaviorData(full_path, readmode='full')))
+                                if(self.log):
+                                    logging.info("Successfully loaded data from: " + full_path)
                             except:
                                 self.sendToAllSubscribers("Error when attempting to load " + full_path + ".", "Alert: Alarm error")
+                                if(self.log):
+                                    logging.error("Could not load " + full_path + ".")
 
     def parseFilePath(self, filepath):
         """
@@ -119,6 +136,9 @@ class Alarm(object):
         """
 
         for destination in self.subscribers:
+            if(self.log):
+                logging.info("Sending " + message + " to " + destination)
+
             self.sendEmail(destination, message, subject)
 
     def sendEmail(self, destination, message, subject):
@@ -158,6 +178,9 @@ class Alarm(object):
         conn.login(sender, password)
         conn.sendmail(sender, destination, msg.as_string())
         conn.close()
+
+        if(self.log):
+            logging.info("Successfully sent alert to " + destination) 
         """
 
     def belowThresholdAlarm(self, data):
@@ -174,6 +197,9 @@ class Alarm(object):
 
         if(self.belowThreshold and self.calculateAverage(data) < self.threshold):
                     message = "Average below acceptable amount for " + self.subjectName + "."
+                    if(self.log):
+                        logging.info(message)
+
                     self.sendToAllSubscribers(message, "Alert: Average performance below threshold.")
 
     def aboveThresholdAlarm(self, data):
@@ -190,6 +216,9 @@ class Alarm(object):
 
         if(self.calculateAverage(data) > self.threshold and self.aboveThreshold):
                 message = "Average above acceptable amount for " + self.subjectName + "."
+                if(self.log):
+                    logging.info(message)
+
                 self.sendToAllSubscribers(message, "Alert: Average performance above threshold.")
 
     def isMissingDataAlarm(self):
@@ -205,7 +234,10 @@ class Alarm(object):
 
         if(self.missingData and len(self.subjects) != 0):
             for animal in self.subjects:
-                self.sendToAllSubscribers("Missing data for " + animal + ".", "Alert: Missing data")
+                message = "Missing data for " + animal + "."
+                if(self.log):
+                    logging.info(message)
+                self.sendToAllSubscribers(message, "Alert: Missing data")
 
     def alert(self):
         """
@@ -225,6 +257,9 @@ class Alarm(object):
 
             # Only call the alarms on animals that we care about.
             if(self.subjectName in self.subjects):
+                if(self.log):
+                    logging.debug("Using data from " + self.subjectName)
+
                 self.subjects.remove(self.subjectName)
 
                 self.belowThresholdAlarm(data)
