@@ -331,10 +331,19 @@ def format_profile(profile_list):
     for profile in profile_list:
         one_pro_str = ""
         one_pro_str += profile['index']
+        print one_pro_str,profile['index']
         one_pro_str += "<br>"
-        one_pro_str += str(profile['subject'])
+        #one_pro_str += str(profile['subject'])
+        for sub in profile['subject']:
+            one_pro_str += sub
+            one_pro_str += ', '
+        print one_pro_str,profile['index']
         one_pro_str += "<br>"
-        one_pro_str += str(profile['plotType'])
+        #one_pro_str += str(profile['plotType'])
+        for plot in profile['plotType']:
+            one_pro_str += plot
+            one_pro_str += ', '
+        print one_pro_str,profile['index']
         is_break = "<br>"
         profile_str += "<input type ='checkbox' id='{index1}' name='profile' value='{index2}' class='hidden_profile'>	<label class='' for='{index3}'>	<div class=''>{prof}</div>	</label> {is_bre}".format(index1=str(profile['index']),index2=str(profile['index']),index3=str(profile['index']),prof=one_pro_str,is_bre=is_break)
         count += 1

@@ -6,14 +6,23 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
      
-        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-        <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <!-- Google Hosted jQuery (necessary for Bootstrap's JavaScript plugins)-->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> 
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+        
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
         <!-- Include Date Range Picker -->
         <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
         <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-
+	
         <!-- Manual CSS -->
         <link href="static/stylesheet.css" rel="stylesheet">
 
@@ -31,11 +40,11 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">JaraViewer</a>
+                    <a class="navbar-brand" href="/">JaraViewer</a>
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="index.html">Home</a></li>
+                        <li class="active"><a href="/">Home</a></li>
                         <li><a href="/modify_saved_profile">Modify Subject</a></li>
 
                         <li class="dropdown">
@@ -63,14 +72,25 @@
         <div class="container">
             <!-- container 1: Form -->
             <div class="col-lg-8 vertical-line"> 
-                <h3 align="center">Form</h3>
-                <br>
+		<form class="form-horizontal" role="form" name="form" action="/modify" method='POST'>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="subject">Modify Subject:</label>
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" id="subject" name='subject'>
+                        </div>
+                        <div class="col-sm-3">
+                       	    <button type="submit" class="btn btn-default" name="submit" value="add">Add</button>
+                            <button type="submit" class="btn btn-default" name="submit" value="delete">Delete</button>
+                        </div>
+                    </div>
 
-                <form class="form-horizontal" role="form" name="form" action="/execute" target="_blank" method='POST'>
+                </form>
+                <br>
+                <form class="form-horizontal" role="form" name="form" action="/execute" target="-blank" method='POST'>
 
                     <!-- Select Subject -->
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="subject">Subjects:</label><br>
+                        <label class="control-label col-sm-2">Subjects:</label><br>
                         <div class="col-sm-10">
                             {{ mice|safe }}
 
@@ -87,19 +107,19 @@
                                 
                             <input type="checkbox" id="psychometric" value="psychometric" name="plotType" class="hidden_plot">
                             <label class="label_item" for="psychometric">
-                                <img src="static/img/line.png">
+                                <img src="static/line.png">
                                 <div class="label_name">Psychometric</div>    
                             </label>
                             
                             <input type="checkbox" id="summary" value="summary" name="plotType" class="hidden_plot">
                             <label class="label_item" for="summary">
-                                <img src="static/img/bar.png">
+                                <img src="static/bar.png">
                                 <div class="label_name">Summary</div>
                             </label>
                             
                             <input type="checkbox" id="dynamics" value="dynamics" name="plotType" class="hidden_plot">
                             <label class="label_item" for="dynamics">
-                                <img src="static/img/stats.png">
+                                <img src="static/stats.png">
                                 <div class="label_name">Dynamics</div>
                             </label>
                         </div>
@@ -172,12 +192,49 @@
                             <!-- input type button, so doesn't submit upon click -->
                            <!--  <input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/> -->
                             <button type="reset" class="btn btn-warning" name="submit" value="reset">Reset </button>
-                            <input type="checkbox" id="save-profile-btn" class="btn btn-success" name="save" value="Save"/>
-                            <button type="submit" class="btn btn-primary" name="submit" value="submit">Submit</button>
+                            <input type="checkbox" id="save-profile-btn" class="hidden_save_btn" name="save" value="Save"/>
+							<label class="label_save_btn btn btn-success" for="save-profile-btn">
+								<div class="label_name">Save</div>
+							</label>
+                            <button type="submit" class="btn btn-primary" name="submit" value="submit" onClick = "valthisform();">Submit</button>
                            
                         </div>
 
+			
+			
+			<!-- Validate subject and plot type checkboxes -->
+			<script type="text/javascript">
+                            function valthisform(){
+                                
+                                // catching subject checkboxes
+                                var subjectchecked = false;
+                                var subjectcheckbox = document.getElementsByName("subject");
+                                
+                                for (var i = 0; i<subjectcheckbox.length; i++){
+                                    if (subjectcheckbox[i].checked){
+                                        subjectchecked = true;
+                                        break;
+                                    }
+                                }
+                                if (subjectchecked == false){
+                                    alert("Please select a subject.");
+                                }
 
+
+                                // catching plot type checkboxes
+                                var plotcheckbox = document.getElementsByName("plotType");
+                                var plotchecked = false;
+                                for (var i = 0; i<plotcheckbox.length; i++){
+                                    if (plotcheckbox[i].checked){
+                                        plotchecked = true;
+                                        break;
+                                    }
+                                }
+                                if (plotchecked == false){
+                                    alert("Please select a plot type.");
+                                }
+                            }
+                        </script>
 
                         <!-- Clear Data Function to Reset values for profileClickHandler --> 
                         <script type="text/javascript">
@@ -225,91 +282,25 @@
                             $(function() {
                                 var listOfProfiles;
 
-                                //if (list_profiles == null){
-                                    //listOfProfiles = [];
-                                //}
-                                //else {
-                                    listOfProfiles = {{list_profiles|safe}} // looks at previous profile  
-									console.log(listOfProfiles)
-                                //}
-
+                                listOfProfiles = {{list_profiles|safe}} // looks at previous profile  
+				console.log(listOfProfiles) // print out listOfProfiles
 
                                 // displaying saved profiles from previous saved
                                 for(var i=0; i<listOfProfiles.length; i++) {
                                     var data = listOfProfiles[i]
                                     $profileLabel = $('<div class="profile-div">' + 
-										JSON.stringify(data.index, null, 2).replace(/[\[\]"]/g, "") 
-										+ '<br>'
+					JSON.stringify(data.index, null, 2).replace(/[\[\]"]/g, "") 
+					+ '<br>'
                                         + JSON.stringify(data.subject, null, 2).replace(/[\[\]"]/g, "") 
                                         + '<br>' 
                                         + JSON.stringify(data.plotType, null, 2).replace(/[\[\]"]/g, "") 
-                                        + '<br>' + '<div>');
+                                        + '<br>' + '</div>');
                                     $profileLabel.appendTo('#display-data');
                                     // append button to display 
                                     $profileLabel.click(profileClickHandler(data));
-                                }
-
-
-<!--                                 $("#save-profile-btn").click(function() {
-//                                     var $checkedSubject = $("[name='subject']:checked") // list of selected subjects
-
-                 //                   var sValues = [] // list to hold the subject
-                 //                   for (var i = 0; i < $checkedSubject.length; i++ ){
-                 //                       sValues.push($checkedSubject[i].value);
-                 //                   }
-//
-                 //                   var $checkedPlot = $("[name='plotType']:checked") // list of checked plot types
-                 //                   var pValues = [] // list of plot types
-                 //                   for (var i = 0; i < $checkedPlot.length; i++){
-                 //                       pValues.push($checkedPlot[i].value);
-                 //                   }
-
-                                    // var dValue = $("#date-range-input").val() // comment out 
-                                    // var cValue = $("select[name=columNum]").val(); // comment outlater after verification
-
-                                    /* Logs for debugging purposes*/
-                                    //console.log(sValues);
-                                  //  console.log(pValues);
-                                    // console.log(dValue);
-                                    // console.log(cValue);
-
-
-                                    // Profiles data
-                                   // var profile = {
-									//	index: iter,
-                                   //     subject: sValues,
-                                    //    plotType: pValues 
-                                        // in future, if want to add daterange or column, just add:
-                                        // dateRange: dValue,
-                                        // columNum: cValue
-                                        // and uncomment dValue, cValue above
-               //                     };
-
-
-                                //}); // close whole function() -->
-                            });
+                                }})
                         </script>
                     </div>
-                </form>
-
-                <br>
-                <br>
-                <hr>
-                <h3 align="center">Add/Delete Option 2: Separate form</h3>
-                <hr>
-                <h4>Add/Delete subjects</h4>
-                <br>
-                
-				<form class="form-horizontal" role="form" name="form" action="/modify" method='POST'>
-                    <div class="form-group">
-                        <label class="control-label col-sm-2" for="subject">Modify Subject:</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="form-control" id="subject" name='subject'>
-                        </div>
-                    </div>
-                        <button type="submit" class="btn btn-default" name="submit" value="add">Add</button>
-                        <button type="submit" class="btn btn-default" name="submit" value="delete">Delete</button>
- 
                 </form>
             </div> <!-- container 1 -->
 

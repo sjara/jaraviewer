@@ -22,7 +22,7 @@ plot_page = 'plots_fixed.html'
 modify_page = 'modify-saved-profile.html'
 
 app = flask.Flask(__name__
-					#,static_folder = 'static'	#One method for leading the image path
+					,static_folder = 'static'	#One method for leading the image path
 					)
 
 #Another method for leading the image path
