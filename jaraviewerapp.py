@@ -83,8 +83,9 @@ def link():
         arg_name = "plot"+str(ind)
         new_plot_list.append(flask.request.args.get(arg_name))
 
+    css_str = backend.get_css_str(co=col)
     plot_str = backend.plot_render(plo_fil_nam=new_plot_list,col=col)	#get he string to render the html
-    return flask.render_template(plot_page,mou_str=plot_str)
+    return flask.render_template(plot_page,mou_str=plot_str,cs_str=css_str)
 
 
 # -- Modify subjects (add/delete) --

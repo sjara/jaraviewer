@@ -18,10 +18,7 @@ from jaraviewer import plotgenerator as pg	#File for ploting
 EXPERIMENTER = 'santiago'
 paradigm = '2afc'
 static_group_width = 200
-static_ima_width = 350
 make_up_br = 200
-dynamic_img_height = 300
-dynamic_img_width = 380
 subject_br = 4
 
 #indexes for extracting the date 
@@ -156,43 +153,59 @@ def plot_render(plo_fil_nam,col):
     type_number = len(mice_date[mice_date_str])
 	
     #case for dynamic
-    counter = 0
-    plot_str = ""
     if col == '-':
-        plot_str += "<div class='container'>"
+        css_f = open('./static/dynamic_plot.css','r')
+        for line in css_f:
+            if '--widthX' in line:
+                width = line.split()
+                #print test
+                width = int(width[1][0:-3])
+                break
+        counter = 0
+        plot_str = ""
+
         for group in mice_date:
+            ima_num = len(mice_date[group])
+            style_wid = width*ima_num
             gro_str = ""
-            gro_str += "<div class='page-header'>"+group+"</div>"
-            gro_str += "<div class='row'>"
+            gro_str += "<ul class='img_customer' style='width:"+str(style_wid)+"px'>"
+            gro_str += "<p>"+group+"</p>"
             for img in mice_date[group]:
                 ima_src = ""
-                ima_src += settings.IMAGE_PATH
-                ima_src += img
+                ima_src = os.path.join(ima_src,settings.IMAGE_PATH)
+                ima_src = os.path.join(ima_src,img)
                 ima_str = ""
-                ima_str += "<div class='col-xs-4'><img width='"+str(dynamic_img_width)+"px' height='"+str(dynamic_img_height)+"px' src='"+ima_src+"'></a></div>"
+                ima_str += "<li><img src="+ima_src+"></li>"
                 gro_str += ima_str
-            gro_str += "</div> <br>"
             plot_str += gro_str
-        plot_str += "</div>"
+            plot_str += '</ul>'
         return plot_str
+
 	
     #case for static
     col = int(col)
     if col > 0:
-        width = col*((static_group_width*type_number)+static_ima_width+make_up_br)
+        css_f = open('./static/static_plot.css','r')
+        for line in css_f:
+            if '--widthXS' in line:
+                im_width = line.split()
+                #print test
+                im_width = int(im_width[1][0:-3])
+                print im_width
+                break
+
+        width = col*((static_group_width*type_number)+im_width+make_up_br)
         width = str(width)
         col_counter = 0
         plot_str = ""+"<table cellpadding='0' cellspacing='0' border='0'> <tr class='row1'>"
         for group in mice_date:
-            
-            
             if col_counter < col:
                 group_str = ""
                 group_str += "<td><h1 style='width:"+str(static_group_width)+"px'>"+group+"</h1></td>"
                 for file_name in mice_date[group]:
                     ima_src = settings.IMAGE_PATH
                     ima_src += file_name
-                    group_str += "<td><img  style='width:"+str(static_ima_width)+"px' src='"+ima_src+"' /></td>"
+                    group_str += "<td><img src='"+ima_src+"' /></td>"
                 group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
                 plot_str += group_str
                 col_counter += 1
@@ -204,7 +217,7 @@ def plot_render(plo_fil_nam,col):
                 for file_name in mice_date[group]:
                     ima_src = settings.IMAGE_PATH
                     ima_src += file_name
-                    group_str += "<td><img  style='width:"+str(static_ima_width)+"px' src='"+ima_src+"' /></td>"
+                    group_str += "<td><img src='"+ima_src+"' /></td>"
                 group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
                 plot_str += group_str                
                 col_counter = 1
@@ -384,3 +397,10 @@ def dele_profile(index_list):
         counter += 1
     new_pro.close()
     shutil.move(new_file_path, file_path)
+
+	
+def get_css_str(co):
+    if co == '-':
+        return "<link rel='stylesheet' type='text/css' href='./static/dynamic_plot.css'>"
+    else:
+        return "<link rel='stylesheet' type='text/css' href='./static/static_plot.css'>"
