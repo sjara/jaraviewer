@@ -9,8 +9,10 @@ import numpy
 import flask
 import jinja2
 
-from jaraviewer import backend
-from jaraviewer import settings
+#from jaraviewer import backend
+#from jaraviewer import settings
+import backend  ### ONLY DURING TESTING
+import settings ### ONLY DURING TESTING
 
 port_name = settings.JARAVIEWER_PORT_NAME
 port_number = settings.JARAVIEWER_PORT_NUMBER
@@ -51,26 +53,24 @@ def execute():
     '''
     Method for excute the main code, including loading data and generate the plots.
     '''
-    save = flask.request.form.getlist('save')
+    #save = flask.request.form.getlist('save')
     miceSelect = flask.request.form.getlist('subject')
     plot_type_list = flask.request.form.getlist('plotType')
     dateRange = flask.request.form['dateRange']
     colum = str(flask.request.form['columNum'])
 
     # -- Check if user chose save --
-    if len(save) > 0:
-        save = str(save[0])
-        if save == "Save":
-            # -- Write code to the profiles file --
-            backend.write_profile(mic_lis=miceSelect,
-                                  plo_lis=plot_type_list,
-                                  dat_ran=dateRange,col=colum)
-            return flask.redirect(port_name,code=trans_code)
-
-    date_list = backend.date_generator(raw_date_str = dateRange)                      # Get the list of dates
-    plot_file_name = backend.get_plot(miceSelect, date_list, plo_typ=plot_type_list)  # Get the list of file names
-    link_str = backend.link_gene(plo_fil_nam=plot_file_name,col=colum)	          # Get the string for sharing link
-    return flask.redirect(link_str,code=trans_code)
+    if flask.request.form['submit'] == "saveProfile":
+        # -- Write code to the profiles file --
+        backend.write_profile(mic_lis=miceSelect,
+                              plo_lis=plot_type_list,
+                              dat_ran=dateRange,col=colum)
+        return flask.redirect(port_name,code=trans_code)
+    else:
+        date_list = backend.date_generator(raw_date_str = dateRange)                      # Get the list of dates
+        plot_file_name = backend.get_plot(miceSelect, date_list, plo_typ=plot_type_list)  # Get the list of file names
+        link_str = backend.link_gene(plo_fil_nam=plot_file_name,col=colum)	          # Get the string for sharing link
+        return flask.redirect(link_str,code=trans_code)
 
 
 # -- Show the page with the plots --
@@ -103,14 +103,14 @@ def modify():
             print "Error"
     return flask.redirect(port_name,code=trans_code)
 
-
+'''
 # -- Render the profile page --
 @app.route('/modify_saved_profile')
 def modify_profile():
     profile = backend.read_profile()	        # Read from file
     pro_str = backend.format_profile(profile)   # Re-render the html file
     return flask.render_template(modify_page, profile=pro_str)
-
+'''
 
 # -- Delete from profiles file --
 @app.route('/delete_profile',methods=['POST'])
