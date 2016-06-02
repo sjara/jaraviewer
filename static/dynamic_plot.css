@@ -1,0 +1,20 @@
+:root{
+	--widthX: 300px;
+	/*change the width of image here,!!!!!please left the space, it is import!!!!!!!!!!*/
+} 
+ul.img_customer li {
+	float: left;
+}
+ul.img_customer {
+	margin: 0;
+	padding: 0;
+	white-space: auto;
+	overflow-x: auto;
+	float: left;
+	background-color: #ddd;
+}
+img {
+	width: var(--widthX);/*please don't change the value from here*/
+	height: 280px; 
+}
+
