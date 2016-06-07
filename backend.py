@@ -1,5 +1,6 @@
 '''
-FIXME: what does this module do?
+This is the back-end module.
+All the functions that related to the back-end will be defined here.
 '''
 
 import datetime
@@ -15,11 +16,12 @@ from jaraviewer import settings
 from jaraviewer import plotgenerator as pg	#File for ploting
 
 ###fixed variable###
-EXPERIMENTER = 'santiago'
-paradigm = '2afc'
-static_group_width = 200
-make_up_br = 200
-subject_br = 4
+EXPERIMENTER = 'santiago'	#name for the EXPERIMENTER
+paradigm = '2afc'	#name for the paradigm
+static_group_width = 200	#width to show the group name in static mode
+make_up_br = 200	#leaving a little more space horizontally for static mode
+subject_br = 4	#the number of mice checkboxes will be showed in one line in the home page
+link_tag = '/link'	#tag name for sharing link and rendering plots function, need to change the 'link_tag' in 'jaraviewerapp.py' if this is changed
 
 #indexes for extracting the date 
 START_YEAR_STA = 0
@@ -37,6 +39,12 @@ END_DAY_END = 23
 
 #function to open 'subject.txt'
 def get_mice():
+    '''
+    Args:
+        None
+    Returns:
+        A list to store the mice
+    '''
     mice = []
     try:
         mice_file = open(settings.SUBJECT_PATH,"r")
@@ -50,6 +58,12 @@ def get_mice():
 	
 #function to generate the strings of html for mouse selecting
 def format_index(mic):
+    '''
+    Args:
+        mic: A list to store the mice
+    Returns:
+        mouse_str: HTML string for rendering the mice checkbox
+    '''
     mouse_str = ""
     count = 1
     is_break = ""
@@ -63,6 +77,12 @@ def format_index(mic):
 
 #get all the dates from the date string
 def date_generator(raw_date_str):
+    '''
+    Args:
+        raw_date_str: A string to store the date range.
+    Returns:
+        date_list: A list to store all the dates between the date range
+    '''
     star_year = int(raw_date_str[START_YEAR_STA:START_YEAR_END])
     star_month = int(raw_date_str[START_MONTH_STA:START_MONTH_END])
     star_day = int(raw_date_str[START_DAY_STA:START_DAY_END])
@@ -85,6 +105,14 @@ def date_generator(raw_date_str):
 	
 #link to the plot module
 def get_plot(mice,date,plo_typ):
+    '''
+    Args:
+        mice: A list to store the mice
+        date: A list to store the dates
+        plo_typ: A list to store the plot types
+    Returns:
+        all_file_name: A list to store all the file names that referenced in this excuction
+    '''
     subject_list = mice
     session_list = date
 	
@@ -105,9 +133,9 @@ def get_plot(mice,date,plo_typ):
                 all_file_name.append(out_dict['filename'])
                 if not check_exist(fil_nam=out_dict['filename']):
                     #non_exsi_file.append(out_dict['filename'])
-                    test_list=[]
-                    test_list.append(out_dict)
-                    pg.generate(plotList=test_list)
+                    #test_list=[]
+                    #test_list.append(out_dict)
+                    pg.generate(plotInfo=out_dict)
     return all_file_name
 
 
@@ -117,6 +145,14 @@ def get_plot(mice,date,plo_typ):
 
 #form a dictionary for the ploting function
 def form_out_put(sub,typ,data,sess):
+    '''
+    Args:
+        sub: A string for one mouse
+        date: A string for one date
+        typ: A string for one plot type
+    Returns:
+        out_dict: A dictionary that contains all the information for one plot
+    '''
     out_dict = {}
     out_dict['type'] = str(typ)
     form_sess = sess[0:-1]
@@ -126,6 +162,13 @@ def form_out_put(sub,typ,data,sess):
 
 #function to check is the image already existed
 def check_exist(fil_nam):
+    '''
+    Args:
+        fil_nam: A string for the name of one plot file
+    Returns:
+        1. True: If the file name already exists in the folder
+        2. False: If the file name not exists in the folder
+    '''
     check_file_exists = False
     image_path = os.walk(settings.IMAGE_PATH)
     for root,dirs,files in image_path:
@@ -140,6 +183,13 @@ def check_exist(fil_nam):
 
 #generate the string of html for showing plot page
 def plot_render(plo_fil_nam,col):
+    '''
+    Args:
+        plo_fil_nam: A list to store the plot file name
+        col: column number from the front-end
+    Returns:
+        plot_str: HTML string for rendering the plots.
+    '''
     mice_date = {}
     for plot in plo_fil_nam:
         stri = plot.split('_',3)
@@ -187,7 +237,7 @@ def plot_render(plo_fil_nam,col):
     if col > 0:
         css_f = open('./static/static_plot.css','r')
         for line in css_f:
-            if '--widthXS' in line:
+            if '--widthX' in line:
                 im_width = line.split()
                 #print test
                 im_width = int(im_width[1][0:-3])
@@ -203,8 +253,9 @@ def plot_render(plo_fil_nam,col):
                 group_str = ""
                 group_str += "<td><h1 style='width:"+str(static_group_width)+"px'>"+group+"</h1></td>"
                 for file_name in mice_date[group]:
-                    ima_src = settings.IMAGE_PATH
-                    ima_src += file_name
+                    ima_src = ""
+                    ima_src = os.path.join(ima_src,settings.IMAGE_PATH)
+                    ima_src = os.path.join(ima_src,file_name)
                     group_str += "<td><img src='"+ima_src+"' /></td>"
                 group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
                 plot_str += group_str
@@ -215,8 +266,9 @@ def plot_render(plo_fil_nam,col):
                 group_str = ""
                 group_str += "<td><h1 style='width:"+str(static_group_width)+"px;left: 0; top: 2'>"+group+"</h1></td>"
                 for file_name in mice_date[group]:
-                    ima_src = settings.IMAGE_PATH
-                    ima_src += file_name
+                    ima_src = ""
+                    ima_src = os.path.join(ima_src,settings.IMAGE_PATH)
+                    ima_src = os.path.join(ima_src,file_name)
                     group_str += "<td><img src='"+ima_src+"' /></td>"
                 group_str += "<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>"
                 plot_str += group_str                
@@ -227,7 +279,14 @@ def plot_render(plo_fil_nam,col):
 	
 #generate the string of URL for sharing.
 def link_gene(plo_fil_nam,col):
-    link_str = "/link?"
+    '''
+    Args:
+        plo_fil_nam: A list to store the plot file name
+        col: column number from the front-end
+    Returns:
+        link_str: URL for showing the plots, also for share
+    '''
+    link_str = link_tag + '?'
     count = 0
     for plot_name in plo_fil_nam:
         temp_str = "plot"+str(count)+"="+plot_name+'&'
@@ -239,6 +298,13 @@ def link_gene(plo_fil_nam,col):
 
 #functon for adding subject
 def add_subject(sub):
+    '''
+    Args:
+        sub: A string for the mouse name to add
+    Returns:
+        1. False: Failed to add the mouse
+        2. True: Successfully adding the mouse
+    '''
     try:
         mice_file = open(settings.SUBJECT_PATH,"r+")
     except:
@@ -258,6 +324,13 @@ def add_subject(sub):
 
 #function for deleting subject
 def del_subject(sub):
+    '''
+    Args:
+        sub: A string for the mouse name to delete
+    Returns:
+        1. False: Failed to delete the mouse
+        2. True: Successfully deleting the mouse
+    '''
     file_path = settings.SUBJECT_PATH
     try:
         mice_file = open(file_path,"r")
@@ -290,7 +363,14 @@ def del_subject(sub):
     return True
 	
 #function for wirte profile
-def write_profile(mic_lis,plo_lis,dat_ran,col):
+def write_profile(mic_lis,plo_lis):
+    '''
+    Args:
+        mic_lis: A list to store the mice to add in the porfile
+        plo_lis: A list to store the plot types to add in the porfile
+    Returns:
+        None
+    '''
     profile = open(settings.SAVE_PROFILE,'a+')
     wri_str = ""
     for mouse in mic_lis:
@@ -311,6 +391,12 @@ def write_profile(mic_lis,plo_lis,dat_ran,col):
 
 #read profile from file
 def read_profile():
+    '''
+    Args:
+        None
+    Returns:
+        res_list: A list contains all the profile information
+    '''
     try:
         profile = open(settings.SAVE_PROFILE,'r')
     except:
@@ -338,6 +424,12 @@ def read_profile():
 
 #function to generate the strings of html for profile selecting, not done
 def format_profile(profile_list):
+    '''
+    Args:
+        profile_list: A list contains all the profile information
+    Returns:
+        profile_str: HTML string to renter the profile part
+    '''
     profile_str = ""
     count = 1
     is_break = ""
@@ -366,6 +458,12 @@ def format_profile(profile_list):
 	
 # function to delete profile
 def dele_profile(index_list):
+    '''
+    Args:
+        index_list: A list contains all the profile index to delete
+    Returns:
+        None
+    '''
     str_index_list = []
     for index in index_list:
         str_index_list.append(str(index))
@@ -400,6 +498,12 @@ def dele_profile(index_list):
 
 	
 def get_css_str(co):
+    '''
+    Args:
+        co: column number from the front-end
+    Returns:
+        1. HTML string to render the CSS part.
+    '''
     if co == '-':
         return "<link rel='stylesheet' type='text/css' href='./static/dynamic_plot.css'>"
     else:
