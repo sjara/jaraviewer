@@ -144,6 +144,13 @@
                                         }
                                         /* Range for user to select */
                                         $('#daterange input').daterangepicker({
+                                            /*
+                                            locale: (object) Allows you to provide localized strings for buttons and labels, customize the date display format, and change the first day of week for the calendars
+
+                                            ranges: (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range
+
+                                            */
+
                                             locale: {
                                                 format: 'YYYY-MM-DD' 
                                             },
@@ -152,18 +159,8 @@
                                                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
                                                 'Current Month': [moment().startOf('month'), moment().endOf('month')],
                                                 'Previous Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                                            }, cb
-                                        });
-
-                                        /* Apply Button */
-                                        $('#daterange').on('apply.daterangepicker', function(ev, picker) {
-                                            $(this).find("input").val(picker.startDate.format("YYYY-MM-DD") + ' - ' + picker.endDate.format("YYYY-MM-DD"));
-                                        });
-
-                                        /* Cancel Button */
-                                        $('#daterange').on('cancel.daterangepicker', function(ev, picker){
-                                            $(this).find("input").val('');
-                                        });
+                                            }
+                                        }, cb);
                                     });
                                 </script>
                             </div>       
