@@ -202,34 +202,23 @@
 			<!-- Validate subject and plot type checkboxes -->
 			<script type="text/javascript">
                             function valthisform(){
-                                
-                                // catching subject checkboxes
-                                var subjectchecked = false;
-                                var subjectcheckbox = document.getElementsByName("subject");
-                                
-                                for (var i = 0; i<subjectcheckbox.length; i++){
-                                    if (subjectcheckbox[i].checked){
-                                        subjectchecked = true;
-                                        break;
-                                    }
-                                }
-                                if (subjectchecked == false){
-                                    alert("Please select a subject.");
-                                }
-
-
-                                // catching plot type checkboxes
-                                var plotcheckbox = document.getElementsByName("plotType");
-                                var plotchecked = false;
-                                for (var i = 0; i<plotcheckbox.length; i++){
-                                    if (plotcheckbox[i].checked){
-                                        plotchecked = true;
-                                        break;
-                                    }
-                                }
-                                if (plotchecked == false){
-                                    alert("Please select a plot type.");
-                                }
+                    
+                    		// catching subject checkboxes
+                    		if( $("[name='subject']:checked").length == 0){
+                    			alert("Please select a subject.");
+                    			$("[name='subject']").attr("required", "required");
+                    		} else {
+                    			$("[name=subject]").removeAttr("required");
+                    		}
+				
+				// catching plottype checkboxes
+                    		if( $("[name='plotType']:checked").length == 0){
+                    			alert("Please select a plot type.");
+                    			$("[name='plotType']").attr("required", "required");
+                    			
+                    		} else {
+                    			$("[name=plotType]").removeAttr("required");
+                    		}
                             }
                         </script>
 
