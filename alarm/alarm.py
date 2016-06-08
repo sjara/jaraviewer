@@ -17,7 +17,7 @@ class Alarm(object):
     an email when given conditions are true.
     """
 
-    def __init__(self, threshold = 0, subjects = [], subscribers = [], log = False, belowThreshold = False, aboveThreshold = False, missingData = False):
+    def __init__(self, threshold = 0, subjects = [], subscribers = [], date = date.today(), log = False, belowThreshold = False, aboveThreshold = False, missingData = False):
 
         """
         Sets up instance variables that will be needed later on, and sets
@@ -28,6 +28,7 @@ class Alarm(object):
             subjects        - A list of strings containing the names of animals to check the data for
             subscribers     - A list of strings containing the emails of those to alert when alarms are set off
             log             - A boolean flag on whether to keep a log of debug/error/info messages
+	    date            - A datetime object specifying the date to compare with
             belowThreshold  - A boolean flag to check if animals are below the passed in threshold 
             aboveThreshold  - A boolean flag to check if animals are above the passed in threshold 
             missingData     - A boolean flag to check if data for the passed in animals is missing
@@ -45,6 +46,7 @@ class Alarm(object):
         self.subjects       = subjects
         self.subscribers    = subscribers
         self.log            = log
+	self.date	    = date
 
         # Information from parsed filepath
         self.subjectName        = None
@@ -87,13 +89,12 @@ class Alarm(object):
                         # Get the date from the name and format it in ISO format to compare to the current date.
                         experimentDate  = name.split("_")[-1]
                         isoDate         = experimentDate[:4] + "-" + experimentDate[4:6] + "-" + experimentDate[6:8]
-                        today           = date.today() 
 
                         if(self.log):
-                            logging.debug("Comparing date: " + str(isoDate) + " to " + str(today) + " (today)")
+                            logging.debug("Comparing date: " + str(isoDate) + " to " + str(self.date) + " (today)")
 
                         # We only want data from today from an animal that we care about
-                        if(today == extrafuncs.parse_isodate(isoDate) and extension == "h5" and animal in name):
+                        if(self.date == extrafuncs.parse_isodate(isoDate) and extension == "h5" and animal in name):
                             try:
                                 full_path = os.path.join(path, element)
                                 self.behavData.append((full_path, loadbehavior.BehaviorData(full_path, readmode='full')))
