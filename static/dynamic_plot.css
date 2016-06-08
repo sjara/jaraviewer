@@ -11,10 +11,12 @@ ul.img_customer {
 	white-space: auto;
 	overflow-x: auto;
 	float: left;
-	background-color: #ddd;
+	/*background-color: #ddd;*/
 }
 img {
 	width: var(--widthX);/*please don't change the value from here*/
 	height: 280px; 
 }
-
+li {
+	list-style-type: none;
+}
