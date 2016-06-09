@@ -450,7 +450,7 @@ def format_profile(profile_list):
             one_pro_str += ', '
         print one_pro_str,profile['index']
         is_break = "<br>"
-        profile_str += "<input type ='checkbox' id='{index1}' name='profile' value='{index2}' class='hidden_profile'>	<label class='' for='{index3}'>	<div class=''>{prof}</div>	</label> {is_bre}".format(index1=str(profile['index']),index2=str(profile['index']),index3=str(profile['index']),prof=one_pro_str,is_bre=is_break)
+        profile_str += "<input type ='checkbox' id='{index1}' name='profile' value='{index2}' class='hidden_profile'>	<label class='label_profile' for='{index3}'>	<div class='label_name'>{prof}</div>	</label> {is_bre}".format(index1=str(profile['index']),index2=str(profile['index']),index3=str(profile['index']),prof=one_pro_str,is_bre=is_break)
         count += 1
     return profile_str
 	
