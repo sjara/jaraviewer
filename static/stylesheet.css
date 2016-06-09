@@ -127,3 +127,20 @@ body {
 	border-radius: 4px;  /* round corner*/
 	opacity:0.5;
 }
+
+
+.hidden_profile{
+	/*visibility: hidden; */ /*hide checkboxes*/
+	position: absolute;
+	width: 200px;
+	padding: 10px;
+	
+}
+
+.hidden_profile:checked+label{
+	border-radius: 5px;
+	background: #ffff80;
+	padding: 10px;
+	width: 200px;
+
+}
