@@ -36,27 +36,28 @@ body {
 	border-radius: 4px;  /* round corner*/
 }
 
-.label_item {
-	border: outset;
+.label_ploticon {
+        /* background-image: linear-gradient(to bottom,#fff,#e8e8e8); */
+	border-color: #444444;
+	border: solid 2px; /* outset #444444 */
+	border-radius: 8px;  /* round corner*/
 	display: inline-block;
-	height: 70px;
+	height: 76px;
 	margin-right: 20px;
 	margin-bottom: 30px;
 	text-decoration: none;
-	width: 85px;
+	width: 84px;
 	vertical-align: top;
 	padding-bottom: 10px;
 	text-align:center;
-	opacity: .5; /* initial gray*/
-	border-radius: 10px;  /* round corner*/
+	opacity: .25; /* initial gray*/
 }
 
-.hidden_subject:checked + label {
-	/*border: 2px inset ; /* white border when clicked*/
-	opacity: 1;
+img.icon{
+    width: 64px;
+    padding-top: 5px;
+    padding-bottom: 6px;
 }
-
-/* .label_name {text-align: center;} */
 
 .hidden_plot {
 	visibility: hidden;
@@ -64,9 +65,17 @@ body {
 }
 
 .hidden_plot:checked + label {
-	border: 2px inset #ff3333 ; 
-	opacity: .9;
+	/* border: 2px inset #ff3333 ; */
+	opacity: 0.8;
 }
+
+
+.hidden_subject:checked + label {
+	/*border: 2px inset ; /* white border when clicked*/
+	opacity: 1;
+}
+
+/* .label_name {text-align: center;} */
 
 
 .hidden_date:checked + label{
@@ -140,5 +149,8 @@ body {
 	background: #ffff80;
 	padding: 10px;
 	width: 200px;
-
 }
+/*	background: #ffff80; */
+
+
+

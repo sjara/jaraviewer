@@ -102,20 +102,20 @@
                         <div class="col-sm-6">
                                 
                             <input type="checkbox" id="psychometric" value="psychometric" name="plotType" class="hidden_plot">
-                            <label class="label_item" for="psychometric">
-                                <img src="static/line.png" alt="">
+                            <label class="label_ploticon" for="psychometric">
+                                <img class="icon" src="static/psychometric.svg" alt="">
                                 Psychometric   
                             </label>
                             
                             <input type="checkbox" id="summary" value="summary" name="plotType" class="hidden_plot">
-                            <label class="label_item" for="summary">
-                                <img src="static/bar.png" alt="">
+                            <label class="label_ploticon" for="summary">
+                                <img class="icon" src="static/summary.svg" alt="">
                                 Summary
                             </label>
                             
                             <input type="checkbox" id="dynamics" value="dynamics" name="plotType" class="hidden_plot">
-                            <label class="label_item" for="dynamics">
-                                <img src="static/stats.png" alt="">
+                            <label class="label_ploticon" for="dynamics">
+                                <img class="icon" src="static/dynamics.svg" alt="">
                                 Dynamics
                             </label>
                         </div>
@@ -140,20 +140,22 @@
                                         /* Range for user to select */
                                         $('#daterange input').daterangepicker({
                                             /*
-                                            locale: (object) Allows you to provide localized strings for buttons and labels, customize the date display format, and change the first day of week for the calendars
-
-                                            ranges: (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range
-
+                                            locale: (object) Allows you to provide localized strings for buttons and labels,
+                                                     customize the date display format, and change the first day of week for the calendars
+                                            ranges: (object) Set predefined date ranges the user can select from.
+                                                    Each key is the label for the range, and its value an array with
+				                    two dates representing the bounds of the range
                                             */
 
                                             locale: {
                                                 format: 'YYYY-MM-DD' 
                                             },
                                             ranges: {
+				                'test': [moment('2016-05-01','YYYY-MM-DD'),moment('2016-05-02','YYYY-MM-DD')],
                                                 'Today': [moment(), moment()],
                                                 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                                                'Current Month': [moment().startOf('month'), moment().endOf('month')],
-                                                'Previous Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                                                //'Current Month': [moment().startOf('month'), moment().endOf('month')],
+                                                //'Previous Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
                                             }
                                         }, cb);
                                     });
