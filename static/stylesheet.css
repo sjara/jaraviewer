@@ -1,6 +1,20 @@
+span.jara {
+    font-size: 140%;
+    font-family: "Source Sans Pro", "Open sans", sans-serif;
+    font-weight: 600;
+    color: #52898f; /* Blueish aqua */
+}
+span.lab {
+    font-size: 140%;
+    font-family: "Source Sans Pro", "Open sans", sans-serif;
+    font-weight: 600;
+    color: rgb(153, 153, 153);
+}
+
 body {
-  padding-top: 70px;
-  padding-bottom: 30px;
+    font-family: "Open sans", sans-serif;
+    padding-top: 70px;
+    padding-bottom: 30px;
 }
 
 .theme-dropdown .dropdown-menu {
