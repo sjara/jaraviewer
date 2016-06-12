@@ -19,7 +19,7 @@ EXPERIMENTER = 'santiago'	#name for the EXPERIMENTER
 paradigm = '2afc'	#name for the paradigm
 static_group_width = 200	#width to show the group name in static mode
 make_up_br = 200	#leaving a little more space horizontally for static mode
-subject_br = 4	#the number of mice checkboxes will be showed in one line in the home page
+SUBJECTS_PER_ROW = 4	#the number of mice checkboxes will be showed in one line in the home page
 link_tag = '/link'	#tag name for sharing link and rendering plots function, need to change the 'link_tag' in 'jaraviewerapp.py' if this is changed
 
 #indexes for extracting the date 
@@ -55,9 +55,11 @@ def get_mice():
     mice_file.close()
     return mice
 	
-#function to generate the strings of html for mouse selecting
+
 def format_index(mic):
     '''
+    Generate HTML for subject buttons.
+
     Args:
         mic: A list to store the mice
     Returns:
@@ -67,9 +69,16 @@ def format_index(mic):
     count = 1
     is_break = ""
     for mouse in mic:
-        if count%subject_br == 0:
+        if count%SUBJECTS_PER_ROW == 0:
             is_break = "<br>"
-        mouse_str += "<input type ='checkbox' id='{sub}' name='subject' value='{subj1}' class='hidden_subject'>	<label class='label_subject btn btn-primary' for='{sub2}'>	<div class='label_name'>{subj2}</div>	</label> {is_bre}".format(sub=mouse,subj1=mouse,sub2=mouse,subj2=mouse,is_bre=is_break)
+        '''
+        mouse_str += "<input type ='checkbox' id='{sub}' name='subject' value='{subj1}' class='hidden_subject'>\n".format(sub=mouse,subj1=mouse)
+        mouse_str += "<label class='label_subject btn btn-primary' for='{sub2}'>\n".format(sub2=mouse)
+        mouse_str += "<div class='label_name'>{subj2}</div>	</label> {is_bre}\n".format(subj2=mouse,is_bre=is_break)
+        '''
+        mouse_str += "<input type ='checkbox' id='{sub}' name='subject' value='{subj1}' class='hidden_subject'>\n".format(sub=mouse,subj1=mouse)
+        mouse_str += "<label class='label_subject btn btn-primary' for='{sub2}'>\n".format(sub2=mouse)
+        mouse_str += "{subj2}</label>{is_bre}\n".format(subj2=mouse,is_bre=is_break)
         count += 1
         is_break = ""
     return mouse_str

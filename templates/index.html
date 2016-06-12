@@ -8,7 +8,7 @@
      
         <!-- Google Hosted jQuery (necessary for Bootstrap's JavaScript plugins)-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> 
+        <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script> 
 
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -28,7 +28,7 @@
 
     </head>
 
-    <body role="document">
+    <body>
 
         <!-- Fixed navbar -->
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -56,8 +56,8 @@
                             </ul>
                         </li>
                     </ul>
-                </div><!--/.nav-collapse -->
-            </div>
+                </div> <!--/.nav-collapse -->
+            </div> <!-- container -->
         </nav> <!-- nav bar end -->
 
         <div class="container theme-showcase" role="main">
@@ -72,7 +72,7 @@
         <div class="container">
             <!-- container 1: Form -->
             <div class="col-lg-8 vertical-line"> 
-		<form class="form-horizontal" role="form" name="form" action="/modify" method='POST'>
+		<form class="form-horizontal" name="form" action="/modify" method='POST'>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="subject">Edit subjects:</label>
                         <div class="col-sm-6">
@@ -87,7 +87,7 @@
                 </form>
                 <br>
 
-                <form class="form-horizontal" role="form" name="form" action="/execute" target="_blank" method='POST'>
+                <form class="form-horizontal" name="form" action="/execute" target="_blank" method='POST'>
                     <!-- Select Subject -->
                     <div class="form-group">
                         <label class="control-label col-sm-2">Subjects:</label><br>
@@ -103,23 +103,23 @@
                                 
                             <input type="checkbox" id="psychometric" value="psychometric" name="plotType" class="hidden_plot">
                             <label class="label_item" for="psychometric">
-                                <img src="static/line.png">
-                                <div class="label_name">Psychometric</div>    
+                                <img src="static/line.png" alt="">
+                                Psychometric   
                             </label>
                             
                             <input type="checkbox" id="summary" value="summary" name="plotType" class="hidden_plot">
                             <label class="label_item" for="summary">
-                                <img src="static/bar.png">
-                                <div class="label_name">Summary</div>
+                                <img src="static/bar.png" alt="">
+                                Summary
                             </label>
                             
                             <input type="checkbox" id="dynamics" value="dynamics" name="plotType" class="hidden_plot">
                             <label class="label_item" for="dynamics">
-                                <img src="static/stats.png">
-                                <div class="label_name">Dynamics</div>
+                                <img src="static/stats.png" alt="">
+                                Dynamics
                             </label>
                         </div>
-                    </div>
+                    </div> <!-- form-group -->
                     <br>
 
                     <!-- Date Range Picker -->
@@ -160,7 +160,7 @@
                                 </script>
                             </div>       
                         </div>
-                    </div>
+                    </div> <!-- form-group -->
 
                     <!--Columns  -->
                     <div class="form-group">
@@ -175,7 +175,7 @@
                                 <option value="5">5</option>
                             </select>
                         </div>
-                    </div>
+                    </div>  <!-- form-group -->
 
                     <br>
                     <div class="form-group">
@@ -272,26 +272,21 @@
                                     $profileLabel.click(profileClickHandler(data));
                                 }})
                         </script>
-                    </div>
+                    </div> <!-- form-group -->
                 </form>
             </div> <!-- container 1 -->
 
 
-
             <!-- container 2: Display Profiles  -->
             <div class="col-lg-4">
-                <div id="display-data"/>
-
-                    <h3 align="center">Saved Profiles</h3>
+                <div id="display-data">
+                    <h3>Saved Profiles</h3>
                     <div class="form-group">
-
-                        
+		    </div>
                 </div>
-
-            </div> <!-- 2 -->
-
+            </div> <!-- container 2 -->
             
-        </div>
+        </div> <!-- container (main) -->
     </body>
 </html>
 

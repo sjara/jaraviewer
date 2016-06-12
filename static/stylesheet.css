@@ -56,9 +56,7 @@ body {
 	opacity: 1;
 }
 
-.label_name {
-	text-align: center;
-}
+/* .label_name {text-align: center;} */
 
 .hidden_plot {
 	visibility: hidden;
