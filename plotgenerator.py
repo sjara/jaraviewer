@@ -5,12 +5,12 @@ This version relies on jaratoolbox for making the plots.
 
 import matplotlib.pyplot as plt
 from jaratoolbox import behavioranalysis
-import settings    # FIXME: we should make this a relative import
+#import settings    # FIXME: we should make this a relative import
 import os
 
 FONTSIZE = 14
 
-def generate(plotInfo):
+def generate(plotInfo, outputpath):
     '''
     FIXME: finish this docstring
 
@@ -33,7 +33,7 @@ def generate(plotInfo):
         behavioranalysis.plot_dynamics(plotData,winsize=40,fontsize=FONTSIZE,soundfreq=freqsToUse)
     else:
         raise ValueError('Plot type {0} is not valid'.format(plotInfo['Type']))
-    outputFile = os.path.join(settings.IMAGE_PATH, plotInfo['filename'])
+    outputFile = os.path.join(outputpath, plotInfo['filename'])
     print 'Saving plot to {0}'.format(outputFile)
     plt.savefig(outputFile)
 

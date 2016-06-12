@@ -135,7 +135,7 @@ def get_plot(mice,date,plo_typ):
                     #non_exsi_file.append(out_dict['filename'])
                     #test_list=[]
                     #test_list.append(out_dict)
-                    pg.generate(plotInfo=out_dict)
+                    pg.generate(out_dict, settings.IMAGE_PATH)
     return all_file_name
 
 
