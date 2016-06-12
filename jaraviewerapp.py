@@ -17,7 +17,7 @@ port_number = settings.JARAVIEWER_PORT_NUMBER	#port number for the jaraviewer
 local_address = settings.JARAVIEWER_LOCAL_ADDRESS	#local address for the flask
 
 ### fixed variables ###
-trans_code = 302	#302 for successly transfer to anther address
+TRANS_CODE = 302	# 302 for successfully transfer to another address
 home_page = 'index.html'	#file name for the index page
 plot_page = 'plots_fixed.html'	#file name for the plot page
 modify_page = 'modify-saved-profile.html'	#file name for the modify profile page
@@ -62,7 +62,7 @@ def execute():
     Returns:
         1.Redirect to the 'initial' function.
         2.Redirect to the 'link' function.
-        trans_code: 302 for successly transfer to anther address
+        TRANS_CODE: 302 for successly transfer to anther address
     '''
     save = flask.request.form.getlist('save')
     miceSelect = flask.request.form.getlist('subject')
@@ -70,19 +70,17 @@ def execute():
     dateRange = flask.request.form['dateRange']
     colum = str(flask.request.form['columNum'])
 
-    # -- Check if user chose save --
-    if len(save) > 0:
-        save = str(save[0])
-        if save == "Save":
-            # -- Write code to the profiles file --
-            backend.write_profile(mic_lis=miceSelect,
-                                  plo_lis=plot_type_list)
-            return flask.redirect(port_name,code=trans_code)
-
-    date_list = backend.date_generator(raw_date_str = dateRange)                      # Get the list of dates
-    plot_file_name = backend.get_plot(miceSelect, date_list, plo_typ=plot_type_list)  # Get the list of file names
-    link_str = backend.link_gene(plo_fil_nam=plot_file_name,col=colum)	          # Get the string for sharing link
-    return flask.redirect(link_str,code=trans_code)
+    # -- Check if user chose SaveProfile --
+    if flask.request.form['submit'] == 'saveProfile':
+        backend.write_profile(mic_lis=miceSelect,
+                              plo_lis=plot_type_list)
+        return flask.redirect(port_name,code=TRANS_CODE)
+    # -- Otherwise, user chose submit --
+    else:
+        date_list = backend.date_generator(raw_date_str = dateRange)                      # Get the list of dates
+        plot_file_name = backend.get_plot(miceSelect, date_list, plo_typ=plot_type_list)  # Get the list of file names
+        link_str = backend.link_gene(plo_fil_nam=plot_file_name,col=colum)	          # Get the string for sharing link
+        return flask.redirect(link_str,code=TRANS_CODE)
 
 
 # -- Show the page with the plots --
@@ -116,7 +114,7 @@ def modify():
         None
     Returns:
         Redirect to the 'initial' function.
-        trans_code: 302 for successly transfer to anther address
+        TRANS_CODE: 302 for successly transfer to anther address
     '''
     sub_str = flask.request.form['subject']
     result = True
@@ -126,10 +124,10 @@ def modify():
         result = backend.del_subject(sub=sub_str)	# Delete one subject from subjects file
     else:
         print "Error"
-        return flask.redirect(port_name,code=trans_code)
+        return flask.redirect(port_name,code=TRANS_CODE)
         if result == False:
             print "Error"
-    return flask.redirect(port_name,code=trans_code)
+    return flask.redirect(port_name,code=TRANS_CODE)
 
 
 # -- Render the profile page --
@@ -155,11 +153,11 @@ def delete_profile():
         None
     Returns:
         Redirect to the 'initial' function.
-        trans_code: 302 for successly transfer to anther address
+        TRANS_CODE: 302 for successly transfer to anther address
     '''
     check_list = flask.request.form.getlist('profile')	# See which profile the user choose
     backend.dele_profile(index_list=check_list)	        # Delete from file
-    return flask.redirect(port_name,code=trans_code)
+    return flask.redirect(port_name,code=TRANS_CODE)
 
 if __name__ == "__main__":
     app.run(host=local_address,debug=True,port=port_number)

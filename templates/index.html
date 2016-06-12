@@ -74,7 +74,7 @@
             <div class="col-lg-8 vertical-line"> 
 		<form class="form-horizontal" role="form" name="form" action="/modify" method='POST'>
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="subject">Modify Subject:</label>
+                        <label class="control-label col-sm-2" for="subject">Edit subjects:</label>
                         <div class="col-sm-6">
                             <input type="text" class="form-control" id="subject" name='subject'>
                         </div>
@@ -86,19 +86,15 @@
 
                 </form>
                 <br>
-                <form class="form-horizontal" role="form" name="form" action="/execute" target="_blank" method='POST'>
 
+                <form class="form-horizontal" role="form" name="form" action="/execute" target="_blank" method='POST'>
                     <!-- Select Subject -->
                     <div class="form-group">
                         <label class="control-label col-sm-2">Subjects:</label><br>
                         <div class="col-sm-10">
                             {{ mice|safe }}
-
-
-
                         </div>
                     </div>
-
                    
                     <!-- Select Plot Type -->
                     <div class="form-group">
@@ -124,7 +120,6 @@
                             </label>
                         </div>
                     </div>
-
                     <br>
 
                     <!-- Date Range Picker -->
@@ -169,7 +164,7 @@
 
                     <!--Columns  -->
                     <div class="form-group">
-                        <label class="control-label col-sm-2" for="column-num">Column Number:</label>    
+                        <label class="control-label col-sm-2" for="column-num">Columns:</label>    
                         <div class="col-sm-6">
                             <select class="form-control" id="column-num" name="columNum" required>
                                 <option value="-">-</option>
@@ -186,26 +181,18 @@
                     <div class="form-group">
                         <!-- Buttons -->
                         <div class="text-center" >
-                            <!-- input type button, so doesn't submit upon click -->
-                           <!--  <input type="button" id="clear-btn" class="btn btn-default" name="submit" value="clear"/> -->
                             <button type="reset" class="btn btn-warning" name="submit" value="reset">Reset </button>
-                            <input type="checkbox" id="save-profile-btn" class="hidden_save_btn" name="save" value="Save"/>
-							<label class="label_save_btn btn btn-success" for="save-profile-btn">
-								<div class="label_name">Save</div>
-							</label>
-                            <button type="submit" class="btn btn-primary" name="submit" value="submit" onClick = "valthisform();">Submit</button>
-                           
+                            <button type="submit" class="btn btn-default" name="submit" value="saveProfile" onClick="valthisform();">Save profile</button>
+                            <button type="submit" class="btn btn-primary" name="submit" value="submit" onClick="valthisform();">Submit</button>
                         </div>
-
 			
 			
 			<!-- Validate subject and plot type checkboxes -->
 			<script type="text/javascript">
                             function valthisform(){
-                    
-                    		// catching subject checkboxes
+                                // catching subject checkboxes
                     		if( $("[name='subject']:checked").length == 0){
-                    			alert("Please select a subject.");
+                    			//alert("Please select a subject.");
                     			$("[name='subject']").attr("required", "required");
                     		} else {
                     			$("[name=subject]").removeAttr("required");
@@ -213,7 +200,7 @@
 				
 				// catching plottype checkboxes
                     		if( $("[name='plotType']:checked").length == 0){
-                    			alert("Please select a plot type.");
+                    			//alert("Please select a plot type.");
                     			$("[name='plotType']").attr("required", "required");
                     			
                     		} else {
@@ -225,7 +212,6 @@
                         <!-- Clear Data Function to Reset values for profileClickHandler --> 
                         <script type="text/javascript">
                             function clearData() {
-
                                     $("[name='subject']").prop("checked", false);
                                     $("[name='plotType']").prop("checked", false);
                                     $("[name='dateRange']").val($(this).data('original-value'));
