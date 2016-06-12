@@ -1,22 +1,20 @@
-:root{
-	--widthX: 300px;
-	/*change the width of image here,!!!!!please left the space, it is import!!!!!!!!!!*/
-} 
-ul.img_customer li {
-	float: left;
+body{
+	background-color: #fff;
 }
-ul.img_customer {
+
+div.session {
 	margin: 0;
 	padding: 0;
-	white-space: auto;
-	overflow-x: auto;
+	white-space: nowrap;
 	float: left;
-	/*background-color: #ddd;*/
+}
+
+div.img_group {
+	margin: 0;
+	padding: 10px 6px;
+	white-space: nowrap;
+	float: left;
 }
 img {
-	width: var(--widthX);/*please don't change the value from here*/
-	height: 280px; 
-}
-li {
-	list-style-type: none;
+	width: 300px;
 }

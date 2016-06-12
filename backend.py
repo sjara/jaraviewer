@@ -9,7 +9,6 @@ import sys
 import os
 import shutil
 
-import jaratoolbox
 from jaratoolbox import loadbehavior
 
 from jaraviewer import settings
@@ -120,6 +119,7 @@ def get_plot(mice,date,plo_typ):
     for subject in subject_list:
         for session in session_list:
             behavData = None
+            # FIXME: specify an exception type
             try:
                 behavFile = loadbehavior.path_to_behavior_data(subject,EXPERIMENTER,paradigm,session)
                 behavData = loadbehavior.FlexCategBehaviorData(behavFile,readmode='full')
@@ -131,7 +131,7 @@ def get_plot(mice,date,plo_typ):
             for plot_type in plo_typ:
                 out_dict = form_out_put(sub=subject,typ=plot_type,data=behavData,sess=session)
                 all_file_name.append(out_dict['filename'])
-                if not check_exist(fil_nam=out_dict['filename']):
+                if True: #not check_exist(fil_nam=out_dict['filename']):
                     #non_exsi_file.append(out_dict['filename'])
                     #test_list=[]
                     #test_list.append(out_dict)
@@ -214,6 +214,7 @@ def plot_render(plo_fil_nam,col):
         counter = 0
         plot_str = ""
 
+        '''
         for group in mice_date:
             ima_num = len(mice_date[group])
             style_wid = width*ima_num
@@ -230,7 +231,21 @@ def plot_render(plo_fil_nam,col):
             plot_str += gro_str
             plot_str += '</ul>'
         return plot_str
-
+        '''
+        for group in mice_date:
+            ima_num = len(mice_date[group])
+            #style_wid = width*ima_num
+            gro_str  = "  <div class='session'>\n"
+            gro_str += "    <div>{0}</div>\n".format(group)
+            gro_str += "    <div class='img_group'>"
+            for img in mice_date[group]:
+                imgfilepath = os.path.join(settings.IMAGE_PATH,img)
+                gro_str += "        <img src={0} alt=''>\n".format(imgfilepath)
+            gro_str += "    </div>\n"
+            gro_str += "  </div>\n\n"
+            plot_str += gro_str
+        return plot_str
+        
 	
     #case for static
     col = int(col)

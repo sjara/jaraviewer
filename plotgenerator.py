@@ -8,7 +8,7 @@ from jaratoolbox import behavioranalysis
 #import settings    # FIXME: we should make this a relative import
 import os
 
-FONTSIZE = 14
+FONTSIZE = 20
 
 def generate(plotInfo, outputpath):
     '''
@@ -21,7 +21,8 @@ def generate(plotInfo, outputpath):
     'data': raw behavior data created by jaratoolbox.loadbehavior.FlexCategBehaviorData()
 
     Files are saved to settings.IMAGE_PATH
-   : '''
+    '''
+    plt.clf()
     plotData = plotInfo['data']
     if plotInfo['type'] == 'psychometric':
         behavioranalysis.plot_frequency_psycurve(plotData,fontsize=FONTSIZE)
@@ -36,4 +37,5 @@ def generate(plotInfo, outputpath):
     outputFile = os.path.join(outputpath, plotInfo['filename'])
     print 'Saving plot to {0}'.format(outputFile)
     plt.savefig(outputFile)
+    #plt.close()
 
