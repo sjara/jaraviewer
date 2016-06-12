@@ -23,9 +23,8 @@ plot_page = 'plots_fixed.html'	#file name for the plot page
 modify_page = 'modify-saved-profile.html'	#file name for the modify profile page
 link_tag = '/link'	#tag name for sharing link and rendering plots function, need to change the 'link_tag' in 'backend.py' if this is changed
 
-app = flask.Flask(__name__
-					,static_folder = 'static'	#One method for leading the image path
-					)
+app = flask.Flask(__name__, static_folder = 'static')
+
 
 '''					
 #Another method for leading the image path

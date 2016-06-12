@@ -47,11 +47,11 @@ def get_mice():
     '''
     mice = []
     try:
-        mice_file = open(settings.SUBJECT_PATH,"r")
+        mice_file = open(settings.SUBJECTS_FILE,"r")
     except:
-        mice_file = open(settings.SUBJECT_PATH,"w")
+        mice_file = open(settings.SUBJECTS_FILE,"w")
         mice_file.close()
-        mice_file = open(settings.SUBJECT_PATH,"r")
+        mice_file = open(settings.SUBJECTS_FILE,"r")
     mice = mice_file.read().splitlines()
     mice_file.close()
     return mice
@@ -306,7 +306,7 @@ def add_subject(sub):
         2. True: Successfully adding the mouse
     '''
     try:
-        mice_file = open(settings.SUBJECT_PATH,"r+")
+        mice_file = open(settings.SUBJECTS_FILE,"r+")
     except:
         print "Can't open the file"
     mice = mice_file.read().splitlines()
@@ -315,7 +315,7 @@ def add_subject(sub):
     sub += '\n'
     mice_file.close()
     try:
-        mice_file = open(settings.SUBJECT_PATH,"a+")
+        mice_file = open(settings.SUBJECTS_FILE,"a+")
     except:
         print "Can't open the file"
     mice_file.write(sub)
@@ -331,7 +331,7 @@ def del_subject(sub):
         1. False: Failed to delete the mouse
         2. True: Successfully deleting the mouse
     '''
-    file_path = settings.SUBJECT_PATH
+    file_path = settings.SUBJECTS_FILE
     try:
         mice_file = open(file_path,"r")
     except:
@@ -371,7 +371,7 @@ def write_profile(mic_lis,plo_lis):
     Returns:
         None
     '''
-    profile = open(settings.SAVE_PROFILE,'a+')
+    profile = open(settings.PROFILES_FILE,'a+')
     wri_str = ""
     for mouse in mic_lis:
         mouse = str(mouse) + ','
@@ -398,11 +398,11 @@ def read_profile():
         res_list: A list contains all the profile information
     '''
     try:
-        profile = open(settings.SAVE_PROFILE,'r')
+        profile = open(settings.PROFILES_FILE,'r')
     except:
-        profile = open(settings.SAVE_PROFILE,'w')
+        profile = open(settings.PROFILES_FILE,'w')
         profile.close()
-        profile = profile = open(settings.SAVE_PROFILE,'r+')
+        profile = profile = open(settings.PROFILES_FILE,'r+')
     res_list = []
     pro_list = profile.read().splitlines()
     profile.close()
@@ -467,7 +467,7 @@ def dele_profile(index_list):
     str_index_list = []
     for index in index_list:
         str_index_list.append(str(index))
-    file_path = settings.SAVE_PROFILE
+    file_path = settings.PROFILES_FILE
     try:
         profile = open(file_path,"r+")
     except:
