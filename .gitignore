@@ -1,3 +1,7 @@
 *.pyc
 *~
+settings.py
 static/output/
+static/old/
+old/
+
