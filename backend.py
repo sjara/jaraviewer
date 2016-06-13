@@ -223,29 +223,10 @@ def plot_render(plo_fil_nam,col):
         counter = 0
         plot_str = ""
 
-        '''
         for group in mice_date:
             ima_num = len(mice_date[group])
-            style_wid = width*ima_num
-            gro_str = ""
-            gro_str += "<ul class='img_customer' style='width:"+str(style_wid)+"px'>"
-            gro_str += "<p>"+group+"</p>"
-            for img in mice_date[group]:
-                ima_src = ""
-                ima_src = os.path.join(ima_src,settings.IMAGE_PATH)
-                ima_src = os.path.join(ima_src,img)
-                ima_str = ""
-                ima_str += "<li><img src="+ima_src+"></li>"
-                gro_str += ima_str
-            plot_str += gro_str
-            plot_str += '</ul>'
-        return plot_str
-        '''
-        for group in mice_date:
-            ima_num = len(mice_date[group])
-            #style_wid = width*ima_num
-            gro_str  = "  <div class='session'>\n"
-            gro_str += "    <div>{0}</div>\n".format(group)
+            gro_str  = "  <div class='session_group'>\n"
+            gro_str += "    <div class='session_title'>{0}</div>\n".format(group)
             gro_str += "    <div class='img_group'>"
             for img in mice_date[group]:
                 imgfilepath = os.path.join(settings.IMAGE_PATH,img)
