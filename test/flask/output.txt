@@ -1,7 +1,0 @@
-left choice: 
-{0: u'left', 1: u'right', u'none': 2, u'right': 1, 2: u'none', u'left': 0} 
-type:<type 'dict'>
-subject=adap021
-date=2016-03-10 13:40:33
-hostname=jararig7
-{u'date': '2016-03-10 13:40:33', u'trainer': 'vr', u'hostname': 'jararig7', u'experimenter': 'santiago', u'subject': 'adap021'}
