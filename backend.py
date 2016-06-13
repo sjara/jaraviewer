@@ -19,7 +19,7 @@ EXPERIMENTER = 'santiago'	#name for the EXPERIMENTER
 paradigm = '2afc'	#name for the paradigm
 static_group_width = 200	#width to show the group name in static mode
 make_up_br = 200	#leaving a little more space horizontally for static mode
-SUBJECTS_PER_ROW = 4	#the number of mice checkboxes will be showed in one line in the home page
+SUBJECTS_PER_ROW = 5	#the number of mice checkboxes will be showed in one line in the home page
 link_tag = '/link'	#tag name for sharing link and rendering plots function, need to change the 'link_tag' in 'jaraviewerapp.py' if this is changed
 
 #indexes for extracting the date 
