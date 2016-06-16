@@ -98,7 +98,7 @@
                 </form>
                 <br>
 
-                <form class="form-horizontal" name="form" action="/execute" target="_blank" method='POST'>
+                <form class="form-horizontal" name="form" action="/execute" method='POST'>
                     <!-- Select Subject -->
                     <div class="form-group">
                         <label class="control-label col-sm-2">Subjects:</label><br>
@@ -195,8 +195,10 @@
                         <!-- Buttons -->
                         <div class="text-center" >
                             <button type="reset" class="btn btn-warning" name="submit" value="reset">Reset </button>
-                            <button type="submit" class="btn btn-default" name="submit" value="saveProfile" onClick="valthisform();">Save profile</button>
-                            <button type="submit" class="btn btn-primary" name="submit" value="submit" onClick="valthisform();">Submit</button>
+                            <button type="submit" class="btn btn-default" name="submit" value="saveProfile"
+				    onClick="this.form.target='_self';valthisform();">Save profile</button>
+                            <button type="submit" class="btn btn-primary" name="submit" value="submit"
+				    onClick="this.form.target='_blank';valthisform();">Submit</button>
                         </div>
 			
 			
