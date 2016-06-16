@@ -36,47 +36,44 @@ END_MONTH_END = 20
 END_DAY_STA = 21
 END_DAY_END = 23
 
-#function to open 'subject.txt'
-def get_mice():
+
+def read_subjects(filename=settings.SUBJECTS_FILE):
     '''
+    Read list of subjects from a file.
+
     Args:
-        None
+        filename (str): full path to the file containing subjects.
     Returns:
-        A list to store the mice
+        subjects (list): list of strings with subject names.
     '''
-    mice = []
+    # FIXME: this is a weird way to test the file exists and create it otherwise
     try:
-        mice_file = open(settings.SUBJECTS_FILE,"r")
+        mice_file = open(filename,"r")
     except:
-        mice_file = open(settings.SUBJECTS_FILE,"w")
+        mice_file = open(filename,"w")
         mice_file.close()
-        mice_file = open(settings.SUBJECTS_FILE,"r")
-    mice = mice_file.read().splitlines()
+        mice_file = open(filename,"r")
+    subjects = mice_file.read().splitlines()
     mice_file.close()
-    return mice
+    return subjects
 	
 
-def format_index(mic):
+def subjects_buttons(subjects):
     '''
     Generate HTML for subject buttons.
 
     Args:
-        mic: A list to store the mice
+        subjects (list): list of strings with subject names.
     Returns:
-        mouse_str: HTML string for rendering the mice checkbox
+        mouse_str: HTML string for rendering the mice checkbox.
     '''
     mouse_str = ""
     count = 1
     is_break = ""
-    for mouse in mic:
+    for mouse in subjects:
         if count%SUBJECTS_PER_ROW == 0:
             is_break = "<br>"
-        '''
-        mouse_str += "<input type ='checkbox' id='{sub}' name='subject' value='{subj1}' class='hidden_subject'>\n".format(sub=mouse,subj1=mouse)
-        mouse_str += "<label class='label_subject btn btn-primary' for='{sub2}'>\n".format(sub2=mouse)
-        mouse_str += "<div class='label_name'>{subj2}</div>	</label> {is_bre}\n".format(subj2=mouse,is_bre=is_break)
-        '''
-        mouse_str += "<input type ='checkbox' id='{sub}' name='subject' value='{subj1}' class='hidden_subject'>\n".format(sub=mouse,subj1=mouse)
+        mouse_str += "<input type='checkbox' id='{sub}' name='subject' value='{subj1}' class='hidden_subject'>\n".format(sub=mouse,subj1=mouse)
         mouse_str += "<label class='label_subject btn btn-primary' for='{sub2}'>\n".format(sub2=mouse)
         mouse_str += "{subj2}</label>{is_bre}\n".format(subj2=mouse,is_bre=is_break)
         count += 1
@@ -301,29 +298,31 @@ def link_gene(plo_fil_nam,col):
     link_str += "&col=" + str(col)
     return link_str
 
-#functon for adding subject
-def add_subject(sub):
+
+def add_subject(subject, filename=settings.SUBJECTS_FILE):
     '''
+    Add a subject to the subjects file.
+    
     Args:
-        sub: A string for the mouse name to add
+        subject (str): name of the subject to add.
+        filename (str): full path to the file containing subjects.
     Returns:
-        1. False: Failed to add the mouse
-        2. True: Successfully adding the mouse
+        (bool): True=success, False=failed to add subject.
     '''
     try:
-        mice_file = open(settings.SUBJECTS_FILE,"r+")
+        mice_file = open(filename,"r+")
     except:
         print "Can't open the file"
     mice = mice_file.read().splitlines()
-    if sub in mice:
+    if subject in mice:
         return False
-    sub += '\n'
+    subject += '\n'
     mice_file.close()
     try:
-        mice_file = open(settings.SUBJECTS_FILE,"a+")
+        mice_file = open(filename,"a+")
     except:
         print "Can't open the file"
-    mice_file.write(sub)
+    mice_file.write(subject)
     mice_file.close()
     return True
 
@@ -394,20 +393,22 @@ def write_profile(mic_lis,plo_lis):
             time.sleep(1)
     profile.close()
 
-#read profile from file
-def read_profile():
+
+def read_profiles(filename=settings.PROFILES_FILE):
     '''
+    Read profiles from a file.
+
     Args:
-        None
+        filename (str): full path to the file containing subjects.
     Returns:
         res_list: A list contains all the profile information
     '''
     try:
-        profile = open(settings.PROFILES_FILE,'r')
+        profile = open(filename,'r')
     except:
-        profile = open(settings.PROFILES_FILE,'w')
+        profile = open(filename,'w')
         profile.close()
-        profile = profile = open(settings.PROFILES_FILE,'r+')
+        profile = profile = open(filename,'r+')
     res_list = []
     pro_list = profile.read().splitlines()
     profile.close()

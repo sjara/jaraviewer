@@ -4,61 +4,53 @@
 Main application that uses Flask to receive requests from the fron-end and renders the results page.
 '''
 
-import os
-import numpy
+
 import flask
-import jinja2
+import os
 
 from jaraviewer import backend
 from jaraviewer import settings
 
-port_name = settings.JARAVIEWER_PORT_NAME	#tag name for 'initial' function
+# -- Get settings --
+PORT_NAME = settings.JARAVIEWER_PORT_NAME	#tag name for 'initial' function
 port_number = settings.JARAVIEWER_PORT_NUMBER	#port number for the jaraviewer
 local_address = settings.JARAVIEWER_LOCAL_ADDRESS	#local address for the flask
 
-### fixed variables ###
-TRANS_CODE = 302	# 302 for successfully transfer to another address
-home_page = 'index.html'	#file name for the index page
-plot_page = 'plots_fixed.html'	#file name for the plot page
-modify_page = 'modify-saved-profile.html'	#file name for the modify profile page
-link_tag = '/link'	#tag name for sharing link and rendering plots function, need to change the 'link_tag' in 'backend.py' if this is changed
+# -- Define template locations --
+TRANS_CODE = 302               # 302 for successfully transfer to another address
+home_page = 'index.html'       # Main page template
+plot_page = 'plots_fixed.html' # Results page template
+modify_page = 'modify-saved-profile.html'  # Page for deleting profiles
+
+link_tag = '/link'
+# tag name for sharing link and rendering plots function,
+# need to change the 'link_tag' in 'backend.py' if this is changed
+
 
 app = flask.Flask(__name__, static_folder = 'static')
 
 
-'''					
-#Another method for leading the image path
-APP_ROOT = os.path.dirname(os.path.abspath(__file__)) 
-my_loader = jinja2.ChoiceLoader([
-        app.jinja_loader,
-        jinja2.FileSystemLoader(APP_ROOT),
-    ])
-app.jinja_loader = my_loader
-'''
-
-# -- Read the homepage --
-@app.route(port_name)
+#@app.route(PORT_NAME)
+@app.route('/')
 def initial():
     '''
-    Args:
-        None
+    Render the main page.
+
     Returns:
-        A rendered home page.
-        mice_str: HTML string for building up mice checkbox
-        profile: HTML string for showing the profile
+        The main page as HTML (including existing subjects and profiles)
     '''
-    mice = backend.get_mice()	          # open the 'subject.txt'
-    mice_str = backend.format_index(mic=mice) # get the html string
-    profile = backend.read_profile()	  # function for profiles
+    mice = backend.read_subjects()             # Load list of mice
+    mice_str = backend.subjects_buttons(mice)  # Make html for buttons
+    profile = backend.read_profiles()          # Load profiles
     return flask.render_template(home_page, mice=mice_str, list_profiles=profile)
 
 
-# -- Get the information from the home page and excute the plot generator program --
+
 @app.route('/execute',methods=['POST'])
 def execute():
     '''
-    Args:
-        None
+    Get parameters from main page and render plots.
+
     Returns:
         1.Redirect to the 'initial' function.
         2.Redirect to the 'link' function.
@@ -74,7 +66,7 @@ def execute():
     if flask.request.form['submit'] == 'saveProfile':
         backend.write_profile(mic_lis=miceSelect,
                               plo_lis=plot_type_list)
-        return flask.redirect(port_name,code=TRANS_CODE)
+        return flask.redirect(PORT_NAME,code=TRANS_CODE)
     # -- Otherwise, user chose submit --
     else:
         date_list = backend.date_generator(raw_date_str = dateRange)                      # Get the list of dates
@@ -106,28 +98,23 @@ def link():
     return flask.render_template(plot_page,mou_str=plot_str,cs_str=css_str)
 
 
-# -- Modify subjects (add/delete) --
 @app.route('/modify',methods=['POST'])
 def modify():
     '''
-    Args:
-        None
+    Modify list of subjects (add or delete).
+
     Returns:
-        Redirect to the 'initial' function.
-        TRANS_CODE: 302 for successly transfer to anther address
+        Redirect to main method 'initial'.
     '''
     sub_str = flask.request.form['subject']
     result = True
     if flask.request.form['submit'] == "add":
-        result = backend.add_subject(sub=sub_str)	# Add one subject to subjects file
+        result = backend.add_subject(sub_str)	# Add one subject to subjects file
     elif flask.request.form['submit'] == "delete":
-        result = backend.del_subject(sub=sub_str)	# Delete one subject from subjects file
+        result = backend.del_subject(sub_str)	# Delete one subject from subjects file
     else:
-        print "Error"
-        return flask.redirect(port_name,code=TRANS_CODE)
-        if result == False:
-            print "Error"
-    return flask.redirect(port_name,code=TRANS_CODE)
+        flask.abort(406) # Send code for "Not acceptable"
+    return flask.redirect(flask.url_for('initial'))
 
 
 # -- Render the profile page --
@@ -157,7 +144,7 @@ def delete_profile():
     '''
     check_list = flask.request.form.getlist('profile')	# See which profile the user choose
     backend.dele_profile(index_list=check_list)	        # Delete from file
-    return flask.redirect(port_name,code=TRANS_CODE)
+    return flask.redirect(PORT_NAME,code=TRANS_CODE)
 
 if __name__ == "__main__":
     app.run(host=local_address,debug=True,port=port_number)
