@@ -83,7 +83,7 @@
         <div class="container">
             <!-- container 1: Form -->
             <div class="col-lg-8 vertical-line"> 
-		<form class="form-horizontal" name="form" action="/modify" method='POST'>
+		<form class="form-horizontal" name="form" action="{{ location|safe }}/modify" method='POST'>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="subject">Edit subjects:</label>
                         <div class="col-sm-6">
@@ -98,7 +98,7 @@
                 </form>
                 <br>
 
-                <form class="form-horizontal" name="form" action="/execute" method='POST'>
+                <form class="form-horizontal" name="form" action="{{ location|safe }}/execute" method='POST'>
                     <!-- Select Subject -->
                     <div class="form-group">
                         <label class="control-label col-sm-2">Subjects:</label><br>

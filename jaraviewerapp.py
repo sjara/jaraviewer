@@ -42,7 +42,8 @@ def initial():
     mice = backend.read_subjects()             # Load list of mice
     mice_str = backend.subjects_buttons(mice)  # Make html for buttons
     profile = backend.read_profiles()          # Load profiles
-    return flask.render_template(home_page, mice=mice_str, list_profiles=profile)
+    return flask.render_template(home_page, location=PORT_NAME,
+                                 mice=mice_str, list_profiles=profile)
 
 
 
