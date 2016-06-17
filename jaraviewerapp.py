@@ -53,9 +53,7 @@ def execute():
     Get parameters from main page and render plots.
 
     Returns:
-        1.Redirect to the 'initial' function.
-        2.Redirect to the 'link' function.
-        TRANS_CODE: 302 for successly transfer to anther address
+
     '''
     save = flask.request.form.getlist('save')
     miceSelect = flask.request.form.getlist('subject')
@@ -107,12 +105,11 @@ def modify():
     Returns:
         Redirect to main method 'initial'.
     '''
-    sub_str = flask.request.form['subject']
-    result = True
+    subjectName = flask.request.form['subject']
     if flask.request.form['submit'] == "add":
-        result = backend.add_subject(sub_str)	# Add one subject to subjects file
+        result = backend.add_subject(subjectName)	# Add one subject to subjects file
     elif flask.request.form['submit'] == "delete":
-        result = backend.del_subject(sub_str)	# Delete one subject from subjects file
+        result = backend.del_subject(subjectName)	# Delete one subject from subjects file
     else:
         flask.abort(406) # Send code for "Not acceptable"
     return flask.redirect(flask.url_for('initial'))

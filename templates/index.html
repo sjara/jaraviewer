@@ -54,7 +54,8 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <!-- <li class="active"><a href="/jaraviewer">Home</a></li> -->
-                        <li><a href="/modify_saved_profile">Delete Profiles</a></li>
+                        <!-- <li><a href="{{ location|safe }}/modify_saved_profile">Delete Profiles</a></li> -->
+                        <li><a href="{{ url_for('modify_profile') }}">Delete Profiles</a></li>
 
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Git <span class="caret"></span></a>
@@ -69,21 +70,11 @@
             </div> <!-- container -->
         </nav> <!-- nav bar end -->
 
-        <!-- Main jumbotron for a primary marketing message or call to action -->
-	<!--
-        <div class="container theme-showcase" role="main">
-            <div class="jumbotron">
-                <h1>Jara Viewer</h1>
-                <p>Online data viewer for behavior data collected in the Jaramillo lab.
-                </p>
-            </div>
-        </div>
-	-->
 
         <div class="container">
             <!-- container 1: Form -->
             <div class="col-lg-8 vertical-line"> 
-		<form class="form-horizontal" name="form" action="{{ location|safe }}/modify" method='POST'>
+		<form class="form-horizontal" name="form" action="{{ url_for('modify') }}" method='POST'>
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="subject">Edit subjects:</label>
                         <div class="col-sm-6">
@@ -98,7 +89,7 @@
                 </form>
                 <br>
 
-                <form class="form-horizontal" name="form" action="{{ location|safe }}/execute" method='POST'>
+                <form class="form-horizontal" name="form" action="{{ url_for('execute') }}" method='POST'>
                     <!-- Select Subject -->
                     <div class="form-group">
                         <label class="control-label col-sm-2">Subjects:</label><br>
