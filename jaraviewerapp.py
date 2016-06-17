@@ -59,7 +59,7 @@ def execute():
     miceSelected = flask.request.form.getlist('subject')
     plotTypeList = flask.request.form.getlist('plotType')
     dateRange = flask.request.form['dateRange']
-    nColumns = str(flask.request.form['nColumns'])
+    nColumns = str(flask.request.form['columNum'])
 
     # -- Check if user chose to save a profile --
     if flask.request.form['submit'] == 'saveProfile':
