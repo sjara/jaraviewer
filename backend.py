@@ -278,18 +278,20 @@ def plot_render(plo_fil_nam,col):
 
     return plot_str
 	
-#generate the string of URL for sharing.
-def link_gene(plo_fil_nam,col):
+
+def link_gene(plotsFilenames, col):
     '''
+    Generate the URL for the results page.
+
     Args:
-        plo_fil_nam: A list to store the plot file name
+        plotsFilenames: A list to store the plot file name
         col: column number from the front-end
     Returns:
         link_str: URL for showing the plots, also for share
     '''
     link_str = link_tag + '?'
     count = 0
-    for plot_name in plo_fil_nam:
+    for plot_name in plotsFilenames:
         temp_str = "plot"+str(count)+"="+plot_name+'&'
         link_str += temp_str
         count +=1
