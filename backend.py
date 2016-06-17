@@ -366,32 +366,19 @@ def del_subject(sub):
     shutil.move(temp_path, file_path)
     return True
 	
-#function for wirte profile
-def write_profile(mic_lis,plo_lis):
+
+def save_profile(subjectsList, plotsList):
     '''
+    Save a profile.
+
     Args:
-        mic_lis: A list to store the mice to add in the porfile
-        plo_lis: A list to store the plot types to add in the porfile
-    Returns:
-        None
+        subjectsList (list): each item is the name of a subject.
+        plotsList (list): each item is the name of a plot.
     '''
-    profile = open(settings.PROFILES_FILE,'a+')
-    wri_str = ""
-    for mouse in mic_lis:
-        mouse = str(mouse) + ','
-        wri_str += mouse
-    wri_str += ';'
-    for plot in plo_lis:
-        plot = str(plot) + ','
-        wri_str += plot
-    wri_str += '\n'
-    while True:
-        try:
-            profile.write(wri_str)
-            break
-        except:
-            time.sleep(1)
-    profile.close()
+    profileStr = ','.join(subjectsList) + ';' + ','.join(plotsList) + '\n'
+    pFile = open(settings.PROFILES_FILE,'a+')
+    pFile.write(profileStr)
+    pFile.close()
 
 
 def read_profiles(filename=settings.PROFILES_FILE):
@@ -403,29 +390,24 @@ def read_profiles(filename=settings.PROFILES_FILE):
     Returns:
         res_list: A list contains all the profile information
     '''
+    # FIXME: this is a weird way to test the file exists and create it otherwise
     try:
-        profile = open(filename,'r')
+        pFile = open(filename,'r')
     except:
-        profile = open(filename,'w')
-        profile.close()
-        profile = profile = open(filename,'r+')
-    res_list = []
-    pro_list = profile.read().splitlines()
-    profile.close()
+        pFile = open(filename,'w')
+        pFile.close()
+        pFile = open(filename,'r+')
+    resList = []
+    proList = pFile.read().splitlines()
+    pFile.close()
     index = 0
-    for prof in pro_list:
-        pro_dict = {}
-        pro_data = prof.split(';',1)
-        mice = pro_data[0].split(',')
-        mice = mice[0:-1]
-        type_list = pro_data[1].split(',')
-        type_list = type_list[0:-1]
-        index += 1
-        pro_dict['index'] = str(index)
-        pro_dict['subject'] = mice
-        pro_dict['plotType'] = type_list
-        res_list.append(pro_dict)
-    return res_list
+    for indp,prof in enumerate(proList):
+        profData = prof.split(';')
+        mice = profData[0].split(',')
+        plots = profData[1].split(',')
+        profDict = {'index':str(indp), 'subject':mice, 'plotType':plots}
+        resList.append(profDict)
+    return resList
 
 
 #function to generate the strings of html for profile selecting, not done

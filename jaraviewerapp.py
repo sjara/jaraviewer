@@ -55,27 +55,25 @@ def execute():
     Returns:
 
     '''
-    save = flask.request.form.getlist('save')
-    miceSelect = flask.request.form.getlist('subject')
-    plot_type_list = flask.request.form.getlist('plotType')
+    miceSelected = flask.request.form.getlist('subject')
+    plotTypeList = flask.request.form.getlist('plotType')
     dateRange = flask.request.form['dateRange']
-    colum = str(flask.request.form['columNum'])
+    nColumns = str(flask.request.form['nColumns'])
 
-    # -- Check if user chose SaveProfile --
+    # -- Check if user chose to save a profile --
     if flask.request.form['submit'] == 'saveProfile':
-        backend.write_profile(mic_lis=miceSelect,
-                              plo_lis=plot_type_list)
+        backend.save_profile(miceSelected, plotTypeList)
         return flask.redirect(PORT_NAME,code=TRANS_CODE)
-    # -- Otherwise, user chose submit --
+    # -- Otherwise, user chose button to generate plots --
     else:
-        date_list = backend.date_generator(raw_date_str = dateRange)                      # Get the list of dates
-        plot_file_name = backend.get_plot(miceSelect, date_list, plo_typ=plot_type_list)  # Get the list of file names
-        link_str = backend.link_gene(plo_fil_nam=plot_file_name,col=colum)	          # Get the string for sharing link
-        return flask.redirect(link_str,code=TRANS_CODE)
+        dateList = backend.date_generator(raw_date_str = dateRange)                      # Get the list of dates
+        plotFilename = backend.get_plot(miceSelected, dateList, plo_typ=plotTypeList)  # Get the list of file names
+        linkStr = backend.link_gene(plo_fil_nam=plotFilename,col=nColumns)	          # Get the string for sharing link
+        return flask.redirect(linkStr,code=TRANS_CODE)
 
 
 # -- Show the page with the plots --
-@app.route(link_tag,methods=['GET'])
+@app.route(link_tag, methods=['GET'])
 def link():
     '''
     Args:
@@ -91,7 +89,6 @@ def link():
     for ind in range(0,int(num)):
         arg_name = "plot"+str(ind)
         new_plot_list.append(flask.request.args.get(arg_name))
-
     css_str = backend.get_css_str(co=col)
     plot_str = backend.plot_render(plo_fil_nam=new_plot_list,col=col)	#get he string to render the html
     return flask.render_template(plot_page,mou_str=plot_str,cs_str=css_str)
@@ -125,7 +122,7 @@ def modify_profile():
         A rendered modify profile page.
         pro_str: HTML string for building up profiles
     '''
-    profile = backend.read_profile()	        # Read from file
+    profile = backend.read_profiles()	        # Read from file
     pro_str = backend.format_profile(profile)   # Re-render the html file
     return flask.render_template(modify_page, profile=pro_str)
 
