@@ -66,9 +66,9 @@ def execute():
         return flask.redirect(PORT_NAME,code=TRANS_CODE)
     # -- Otherwise, user chose button to generate plots --
     else:
-        dateList = backend.date_generator(raw_date_str = dateRange)                      # Get the list of dates
-        plotFilename = backend.get_plot(miceSelected, dateList, plo_typ=plotTypeList)  # Get the list of file names
-        linkStr = backend.link_gene(plo_fil_nam=plotFilename,col=nColumns)	          # Get the string for sharing link
+        dateList = backend.date_generator(dateRange)                      # Get the list of dates
+        plotFilename = backend.create_plots(miceSelected, dateList, plotTypeList)  # Get the list of file names
+        linkStr = backend.link_gene(plotFilename, nColumns)	          # Get the string for sharing link
         return flask.redirect(linkStr,code=TRANS_CODE)
 
 

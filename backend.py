@@ -108,45 +108,44 @@ def date_generator(raw_date_str):
         temp_date += datetime.timedelta(days=1)
     return date_list
 	
+
 #link to the plot module
-def get_plot(mice,date,plo_typ):
+def create_plots(subjectsList, datesList, plotsList):
     '''
+    Return a list of plots filenames.
+
     Args:
-        mice: A list to store the mice
-        date: A list to store the dates
-        plo_typ: A list to store the plot types
+        subjectsList (list): list of strings with subject names.
+        datesList (list): list of strings with sessions.
+        plotsList (list): list of strings with plot names.
     Returns:
-        all_file_name: A list to store all the file names that referenced in this excuction
+        allFilenames (list): all the filenames of plots.
     '''
-    subject_list = mice
-    session_list = date
-	
-    all_file_name = []
-    for subject in subject_list:
-        for session in session_list:
+    allFilenames = []
+    for subject in subjectsList:
+        for session in datesList:
             behavData = None
             # FIXME: specify an exception type
             try:
-                behavFile = loadbehavior.path_to_behavior_data(subject,EXPERIMENTER,paradigm,session)
+                behavFile = loadbehavior.path_to_behavior_data(subject,paradigm,session)
                 behavData = loadbehavior.FlexCategBehaviorData(behavFile,readmode='full')
             except:
-                for plot_type in plo_typ:
+                for plot_type in plotsList:
                     out_dict = form_out_put(sub=subject,typ='summary',data=None,sess=session)
-                    all_file_name.append(out_dict['filename'])
+                    allFilenames.append(out_dict['filename'])
                 continue
-            for plot_type in plo_typ:
-                out_dict = form_out_put(sub=subject,typ=plot_type,data=behavData,sess=session)
-                all_file_name.append(out_dict['filename'])
-                if True: #not check_exist(fil_nam=out_dict['filename']):
-                    #non_exsi_file.append(out_dict['filename'])
-                    #test_list=[]
-                    #test_list.append(out_dict)
+            for plot_type in plotsList:
+                out_dict = form_out_put(subject, plot_type, behavData, session)
+                allFilenames.append(out_dict['filename'])
+                if settings.REGENERATE_PLOTS:
                     pg.generate(out_dict, settings.IMAGE_PATH)
-    return all_file_name
-
-
-
-
+                else:
+                    if not check_exist(fil_nam=out_dict['filename']):
+                        non_exsi_file.append(out_dict['filename'])
+                        test_list=[]
+                        test_list.append(out_dict)
+                        pg.generate(out_dict, settings.IMAGE_PATH)
+    return allFilenames
 
 
 #form a dictionary for the ploting function
