@@ -28,7 +28,6 @@ link_tag = '/link'
 
 
 app = flask.Flask(__name__, static_folder = 'static')
-app.debug = True   #################### MAKE SURE TO REMOVE THIS ##############
 
 
 #@app.route(PORT_NAME)

@@ -3,9 +3,10 @@ Module for generating and saving data plots.
 This version relies on jaratoolbox for making the plots.
 '''
 
+import matplotlib
+matplotlib.use('Agg') # Set no graphical backend
 import matplotlib.pyplot as plt
 from jaratoolbox import behavioranalysis
-#import settings    # FIXME: we should make this a relative import
 import os
 
 FONTSIZE = 20
