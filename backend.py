@@ -209,10 +209,9 @@ def plot_render(plo_fil_nam, col):
 	
     # -- Case for dynamic --
     if col == '-':
-        # FIXME: hard-coded path
+        '''
         css_f = open('/jaraviewer/static/dynamic_plot.css','r')
         ###css_f = open('./static/dynamic_plot.css','r')
-        '''
         for line in css_f:
             if '--widthX' in line:
                 width = line.split()
