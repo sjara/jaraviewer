@@ -187,7 +187,7 @@ def check_exist(fil_nam):
         return False
 
 #generate the string of html for showing plot page
-def plot_render(plo_fil_nam,col):
+def plot_render(plo_fil_nam, col):
     '''
     Args:
         plo_fil_nam: A list to store the plot file name
@@ -207,9 +207,12 @@ def plot_render(plo_fil_nam,col):
 	
     type_number = len(mice_date[mice_date_str])
 	
-    #case for dynamic
+    # -- Case for dynamic --
     if col == '-':
-        css_f = open('./static/dynamic_plot.css','r')
+        # FIXME: hard-coded path
+        css_f = open('/jaraviewer/static/dynamic_plot.css','r')
+        ###css_f = open('./static/dynamic_plot.css','r')
+        '''
         for line in css_f:
             if '--widthX' in line:
                 width = line.split()
@@ -217,6 +220,7 @@ def plot_render(plo_fil_nam,col):
                 width = int(width[1][0:-3])
                 break
         counter = 0
+        '''
         plot_str = ""
 
         for group in mice_date:
@@ -225,7 +229,9 @@ def plot_render(plo_fil_nam,col):
             gro_str += "    <div class='session_title'>{0}</div>\n".format(group)
             gro_str += "    <div class='img_group'>"
             for img in mice_date[group]:
-                imgfilepath = os.path.join(settings.IMAGE_PATH,img)
+                #imgfilepath = os.path.join(settings.IMAGE_PATH,img)
+                # FIXME: hard-coded path
+                imgfilepath = os.path.join('/jaraviewer/static/output/',img)
                 gro_str += "        <img src={0} alt=''>\n".format(imgfilepath)
             gro_str += "    </div>\n"
             gro_str += "  </div>\n\n"
@@ -279,7 +285,24 @@ def plot_render(plo_fil_nam,col):
     return plot_str
 	
 
-def link_gene(plotsFilenames, col):
+def output_args(plotsFilenames, col):
+    '''
+    Generate arguments of the URL for the results page.
+
+    Args:
+        plotsFilenames: A list to store the plot file name
+        col: column number from the front-end
+    Returns:
+        link_str: URL for showing the plots, also for share
+    '''
+    argdict = {}
+    for indp, plotName in enumerate(plotsFilenames):
+        argdict['plot{0}'.format(indp)] = plotName
+    argdict['num'] = str(len(plotsFilenames))
+    argdict['col'] = str(col)
+    return argdict
+
+def link_gene__OBSOLETE(plotsFilenames, col):
     '''
     Generate the URL for the results page.
 

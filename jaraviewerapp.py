@@ -68,8 +68,8 @@ def execute():
     else:
         dateList = backend.date_generator(dateRange)                      # Get the list of dates
         plotsFilenames = backend.create_plots(miceSelected, dateList, plotTypeList)  # Get the list of file names
-        linkStr = backend.link_gene(plotsFilenames, nColumns)	          # Get the string for sharing link
-        return flask.redirect(linkStr,code=TRANS_CODE)
+        argsStr = backend.output_args(plotsFilenames, nColumns)
+        return flask.redirect(flask.url_for('link',**argsStr))
 
 
 # -- Show the page with the plots --
@@ -90,8 +90,8 @@ def link():
         arg_name = "plot"+str(ind)
         new_plot_list.append(flask.request.args.get(arg_name))
     css_str = backend.get_css_str(co=col)
-    plot_str = backend.plot_render(plo_fil_nam=new_plot_list,col=col)	#get he string to render the html
-    return flask.render_template(plot_page,mou_str=plot_str,cs_str=css_str)
+    plot_str = backend.plot_render(new_plot_list, col)	#get he string to render the html
+    return flask.render_template(plot_page, plot_str, css_str)
 
 
 @app.route('/modify',methods=['POST'])
