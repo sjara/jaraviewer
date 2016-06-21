@@ -32,7 +32,9 @@ def generate(plotInfo, outputpath):
         behavioranalysis.plot_summary(plotData,fontsize=FONTSIZE,soundfreq=freqsToUse)
     elif plotInfo['type'] == 'dynamics':
         freqsToUse = [plotData['lowFreq'][-1],plotData['highFreq'][-1]]
-        behavioranalysis.plot_dynamics(plotData,winsize=40,fontsize=FONTSIZE,soundfreq=freqsToUse)
+        hPlots = behavioranalysis.plot_dynamics(plotData,winsize=40,fontsize=FONTSIZE,soundfreq=freqsToUse)
+        plt.gca().set_xlim([0,1000])
+        plt.setp(hPlots,lw=4)
     else:
         raise ValueError('Plot type {0} is not valid'.format(plotInfo['Type']))
     outputFile = os.path.join(outputpath, plotInfo['filename'])
