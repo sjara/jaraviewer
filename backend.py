@@ -350,10 +350,10 @@ def add_subject(subject, filename=settings.SUBJECTS_FILE):
     return True
 
 #function for deleting subject
-def del_subject(sub):
+def del_subject(subject):
     '''
     Args:
-        sub: A string for the mouse name to delete
+        subject: A string for the mouse name to delete
     Returns:
         1. False: Failed to delete the mouse
         2. True: Successfully deleting the mouse
@@ -365,7 +365,7 @@ def del_subject(sub):
         print "Can't open the file"
     mice = mice_file.read().splitlines()
     try:
-        mice.remove(sub)
+        mice.remove(subject)
     except:
         return False
     mice_file.close()

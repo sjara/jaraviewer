@@ -102,11 +102,14 @@ def modify():
     Returns:
         Redirect to main method 'initial'.
     '''
-    subjectName = flask.request.form['subject']
+    subjectsNames = flask.request.form['subject']
+    subjectsList = subjectsNames.strip().split(' ')
     if flask.request.form['submit'] == "add":
-        result = backend.add_subject(subjectName)	# Add one subject to subjects file
+        for subjectName in subjectsList:
+            result = backend.add_subject(subjectName)	# Add one subject to subjects file
     elif flask.request.form['submit'] == "delete":
-        result = backend.del_subject(subjectName)	# Delete one subject from subjects file
+        for subjectName in subjectsList:
+            result = backend.del_subject(subjectName)	# Delete one subject from subjects file
     else:
         flask.abort(406) # Send code for "Not acceptable"
     return flask.redirect(flask.url_for('initial'))
