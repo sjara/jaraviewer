@@ -141,9 +141,9 @@ def create_plots(subjectsList, datesList, plotsList):
                     pg.generate(out_dict, settings.IMAGE_PATH)
                 else:
                     if not check_exist(fil_nam=out_dict['filename']):
-                        non_exsi_file.append(out_dict['filename'])
-                        test_list=[]
-                        test_list.append(out_dict)
+                        #non_exsi_file.append(out_dict['filename'])
+                        #test_list=[]
+                        #test_list.append(out_dict)
                         pg.generate(out_dict, settings.IMAGE_PATH)
     return allFilenames
 
@@ -187,57 +187,50 @@ def check_exist(fil_nam):
         return False
 
 #generate the string of html for showing plot page
-def plot_render(plo_fil_nam, col):
+def plot_render(plots_filenames, col):
     '''
+    Generate the HTML for the plots section of the output page.
+
     Args:
-        plo_fil_nam: A list to store the plot file name
+        plots_filenames: A list to store the plot file name
         col: column number from the front-end
     Returns:
         plot_str: HTML string for rendering the plots.
     '''
-    mice_date = {}
-    for plot in plo_fil_nam:
-        stri = plot.split('_',3)
-        mice_date_str = stri[0]+'-'+stri[1]
-        if mice_date_str in mice_date.keys():
-            mice_date[mice_date_str].append(plot)
-        else:
-            mice_date[mice_date_str] = []
-            mice_date[mice_date_str].append(plot)
-	
-    type_number = len(mice_date[mice_date_str])
-	
+    sessionsList = []
+    plotsLabels = []
+    plotsItems = []
+    for onePlotFilename in plots_filenames:
+        (subject,datestr,plotype) = onePlotFilename.split('_',3)
+        plotLabel = '{0} [{1}]'.format(subject,datestr)
+        sessionKey = subject+datestr
+        # NOTE: this looks almost like a dict, but it is sorted.
+        if sessionKey not in sessionsList:
+            sessionsList.append(sessionKey)
+            plotsItems.append([])
+            plotsLabels.append(plotLabel)
+        sessionInd = sessionsList.index(sessionKey)
+        plotsItems[sessionInd].append(onePlotFilename)
+    type_number = len(plotsItems[sessionInd]) # Number of plots per session?
+
     # -- Case for dynamic --
     if col == '-':
-        '''
-        css_f = open('/jaraviewer/static/dynamic_plot.css','r')
-        ###css_f = open('./static/dynamic_plot.css','r')
-        for line in css_f:
-            if '--widthX' in line:
-                width = line.split()
-                #print test
-                width = int(width[1][0:-3])
-                break
-        counter = 0
-        '''
         plot_str = ""
-
-        for group in mice_date:
-            ima_num = len(mice_date[group])
+        for sessionInd,plotItems in enumerate(plotsItems):
             gro_str  = "  <div class='session_group'>\n"
-            gro_str += "    <div class='session_title'>{0}</div>\n".format(group)
+            gro_str += "    <div class='session_title'>{0}</div>\n".format(plotsLabels[sessionInd])
             gro_str += "    <div class='img_group'>"
-            for img in mice_date[group]:
+            for plotFilename in plotsItems[sessionInd]:
                 #imgfilepath = os.path.join(settings.IMAGE_PATH,img)
                 # FIXME: hard-coded path
-                imgfilepath = os.path.join('/jaraviewer/static/output/',img)
+                imgfilepath = os.path.join('/jaraviewer/static/output/',plotFilename)
                 gro_str += "        <img src={0} alt=''>\n".format(imgfilepath)
             gro_str += "    </div>\n"
             gro_str += "  </div>\n\n"
             plot_str += gro_str
-        return plot_str
-        
-	
+    return plot_str
+
+    '''
     #case for static
     col = int(col)
     if col > 0:
@@ -280,8 +273,8 @@ def plot_render(plo_fil_nam, col):
                 plot_str += group_str                
                 col_counter = 1
         plot_str += "</tr> </table> <br> <hr style='width: "+width+"px' />"
-
     return plot_str
+    '''
 	
 
 def output_args(plotsFilenames, col):
