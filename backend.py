@@ -14,15 +14,16 @@ from jaratoolbox import loadbehavior
 from jaraviewer import settings
 from jaraviewer import plotgenerator as pg	#File for ploting
 
-###fixed variable###
-EXPERIMENTER = 'santiago'	#name for the EXPERIMENTER
-paradigm = '2afc'	#name for the paradigm
-static_group_width = 200	#width to show the group name in static mode
-make_up_br = 200	#leaving a little more space horizontally for static mode
-SUBJECTS_PER_ROW = 5	#the number of mice checkboxes will be showed in one line in the home page
-link_tag = '/link'	#tag name for sharing link and rendering plots function, need to change the 'link_tag' in 'jaraviewerapp.py' if this is changed
+# -- Fixed parameters --
+PARADIGM = '2afc'         # Behavioral paradigm
+SUBJECTS_PER_ROW = 5      # Number of buttons per line
 
-#indexes for extracting the date 
+# -- Old parameters --
+#link_tag = '/link'        #tag name for sharing link and rendering plots function, need to change the 'link_tag' in 'jaraviewerapp.py' if this is changed
+#static_group_width = 200  # Width of  to show the group name in static mode
+#make_up_br = 200          # leaving a little more space horizontally for static mode
+
+# -- Indexes for extracting the date --
 START_YEAR_STA = 0
 START_YEAR_END = 4
 START_MONTH_STA = 5
@@ -127,7 +128,7 @@ def create_plots(subjectsList, datesList, plotsList):
             behavData = None
             # FIXME: specify an exception type
             try:
-                behavFile = loadbehavior.path_to_behavior_data(subject,paradigm,session)
+                behavFile = loadbehavior.path_to_behavior_data(subject, PARADIGM, session)
                 behavData = loadbehavior.FlexCategBehaviorData(behavFile,readmode='full')
             except:
                 for plot_type in plotsList:
@@ -140,10 +141,7 @@ def create_plots(subjectsList, datesList, plotsList):
                 if settings.REGENERATE_PLOTS:
                     pg.generate(out_dict, settings.IMAGE_PATH)
                 else:
-                    if not check_exist(fil_nam=out_dict['filename']):
-                        #non_exsi_file.append(out_dict['filename'])
-                        #test_list=[]
-                        #test_list.append(out_dict)
+                    if not os.path.isfile(out_dict['filename']):
                         pg.generate(out_dict, settings.IMAGE_PATH)
     return allFilenames
 
@@ -165,26 +163,6 @@ def form_out_put(sub,typ,data,sess):
     out_dict['data'] = data
     return out_dict
 
-#function to check is the image already existed
-def check_exist(fil_nam):
-    '''
-    Args:
-        fil_nam: A string for the name of one plot file
-    Returns:
-        1. True: If the file name already exists in the folder
-        2. False: If the file name not exists in the folder
-    '''
-    check_file_exists = False
-    image_path = os.walk(settings.IMAGE_PATH)
-    for root,dirs,files in image_path:
-        if check_file_exists:
-            return True
-        for f in files:
-            if f == fil_nam:
-                check_file_exists = True
-                return True
-    if not check_file_exists:
-        return False
 
 #generate the string of html for showing plot page
 def plot_render(plots_filenames, col):
