@@ -81,9 +81,11 @@ def subjects_buttons(subjects):
         is_break = ""
     return mouse_str
 
-#get all the dates from the date string
+
 def date_generator(raw_date_str):
     '''
+    Get all the dates from the date string.
+
     Args:
         raw_date_str: A string to store the date range.
     Returns:
@@ -110,7 +112,6 @@ def date_generator(raw_date_str):
     return date_list
 	
 
-#link to the plot module
 def create_plots(subjectsList, datesList, plotsList):
     '''
     Return a list of plots filenames.
@@ -146,9 +147,11 @@ def create_plots(subjectsList, datesList, plotsList):
     return allFilenames
 
 
-#form a dictionary for the ploting function
+
 def form_out_put(sub,typ,data,sess):
     '''
+    Form a dictionary for the ploting function
+
     Args:
         sub: A string for one mouse
         date: A string for one date
@@ -164,7 +167,6 @@ def form_out_put(sub,typ,data,sess):
     return out_dict
 
 
-#generate the string of html for showing plot page
 def plot_render(plots_filenames, col):
     '''
     Generate the HTML for the plots section of the output page.
@@ -272,6 +274,7 @@ def output_args(plotsFilenames, col):
     argdict['col'] = str(col)
     return argdict
 
+"""
 def link_gene__OBSOLETE(plotsFilenames, col):
     '''
     Generate the URL for the results page.
@@ -291,7 +294,7 @@ def link_gene__OBSOLETE(plotsFilenames, col):
     link_str += "num="+str(count)
     link_str += "&col=" + str(col)
     return link_str
-
+"""
 
 def add_subject(subject, filename=settings.SUBJECTS_FILE):
     '''
@@ -320,9 +323,11 @@ def add_subject(subject, filename=settings.SUBJECTS_FILE):
     mice_file.close()
     return True
 
-#function for deleting subject
+
 def del_subject(subject):
     '''
+    Function for deleting subject
+
     Args:
         subject: A string for the mouse name to delete
     Returns:
@@ -404,9 +409,11 @@ def read_profiles(filename=settings.PROFILES_FILE):
     return resList
 
 
-#function to generate the strings of html for profile selecting, not done
+
 def format_profile(profile_list):
     '''
+    Generate HTML for profile selection.
+
     Args:
         profile_list: A list contains all the profile information
     Returns:
@@ -437,10 +444,10 @@ def format_profile(profile_list):
     return profile_str
 	
 	
-	
-# function to delete profile
 def dele_profile(index_list):
     '''
+    Delete profile.
+
     Args:
         index_list: A list contains all the profile index to delete
     Returns:
