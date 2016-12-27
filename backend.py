@@ -221,9 +221,9 @@ def plot_render(plots_filenames, col):
             gro_str += "    <div class='session_title'>{0}</div>\n".format(plotsLabels[sessionInd])
             gro_str += "    <div class='img_group'>"
             for plotFilename in plotsItems[sessionInd]:
-                #imgfilepath = os.path.join(settings.IMAGE_PATH,img)
+                imgfilepath = os.path.join(settings.IMAGE_PATH,plotFilename)
                 # FIXME: hard-coded path
-                imgfilepath = os.path.join('/jaraviewer/static/output/',plotFilename)
+                #imgfilepath = os.path.join('/jaraviewer/static/output/',plotFilename)
                 gro_str += "        <img src={0} alt=''>\n".format(imgfilepath)
             gro_str += "    </div>\n"
             gro_str += "  </div>\n\n"
