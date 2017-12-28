@@ -3,5 +3,7 @@
 settings.py
 static/output/
 static/old/
+static/profiles.txt
+static/subjects.txt
 old/
 

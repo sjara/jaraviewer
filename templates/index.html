@@ -101,23 +101,29 @@
                     <!-- Select Plot Type -->
                     <div class="form-group">
                         <label class="control-label col-sm-2">Plot Type:</label> 
-                        <div class="col-sm-6">
+                        <div class="col-sm-10">
                                 
+                            <input type="checkbox" id="infoText" value="infoText" name="plotType" class="hidden_plot">
+                            <label class="label_ploticon" for="infoText">
+                                <img class="icon" src="static/icons/info.svg" alt="">
+                                Session info
+                            </label>
+                            
                             <input type="checkbox" id="psychometric" value="psychometric" name="plotType" class="hidden_plot">
                             <label class="label_ploticon" for="psychometric">
-                                <img class="icon" src="static/psychometric.svg" alt="">
+                                <img class="icon" src="static/icons/psychometric.svg" alt="">
                                 Psychometric   
                             </label>
                             
                             <input type="checkbox" id="summary" value="summary" name="plotType" class="hidden_plot">
                             <label class="label_ploticon" for="summary">
-                                <img class="icon" src="static/summary.svg" alt="">
+                                <img class="icon" src="static/icons/summary.svg" alt="">
                                 Summary
                             </label>
                             
                             <input type="checkbox" id="dynamics" value="dynamics" name="plotType" class="hidden_plot">
                             <label class="label_ploticon" for="dynamics">
-                                <img class="icon" src="static/dynamics.svg" alt="">
+                                <img class="icon" src="static/icons/dynamics.svg" alt="">
                                 Dynamics
                             </label>
                         </div>
