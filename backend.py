@@ -8,6 +8,8 @@ import time
 import sys
 import os
 import shutil
+import json
+from collections import OrderedDict
 
 from jaratoolbox import loadbehavior
 
@@ -80,6 +82,37 @@ def subjects_buttons(subjects):
         count += 1
         is_break = ""
     return mouse_str
+
+def plot_types(filename=settings.PLUGINS_FILE):
+    fid = open(filename,'r')
+    pluginsInfoStr = fid.read()
+    fid.close()
+    pluginsInfo = json.loads(pluginsInfoStr, object_pairs_hook=OrderedDict)
+    ptypes_str = ''
+    for plugin,pinfo in pluginsInfo.iteritems():
+        ptypes_str += plot_type_str(plugin, pinfo['label'], pinfo['icon'])
+    #ptypes_str = plot_type_str('infoText', 'Session info', 'info.svg')
+    '''
+    ptypes_str = ''
+    ptypes_str += plot_type_str('infoText', 'Info', 'info.svg')
+    ptypes_str += plot_type_str('summary', 'Summary', 'summary.svg')
+    ptypes_str += plot_type_str('psychometric', 'Psych', 'psychometric.svg')
+    ptypes_str += plot_type_str('dynamics', 'Dynamics', 'dynamics.svg')
+    '''
+    return ptypes_str
+
+def plot_type_str(id, label, icon):
+    '''Example plot_type_str('infoText', 'Session info', 'info.svg') '''
+    template_str = '''
+    <input type="checkbox" id="{id}" value="{id}" name="plotType" class="hidden_plot">
+    <label class="label_ploticon" for="{id}">
+      <img class="icon" src="static/icons/{icon}" alt="">
+      {label}
+    </label>
+    '''                        
+    #return 'testsXX'
+    ptype_str = template_str.format(id=id, label=label, icon=icon)
+    return ptype_str
 
 
 def date_generator(raw_date_str):
