@@ -8,13 +8,14 @@ import time
 import sys
 import os
 import shutil
-import json
-from collections import OrderedDict
+#import json
+#from collections import OrderedDict
 
 from jaratoolbox import loadbehavior
 
 from jaraviewer import settings
-from jaraviewer import plotgenerator as pg	#File for ploting
+#from jaraviewer import plotgenerator as pg	#File for ploting
+from jaraviewer import plotter
 
 # -- Fixed parameters --
 PARADIGM = '2afc'         # Behavioral paradigm
@@ -84,6 +85,7 @@ def subjects_buttons(subjects):
     return mouse_str
 
 def plot_types(filename=settings.PLUGINS_FILE):
+    '''
     fid = open(filename,'r')
     pluginsInfoStr = fid.read()
     fid.close()
@@ -91,6 +93,10 @@ def plot_types(filename=settings.PLUGINS_FILE):
     ptypes_str = ''
     for plugin,pinfo in pluginsInfo.iteritems():
         ptypes_str += plot_type_str(plugin, pinfo['label'], pinfo['icon'])
+    '''
+    ptypes_str = ''
+    for ptype, pinfo in plotter.PLOTS.iteritems():
+        ptypes_str += plot_type_str(ptype, pinfo['label'], pinfo['icon'])
     #ptypes_str = plot_type_str('infoText', 'Session info', 'info.svg')
     '''
     ptypes_str = ''
@@ -166,20 +172,27 @@ def create_plots(subjectsList, datesList, plotsList):
                 behavData = loadbehavior.FlexCategBehaviorData(behavFile,readmode='full')
             except:
                 for plot_type in plotsList:
-                    out_dict = form_out_put(sub=subject,typ='summary',data=None,sess=session)
-                    allFilenames.append(out_dict['filename'])
+                    #out_dict = form_out_put(sub=subject,typ='summary',data=None,sess=session)
+                    filename = make_filename(subject, session, 'summary')
+                    allFilenames.append(filename)
                 continue
             for plot_type in plotsList:
-                out_dict = form_out_put(subject, plot_type, behavData, session)
-                allFilenames.append(out_dict['filename'])
+                #out_dict = form_out_put(subject, plot_type, behavData, session)
+                filename = make_filename(subject, session, plot_type)
+                allFilenames.append(filename)
                 if settings.REGENERATE_PLOTS:
-                    pg.generate(out_dict, settings.IMAGE_PATH)
+                    #plotter.generate(out_dict, settings.IMAGE_PATH)
+                    plotter.generate(behavData, plot_type, settings.IMAGE_PATH, filename)
                 else:
-                    if not os.path.isfile(out_dict['filename']):
-                        pg.generate(out_dict, settings.IMAGE_PATH)
+                    if not os.path.isfile(filename):
+                        #plotter.generate(out_dict, settings.IMAGE_PATH)
+                        plotter.generate(behavData, plot_type, settings.IMAGE_PATH, filename)                        
     return allFilenames
 
 
+def make_filename(subject, session, plotType):
+    filename = str(subject)+'_'+str(session[0:8])+'_'+str(plotType)+'.svg'
+    return filename
 
 def form_out_put(sub,typ,data,sess):
     '''
