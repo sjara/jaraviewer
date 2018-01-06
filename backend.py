@@ -1,6 +1,6 @@
 '''
-This is the back-end module.
-All the functions that related to the back-end will be defined here.
+The backend module defines methods for creating/deleting HTML for
+subjects and profiles. IT also calls the plot generator.
 '''
 
 import datetime
@@ -8,13 +8,8 @@ import time
 import sys
 import os
 import shutil
-#import json
-#from collections import OrderedDict
-
 from jaratoolbox import loadbehavior
-
 from jaraviewer import settings
-#from jaraviewer import plotgenerator as pg	#File for ploting
 from jaraviewer import plotter
 
 # -- Fixed parameters --
@@ -85,26 +80,9 @@ def subjects_buttons(subjects):
     return mouse_str
 
 def plot_types(filename=settings.PLUGINS_FILE):
-    '''
-    fid = open(filename,'r')
-    pluginsInfoStr = fid.read()
-    fid.close()
-    pluginsInfo = json.loads(pluginsInfoStr, object_pairs_hook=OrderedDict)
-    ptypes_str = ''
-    for plugin,pinfo in pluginsInfo.iteritems():
-        ptypes_str += plot_type_str(plugin, pinfo['label'], pinfo['icon'])
-    '''
     ptypes_str = ''
     for ptype, pinfo in plotter.PLOTS.iteritems():
         ptypes_str += plot_type_str(ptype, pinfo['label'], pinfo['icon'])
-    #ptypes_str = plot_type_str('infoText', 'Session info', 'info.svg')
-    '''
-    ptypes_str = ''
-    ptypes_str += plot_type_str('infoText', 'Info', 'info.svg')
-    ptypes_str += plot_type_str('summary', 'Summary', 'summary.svg')
-    ptypes_str += plot_type_str('psychometric', 'Psych', 'psychometric.svg')
-    ptypes_str += plot_type_str('dynamics', 'Dynamics', 'dynamics.svg')
-    '''
     return ptypes_str
 
 def plot_type_str(id, label, icon):
@@ -116,7 +94,6 @@ def plot_type_str(id, label, icon):
       {label}
     </label>
     '''                        
-    #return 'testsXX'
     ptype_str = template_str.format(id=id, label=label, icon=icon)
     return ptype_str
 
@@ -170,22 +147,19 @@ def create_plots(subjectsList, datesList, plotsList):
             try:
                 behavFile = loadbehavior.path_to_behavior_data(subject, PARADIGM, session)
                 behavData = loadbehavior.FlexCategBehaviorData(behavFile,readmode='full')
+                #behavData = loadbehavior.BehaviorData(behavFile,readmode='full')
             except:
                 for plot_type in plotsList:
-                    #out_dict = form_out_put(sub=subject,typ='summary',data=None,sess=session)
                     filename = make_filename(subject, session, 'summary')
                     allFilenames.append(filename)
                 continue
             for plot_type in plotsList:
-                #out_dict = form_out_put(subject, plot_type, behavData, session)
                 filename = make_filename(subject, session, plot_type)
                 allFilenames.append(filename)
                 if settings.REGENERATE_PLOTS:
-                    #plotter.generate(out_dict, settings.IMAGE_PATH)
                     plotter.generate(behavData, plot_type, settings.IMAGE_PATH, filename)
                 else:
                     if not os.path.isfile(filename):
-                        #plotter.generate(out_dict, settings.IMAGE_PATH)
                         plotter.generate(behavData, plot_type, settings.IMAGE_PATH, filename)                        
     return allFilenames
 
@@ -320,27 +294,6 @@ def output_args(plotsFilenames, col):
     argdict['col'] = str(col)
     return argdict
 
-"""
-def link_gene__OBSOLETE(plotsFilenames, col):
-    '''
-    Generate the URL for the results page.
-
-    Args:
-        plotsFilenames: A list to store the plot file name
-        col: column number from the front-end
-    Returns:
-        link_str: URL for showing the plots, also for share
-    '''
-    link_str = link_tag + '?'
-    count = 0
-    for plot_name in plotsFilenames:
-        temp_str = "plot"+str(count)+"="+plot_name+'&'
-        link_str += temp_str
-        count +=1
-    link_str += "num="+str(count)
-    link_str += "&col=" + str(col)
-    return link_str
-"""
 
 def add_subject(subject, filename=settings.SUBJECTS_FILE):
     '''

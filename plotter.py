@@ -16,7 +16,6 @@ from collections import OrderedDict
 matplotlib.use('Agg') # Set no graphical backend
 import matplotlib.pyplot as plt
 from jaratoolbox import behavioranalysis
-from .plugins import coreplots
 import os
 
 FONTSIZE = 20
