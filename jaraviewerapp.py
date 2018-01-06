@@ -60,7 +60,8 @@ def execute():
     plotTypeList = flask.request.form.getlist('plotType')
     dateRange = flask.request.form['dateRange']
     nColumns = str(flask.request.form['columNum'])
-
+    loaderMethod = str(flask.request.form['loader'])
+    
     # -- Check if user chose to save a profile --
     if flask.request.form['submit'] == 'saveProfile':
         backend.save_profile(miceSelected, plotTypeList)
@@ -68,7 +69,8 @@ def execute():
     # -- Otherwise, user chose button to generate plots --
     else:
         dateList = backend.date_generator(dateRange)                      # Get the list of dates
-        plotsFilenames = backend.create_plots(miceSelected, dateList, plotTypeList)  # Get the list of file names
+        plotsFilenames = backend.create_plots(miceSelected, dateList,
+                                              plotTypeList, loaderMethod)  # Get the list of file names
         argsStr = backend.output_args(plotsFilenames, nColumns)
         return flask.redirect(flask.url_for('link',**argsStr))
 

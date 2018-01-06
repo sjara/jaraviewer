@@ -15,6 +15,7 @@ from jaraviewer import plotter
 # -- Fixed parameters --
 PARADIGM = '2afc'         # Behavioral paradigm
 SUBJECTS_PER_ROW = 5      # Number of buttons per line
+DEFAULT_LOADER = 'BehaviorData'
 
 # -- Old parameters --
 #link_tag = '/link'        #tag name for sharing link and rendering plots function, need to change the 'link_tag' in 'jaraviewerapp.py' if this is changed
@@ -128,7 +129,7 @@ def date_generator(raw_date_str):
     return date_list
 	
 
-def create_plots(subjectsList, datesList, plotsList):
+def create_plots(subjectsList, datesList, plotsList, loaderStr=DEFAULT_LOADER):
     '''
     Return a list of plots filenames.
 
@@ -144,10 +145,12 @@ def create_plots(subjectsList, datesList, plotsList):
         for session in datesList:
             behavData = None
             # FIXME: specify an exception type
+            loader = getattr(loadbehavior,loaderStr)
             try:
                 behavFile = loadbehavior.path_to_behavior_data(subject, PARADIGM, session)
-                behavData = loadbehavior.FlexCategBehaviorData(behavFile,readmode='full')
+                #behavData = loadbehavior.FlexCategBehaviorData(behavFile,readmode='full')
                 #behavData = loadbehavior.BehaviorData(behavFile,readmode='full')
+                behavData = loader(behavFile)
             except:
                 for plot_type in plotsList:
                     filename = make_filename(subject, session, 'summary')
