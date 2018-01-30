@@ -3,8 +3,8 @@ Module for generating and saving data plots.
 Ideally, plot functions are defined in jaratoolbox and just called from here.
 
 To add a new plot you need:
-1. Create or define what icon to use from .../static/ (e.g., psychometrics.svg)
-2. Add an key to the ordered dict PLOTS below, and specify label and icon.
+1. Create or define what icon to use from .../static/icons/ (e.g., psychometrics.svg)
+2. Add a key to the ordered dict PLOTS below, and specify label and icon.
 3. Create a plotting function at the end of this script using the same name as the new key.
    The plotting function should be minimal (most code should be in jaratoolbox).
 
