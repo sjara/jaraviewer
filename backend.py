@@ -80,7 +80,7 @@ def subjects_buttons(subjects):
         is_break = ""
     return mouse_str
 
-def plot_types(filename=settings.PLUGINS_FILE):
+def plot_types():
     ptypes_str = ''
     for ptype, pinfo in plotter.PLOTS.iteritems():
         ptypes_str += plot_type_str(ptype, pinfo['label'], pinfo['icon'])
