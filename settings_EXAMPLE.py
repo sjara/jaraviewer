@@ -4,7 +4,8 @@
 Settings for the Jaraviewer
 '''
 
-IMAGE_PATH = './static/output/'         # Path to save the generated plots
+IMAGE_PATH_OUTPUT = './static/output/'   # Server path to save the generated plots
+IMAGE_PATH_WEB = './static/output/'      # Web path to read images from
 
 SUBJECTS_FILE = './static/subjects.txt' # File to store subject names
 
