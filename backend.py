@@ -160,10 +160,10 @@ def create_plots(subjectsList, datesList, plotsList, loaderStr=DEFAULT_LOADER):
                 filename = make_filename(subject, session, plot_type)
                 allFilenames.append(filename)
                 if settings.REGENERATE_PLOTS:
-                    plotter.generate(behavData, plot_type, settings.IMAGE_PATH, filename)
+                    plotter.generate(behavData, plot_type, settings.IMAGE_PATH_OUTPUT, filename)
                 else:
                     if not os.path.isfile(filename):
-                        plotter.generate(behavData, plot_type, settings.IMAGE_PATH, filename)                        
+                        plotter.generate(behavData, plot_type, settings.IMAGE_PATH_OUTPUT, filename)                        
     return allFilenames
 
 
@@ -224,7 +224,7 @@ def plot_render(plots_filenames, col):
             gro_str += "    <div class='session_title'>{0}</div>\n".format(plotsLabels[sessionInd])
             gro_str += "    <div class='img_group'>"
             for plotFilename in plotsItems[sessionInd]:
-                imgfilepath = os.path.join(settings.IMAGE_PATH,plotFilename)
+                imgfilepath = os.path.join(settings.IMAGE_PATH_WEB,plotFilename)
                 # FIXME: hard-coded path
                 #imgfilepath = os.path.join('/jaraviewer/static/output/',plotFilename)
                 gro_str += "        <img src={0} alt=''>\n".format(imgfilepath)
