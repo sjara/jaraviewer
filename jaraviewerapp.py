@@ -28,7 +28,7 @@ link_tag = '/link'
 
 
 app = flask.Flask(__name__, static_folder = 'static')
-
+app.debug = True
 
 #@app.route(PORT_NAME)
 @app.route('/')
