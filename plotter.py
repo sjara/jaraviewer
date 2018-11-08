@@ -23,7 +23,9 @@ FONTSIZE = 20
 PLOTS = OrderedDict()
 PLOTS.update({'info'        :{'label':'Info', 'icon':'info.svg'}})
 PLOTS.update({'summary'     :{'label':'Summary', 'icon':'summary.svg'}})
-PLOTS.update({'psychometric':{'label':'Psychometric', 'icon':'psychometric.svg'}})
+#PLOTS.update({'psychometric':{'label':'Psychometric', 'icon':'psychometric.svg'}})
+PLOTS.update({'psycurveLog'  :{'label':'Psycurve (log)', 'icon':'psychometric.svg'}})
+PLOTS.update({'psycurveLinear':{'label':'Psycurve (linear)', 'icon':'psychometric.svg'}})
 PLOTS.update({'dynamics'    :{'label':'Dynamics', 'icon':'dynamics.svg'}})
 
 
@@ -47,8 +49,27 @@ def generate(bdata, plottype, outputpath, filename):
 
 # ======= Plot function should be defined below ========
 
-def psychometric(bdata):
+#def psychometric(bdata):
+#    behavioranalysis.plot_frequency_psycurve(bdata,fontsize=FONTSIZE)
+#    plt.gcf().set_size_inches([8,6])
+
+def psycurveLog(bdata):
     behavioranalysis.plot_frequency_psycurve(bdata,fontsize=FONTSIZE)
+    plt.gcf().set_size_inches([8,6])
+
+def psycurveLinear(bdata):
+    from jaratoolbox import extraplots
+    fontsize=FONTSIZE
+    targetPercentage = bdata['targetFrequency'] # I used name 'frequency' initially
+    choiceRight = bdata['choice']==bdata.labels['choice']['right']
+    valid=bdata['valid']& (bdata['choice']!=bdata.labels['choice']['none'])
+    (possibleValues,fractionHitsEachValue,ciHitsEachValue,nTrialsEachValue,nHitsEachValue)=\
+           behavioranalysis.calculate_psychometric(choiceRight,targetPercentage,valid)
+    (pline, pcaps, pbars, pdots) = extraplots.plot_psychometric(1e-3*possibleValues,fractionHitsEachValue,
+                                                                    ciHitsEachValue,xTickPeriod=1, xscale='linear')
+    plt.xlabel('Stimulus',fontsize=fontsize)
+    plt.ylabel('Rightward trials (%)',fontsize=fontsize)
+    extraplots.set_ticks_fontsize(plt.gca(),fontsize)
     plt.gcf().set_size_inches([8,6])
 
 def summary(bdata):    
