@@ -60,7 +60,10 @@ def psycurveLog(bdata):
 def psycurveLinear(bdata):
     from jaratoolbox import extraplots
     fontsize=FONTSIZE
-    targetPercentage = bdata['targetFrequency'] # I used name 'frequency' initially
+    if 'targetPercentage' in bdata.viewkeys():
+        targetPercentage = bdata['targetPercentage']
+    else:
+        targetPercentage = bdata['targetFrequency'] # I used name 'frequency' initially
     choiceRight = bdata['choice']==bdata.labels['choice']['right']
     valid=bdata['valid']& (bdata['choice']!=bdata.labels['choice']['none'])
     (possibleValues,fractionHitsEachValue,ciHitsEachValue,nTrialsEachValue,nHitsEachValue)=\
